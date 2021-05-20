@@ -1,0 +1,83 @@
+.App {
+  text-align: center;
+}
+
+.header {
+  background-color: #f4e04d;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #10375c;
+}
+
+.plantations-container {
+    padding-left: 3em;
+      padding-right: 3em;
+        margin-top: 3em;
+        
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed ;
+  width: 100% ;
+}
+
+th {
+  border: 1px solid rgb(0, 0, 0);
+  background-color: #11151a;
+  width: 30px;
+}
+
+th.month {
+  border: 1px solid rgb(0, 0, 0);
+  background-color: #10375c;
+  width: 30px;
+}
+
+td {
+  border: 1px solid gray;
+}
+
+td.plant {
+  background-color: #7a641f;
+}
+
+td.seeding {
+  background-color: #EFBF2D;
+  background-position: 100% 100%;
+} 
+
+td.transplanting {
+  background-color: #D47D3A;
+  background-position: 100% 100%;
+} 
+
+td.planting {
+  background-color: #776014;
+  background-position: 100% 0%;
+} 
+
+td.harvesting {
+  background-color: #63AF57;
+  background-position: 100% 100%;
+} 
+
+/* table legend */
+.legend { 
+  list-style: none; 
+  padding-inline-start: 0px;
+  padding: 10px;
+}
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+
+/* legends */
+.legend .seeding { background-color: #EFBF2D; }
+.legend .transplanting { background-color: #D47D3A; }
+.legend .planting { background-color: #776014; }
+.legend .harvesting { background-color: #63AF57; }
