@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-export function GithubCommit() {
+export function PlantList() {
+  
   const [page, setPage] = useState(1);
   const [commitHistory, setCommitHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
