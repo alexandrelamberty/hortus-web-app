@@ -1,10 +1,3 @@
----
-Title: Gardening Planner
-Author: Alexandre Lamberty
-Date: January 20, 2018
-Last Modified: 
-
----
 [![Netlify Status](https://api.netlify.com/api/v1/badges/489b8b79-24fd-496c-b7b6-9b94897a61e6/deploy-status)](https://app.netlify.com/sites/hortus/deploys)
 
 # Gardenning Planner
