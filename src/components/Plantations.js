@@ -1,7 +1,5 @@
 import React from "react";
-import "./App.css";
-import { plantationsData } from "./data";
-import { getAllUsers, createUser } from './PlantService'
+import { plantationsData, getAllUsers, createUser } from '../services/PlantService'
 
 export const Plantations = () => {
 

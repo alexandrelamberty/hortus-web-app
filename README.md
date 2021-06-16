@@ -1,19 +1,13 @@
----
-Title: Gardening Planner
-Author: Alexandre Lamberty
-Date: January 20, 2018
-Last Modified: 
+# Hortus
 
----
-# Gardenning Planner
+A gardenning planner
 
 - Organize your culture.
 - Manage your gardenning spaces, plants and pots …
 
-
 ### Data modeling
 
-## Phase de culture
+## Culture Phase
 
 - Seeding
   - Interieur
@@ -24,6 +18,7 @@ Last Modified:
 - Récolte
 
 ## Culture
+
 Plant represent a plant name with it's differents culture phases starting and ending period.
 
 ```json
@@ -36,7 +31,7 @@ Plant represent a plant name with it's differents culture phases starting and en
 }
 ```
 
-## Types de légumes
+## Vegetable
 
 - Fruit
 - Graine
