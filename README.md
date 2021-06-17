@@ -38,3 +38,7 @@ Plant represent a plant name with it's differents culture phases starting and en
 - Feuille
 - Bulbe
 - Racine
+
+## Ressources
+
+https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications

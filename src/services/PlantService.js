@@ -3,68 +3,73 @@ export const plantationsData = [
     name: "Aubergine",
     events: [
       {
-            name: "seeding", //
-            start: 1,
-            end: 7,
+        name: "seeding", //
+        start: 1,
+        end: 7,
       },
       {
-            name: "transplanting",
-            start: 9,
-            end: 10,
+        name: "transplanting",
+        start: 9,
+        end: 10,
       },
       {
-            name: "planting",
-            start: 14,
-            end: 15,
+        name: "planting",
+        start: 14,
+        end: 15,
       },
       {
-            name: "harvesting",
-            start: 18,
-            end:19,
-      }]
+        name: "harvesting",
+        start: 18,
+        end: 19,
+      },
+    ],
   },
   {
     name: "Carrots",
     events: [
       {
-            name: "seeding",
-            start: 1,
-            end: 2,
+        name: "seeding",
+        start: 1,
+        end: 2,
       },
       {
-            name: "transplanting",
-            start: 9,
-            end: 10,
+        name: "transplanting",
+        start: 9,
+        end: 10,
       },
       {
-            name: "planting",
-            start: 14,
-            end: 15,
+        name: "planting",
+        start: 14,
+        end: 15,
       },
       {
-            name: "harvesting",
-            start: 18,
-            end: 19,
-      }]    
+        name: "harvesting",
+        start: 18,
+        end: 19,
+      },
+    ],
   },
 ];
 
-export async function getPlants()
-{
-		const response = await fetch('http://api.countryside-collection.com/v1/categories?lang=fr&format=json');
-    return await response.json();
+export async function getPlants() {
+  const response = await fetch(
+    "http://api.countryside-collection.com/v1/categories?lang=fr&format=json"
+  );
+  return await response.json();
 }
 
 export async function getAllUsers() {
-    const response = await fetch('http://api.countryside-collection.com/v1/categories?lang=fr&format=json');
-    return await response.json();
+  const response = await fetch(
+    "http://api.countryside-collection.com/v1/categories?lang=fr&format=json"
+  );
+  return await response.json();
 }
 
 export async function createUser(data) {
-    const response = await fetch(`/api/user`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({user: data})
-      })
-    return await response.json();
+  const response = await fetch(`/api/user`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: data }),
+  });
+  return await response.json();
 }

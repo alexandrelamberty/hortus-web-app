@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { PlantList } from "./PlantList";
+import { PlantForm } from "./PlantForm";
 import { Header } from "./Header";
 
-export function Plants() {
+export function Plantations() {
+  const loadMoreCommit = () => {
+    console.log("Add Plant Click");
+  };
+
   return (
     <>
-      <Header title="Plants" />
+      <Header title="Plantations" />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {/* Replace with your content */}
