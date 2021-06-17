@@ -36,29 +36,17 @@ export function Nav() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
+                      {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
 
-                      {navigation.map((item, itemIdx) =>
-                        itemIdx === 0 ? (
-                          <Fragment key={item}>
-                            {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                            <a
-                              href={item.path}
-                              className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                            >
-                              {item.name}
-                            </a>
-                          </Fragment>
-                        ) : (
-                          // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                          <a
-                            key={item}
-                            href={item.path}
-                            className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                          >
-                            {item.name}
-                          </a>
-                        )
-                      )}
+                      {navigation.map((item) => (
+                        <a
+                          key={item}
+                          href={item.path}
+                          className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                        >
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -150,7 +138,6 @@ export function Nav() {
                               {profile.map((item) => (
                                 <Menu.Item key={item}>
                                   {({ active }) => (
-                                    
                                     <a
                                       href={item.path}
                                       className={classNames(

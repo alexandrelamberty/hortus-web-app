@@ -1,4 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
+
 const people = [
   {
     name: "Jane Cooper",
@@ -12,7 +12,7 @@ const people = [
   // More people...
 ];
 
-export function PlantTable() {
+export function PlantTable({plants}) {
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -51,7 +51,7 @@ export function PlantTable() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {people.map((person) => (
+                {plants.map((person) => (
                   <tr key={person.email}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">

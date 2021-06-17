@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function PlantItem({ plant }) {
   return (
@@ -23,7 +23,7 @@ export function PlantList() {
 
   useEffect(() => {
     fetch(
-      `https://api.github.com/search/commits?q=repo:facebook/react+css&page=${page}`,
+      `http://localhost:3333/crops`,
       {
         method: "GET",
         headers: new Headers({
@@ -33,7 +33,7 @@ export function PlantList() {
     )
       .then((res) => res.json())
       .then((response) => {
-        setPlants(response.items);
+        setPlants(response);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -46,7 +46,7 @@ export function PlantList() {
 
       <ul className="divide-y divide-gray-200">
         {plants.map((plant) => (
-          <PlantItem key={plant.id} plant={plant} />
+          <PlantItem key={plant._id} plant={plant} />
         ))}
       </ul>
     </div>

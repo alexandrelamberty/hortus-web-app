@@ -1,10 +1,11 @@
 import React from "react";
-import { plantationsData, getAllUsers, createUser } from '../services/PlantService'
+import {
+  plantations
+} from "../../services/PlantationService";
 import { PlantationTimelineRow } from "./PlantationTimelineRow";
 
 export const PlantationTimeline = () => {
-
-	// The months in the calendar.
+  // The months in the calendar.
   const months = [
     "January",
     "February",
@@ -30,7 +31,7 @@ export const PlantationTimeline = () => {
 
   return (
     <>
-      <div className="plantations-container">
+      <div className="">
         <div className="table-legend">
           <ul className="legend">
             <li>
@@ -61,10 +62,14 @@ export const PlantationTimeline = () => {
                 );
               })}
             </tr>
-            {plantationsData.map((data, key) => {
+            {plantations.map((plantation, key) => {
               return (
                 <tr key={key}>
-                  <PlantationTimelineRow key={key} name={data.name} events={data.events} />
+                  <PlantationTimelineRow
+                    key={key}
+                    name={plantation.name}
+                    events={plantation.events}
+                  />
                 </tr>
               );
             })}

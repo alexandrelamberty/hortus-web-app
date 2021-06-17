@@ -1,15 +1,16 @@
 import React from "react";
-import { Header } from "./Header";
-
-export function Plants() {
+import { Header } from "../Header";
+import { plantations } from "../../services/PlantationService";
+import { PlantationTimeline } from "./PlantationTimeline";
+export function Plantations() {
   return (
     <>
-      <Header title="Plants" />
+      <Header title="Plantations" />
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {/* Replace with your content */}
           <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
+            <PlantationTimeline />
           </div>
           {/* /End replace */}
         </div>

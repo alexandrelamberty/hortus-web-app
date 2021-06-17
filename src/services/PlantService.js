@@ -1,4 +1,4 @@
-export const plantationsData = [
+export const plants = [
   {
     name: "Aubergine",
     events: [
@@ -53,19 +53,30 @@ export const plantationsData = [
 
 export async function getPlants() {
   const response = await fetch(
-    "http://api.countryside-collection.com/v1/categories?lang=fr&format=json"
+    "http://localhost:3333/crops"
   );
   return await response.json();
 }
 
-export async function getAllUsers() {
-  const response = await fetch(
-    "http://api.countryside-collection.com/v1/categories?lang=fr&format=json"
-  );
+export async function createPlant(data) {
+  const response = await fetch(`/api/user`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: data }),
+  });
   return await response.json();
 }
 
-export async function createUser(data) {
+export async function updatePlant(data) {
+  const response = await fetch(`/api/user`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: data }),
+  });
+  return await response.json();
+}
+
+export async function deletePlant(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

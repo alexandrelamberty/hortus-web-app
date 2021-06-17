@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import { Dashboard } from "./components/Dashboard";
+import { Dashboard } from "./components/Dashboard/Dashboard";
 import { Nav } from "./components/Nav";
-import { Plantations } from "./components/Plantations";
-import { Plants } from "./components/Plants";
+import { Plantations } from "./components/Plantations/Plantations";
+import { Plants } from "./components/Plants/Plants";
 
 export default function App() {
   return (

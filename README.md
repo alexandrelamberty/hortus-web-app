@@ -1,44 +1,10 @@
 # Hortus
 
-A gardenning planner
+Hortus a gardenning planner web application developed with React, Tailwind CSS and hosted on Netlify.
+This application connect to this server application
 
-- Organize your culture.
+## Features
+
+- Organize your culture
 - Manage your gardenning spaces, plants and pots …
 
-### Data modeling
-
-## Culture Phase
-
-- Seeding
-  - Interieur
-  - Chassis
-  - Exterieur
-- Repiquage
-- Plantation
-- Récolte
-
-## Culture
-
-Plant represent a plant name with it's differents culture phases starting and ending period.
-
-```json
-{
-  "name": "Carrots",
-  "seeding": [3,5],
-  "transplanting": [5,6],
-  "planting": [8,8],
-  "harvesting": [12,15]
-}
-```
-
-## Vegetable
-
-- Fruit
-- Graine
-- Feuille
-- Bulbe
-- Racine
-
-## Ressources
-
-https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications
