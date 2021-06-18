@@ -12,6 +12,7 @@ export const PlantationTimelineRow = ({ name, events }) => {
       for (i = event.start - 1; i <= event.end - 1; i++) {
         a.splice(i, 1, event.name);
       }
+      return null;
     });
   
     console.log(a);

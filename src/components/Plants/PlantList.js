@@ -13,13 +13,8 @@ function PlantItem({ plant }) {
 }
 
 export function PlantList() {
-  const [page, setPage] = useState(1);
   const [plants, setPlants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const loadMoreCommit = () => {
-    setPage(page + 1);
-  };
 
   useEffect(() => {
     fetch(
@@ -37,7 +32,7 @@ export function PlantList() {
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
-  }, [page]);
+  }, []);
 
   return (
     <div>
