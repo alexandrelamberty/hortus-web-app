@@ -76,14 +76,14 @@ export const plantations = [
   },
 ];
 
-export async function getAllPlantations() {
+export async function getAll() {
   const response = await fetch(
     "http://api.countryside-collection.com/v1/categories?lang=fr&format=json"
   );
   return await response.json();
 }
 
-export async function createPlantation(data) {
+export async function create(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -92,7 +92,7 @@ export async function createPlantation(data) {
   return await response.json();
 }
 
-export async function updatePlantation(data) {
+export async function read(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -101,7 +101,16 @@ export async function updatePlantation(data) {
   return await response.json();
 }
 
-export async function deletePlantation(data) {
+export async function update(data) {
+  const response = await fetch(`/api/user`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: data }),
+  });
+  return await response.json();
+}
+
+export async function remove(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
