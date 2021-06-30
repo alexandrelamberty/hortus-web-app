@@ -24,20 +24,39 @@
 
 Plant name with it's differents culture phases starting and ending period.
 
-
 ```json
 {
   "name": "Carrots",
-  "variety": "Carrots",
+  "type": "Carrots",
   "family": Family(),
-  "Genus": Genus(),
-
-  "seeding": [3,5],
-  "transplanting": [5,6],
-  "planting": [8,8],
-  "harvesting": [12,15],
-  "spacing": [15,20],
-  "description": "..."
+  "genus": Genus(),
+  "description": "...",
+  "seeding": {
+    "start": 2,
+    "end": 5,
+    "germination": 15
+  },
+  "transplanting": {
+    "start": 2,
+    "end": 5,
+    "germination": 15,
+    "growth": 2
+  },
+  "planting": {
+    "start": 2,
+    "end": 5,
+    "maturity": 6
+  },
+  "harvesting": {
+    "start": 2,
+    "end": 5,
+    "germination": 15
+  },
+  "spacing": 
+  {
+    "row": 10,
+    "lines": 30
+  }
 }
 ```
 

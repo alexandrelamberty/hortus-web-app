@@ -1,74 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { PlantCard } from "./PlantCard";
+import React, { useState } from "react";
+import { PlantGridItem } from "./PlantGridItem";
 
-function PlantItem({ plant }) {
+export function PlantGrid({ children, onPlantGridNewClick, onPlantGridItemClick }) {
 
+  // Controlls events
 
-  function onMouseOver(e) {
+  function newClick(e) {
     e.preventDefault();
-    console.log('[PlantGridItem] onMouseOver');
+    console.log("[PlantGrid] newClick ");
+    onPlantGridNewClick(e);
   }
 
-  function handleClick(e) {
-    e.preventDefault();
-    console.log('[PlantGridItem] handleClick', plant);
-  }
-
-  return (
-    <li x-for="item in items" onMouseOver={onMouseOver} onClick={handleClick} class=" md:flex hover:bg-light-blue-500 hover:border-transparent hover:shadow-lg group block rounded-lg border border-gray-200">
-        <img class="w-32 h-32 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto" src={"images/"+plant.image} alt="" width="384" height="512"></img>
-        <dl class="grid sm:block lg:grid xl:block grid-cols-2 grid-rows-2 items-center">
-          <div>
-            <dt class="sr-only">Title</dt>
-            <dd class="group-hover:text-white leading-6 font-medium text-black">
-              {plant.name}
-            </dd>
-          </div>
-          <div>
-            <dt class="sr-only">Category</dt>
-            <dd class="group-hover:text-light-blue-200 text-sm font-medium sm:mb-4 lg:mb-0 xl:mb-4">
-              {plant.family}
-            </dd>
-          </div>
-          <div class="col-start-2 row-start-1 row-end-3">
-            <dt class="sr-only">Users</dt>
-            <dd class="flex justify-end sm:justify-start lg:justify-end xl:justify-start -space-x-2">
-              <img
-                x-for="user in item.users"
-                src="./images/growing-eggplants.jpg"
-                alt="user.name"
-                width="48"
-                height="48"
-                class="w-7 h-7 rounded-full bg-gray-100 border-2 border-white"
-              />
-            </dd>
-          </div>
-        </dl>
-    </li>
-  );
-}
-
-export function PlantGrid({ plants, onPlantGridItemClick }) {
-
-  const [show, setShow] = useState(0)
-
-  function handleClick(e) {
-    e.preventDefault();
-    console.log('[PlantGrid] handleClick ');
-    
-  }
-
+  // Filter input need to be extracted
   function onChange(e) {
     e.preventDefault();
-    console.log('[PlantGrid] onChange ');
-    
+    console.log("[PlantGrid] onChange ");
   }
 
   return (
     <section class="bg-white px-4 sm:px-6 lg:px-4 xl:px-6 pt-4 pb-4 sm:pb-6 lg:pb-4 xl:pb-6 space-y-4">
       <header class="flex items-center justify-between">
         <h2 class="text-lg leading-6 font-medium text-black">Plants</h2>
-        <button onClick={onPlantGridItemClick} class="hover:bg-dark-blue-200 hover:text-light-blue-800 group flex items-center rounded-md bg-light-blue-100 text-light-blue-600 text-sm font-medium px-4 py-2">
+        <button
+          onClick={newClick}
+          class="hover:bg-dark-blue-200 hover:text-light-blue-800 group flex items-center rounded-md bg-light-blue-100 text-light-blue-600 text-sm font-medium px-4 py-2"
+        >
           <svg
             class="group-hover:text-light-blue-600 text-light-blue-500 mr-2"
             width="12"
@@ -105,12 +61,10 @@ export function PlantGrid({ plants, onPlantGridItemClick }) {
           onChange={onChange}
         />
       </form>
-      <ul class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {plants.map((plant) => (
-          <PlantItem key={plant._id} plant={plant} />
-        ))}
+      <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+        
+        {children}
       </ul>
-      <PlantCard show={show}/>
     </section>
   );
 }

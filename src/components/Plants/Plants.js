@@ -1,51 +1,64 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch,
-} from "react-router-dom";
-import { Header } from "../Header";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { getAll } from "../../services/PlantService";
 import { Modal } from "../modal/Modal";
-import { PlantList } from "../Plants/PlantList";
-import { PlantTable } from "../Plants/PlantTable";
+import { PlantCard } from "./PlantCard";
 import { PlantForm } from "./PlantForm";
 import { PlantGrid } from "./PlantGrid";
-
+import { PlantGridItem } from "./PlantGridItem";
 export function Plants() {
   let { path, url } = useRouteMatch();
   const [plants, setPlants] = useState([]);
   const [plant, setPlant] = useState([]);
   const [showForm, setShowForm] = useState(0);
+  const [showCard, setShowCard] = useState(0);
 
   useEffect(() => {
-    fetch(`http://192.168.1.49:3333/plants`, {
-      method: "GET",
-      headers: new Headers({
-        Accept: "application/vnd.github.cloak-preview",
-      }),
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        console.log(response);
-        setPlants(response);
+    getAll()
+      .then((data) => {
+        setPlants(data);
       })
-      .catch((error) => console.log(error));
+      .catch(console.error);
   }, []);
 
-  function onPlantGridItemClick(e) {
+  // Handling event from components
+
+  function onPlantGridNewClick(e) {
     e.preventDefault();
-    console.log("[PlantGrid] itemClick");
+    console.log("[Plants] NewConPlantGridNewClicklick");
     setShowForm(1);
   }
 
-  function onModalClose(e) {
+  function onPlantGridItemClick(plant) {
+    console.log("[Plants] onPlantGridItemClick", plant);
+    setPlant(plant);
+    setShowCard(1);
+  }
+
+  function onCardClose(e) {
     e.preventDefault();
-    console.log('[Modal - PlantForm] handleClick ');
+    console.log("[Plants] onCardClose ");
+    setShowCard(0);
+  }
+
+  function onFormClose(e) {
+    e.preventDefault();
+    console.log("[Plants] onFormClose ");
     setShowForm(0);
   }
+
+    // Handle PlantItemGrid Click
+
+    function gridItemClick(plant) {
+      console.log("[PlantGrid] gridItemClick", plant);
+      onPlantGridItemClick(plant);
+    }
+  
+    function gridItemDelete(e) {
+      e.preventDefault();
+      console.log("[PlantGrid] handleNewClick ");
+      //onPlantGridItemClick(e);
+    }
 
   return (
     <main>
@@ -53,19 +66,25 @@ export function Plants() {
         <Route exact path={path}>
           <div className="flex flex-col">
             <PlantGrid
-              plants={plants}
+              onPlantGridNewClick={onPlantGridNewClick}
               onPlantGridItemClick={onPlantGridItemClick}
-            />
-            <Modal show={showForm} >
-              <PlantForm plant={plant} handleClose={onModalClose} />
-            </Modal>        
+            >
+              {plants.map((plant) => (
+                <PlantGridItem
+                  key={plant._id}
+                  plant={plant}
+                  onClick={gridItemClick}
+                  onClickDelete={gridItemDelete}
+                />
+              ))}
+            </PlantGrid>
+            <Modal show={showForm}>
+              <PlantForm plant={plant} handleClose={onFormClose} />
+            </Modal>
+            <Modal show={showCard}>
+              <PlantCard plant={plant} handleClose={onCardClose} />
+            </Modal>
           </div>
-        </Route>
-        <Route path={`${path}/add`}>
-          <div>Plants Add</div>
-        </Route>
-        <Route path={`${path}/update`}>
-          <div>Plants Update</div>
         </Route>
       </Switch>
     </main>
