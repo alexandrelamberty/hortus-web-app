@@ -24,11 +24,14 @@
 
 Plant name with it's differents culture phases starting and ending period.
 
+
 ```json
 {
   "name": "Carrots",
+  "variety": "Carrots",
   "family": Family(),
   "Genus": Genus(),
+
   "seeding": [3,5],
   "transplanting": [5,6],
   "planting": [8,8],
@@ -82,6 +85,8 @@ POACEAE
 
 https://www.fondation-louisbonduelle.org/en/my-vegetable-garden/grouping-vegetables-according-to-plant-families/
 
+https://www.vegetables.co.nz/vegetables-a-z/
+
 Root (Racine)
 Bulb (Bulbe)
 Stem	
@@ -94,4 +99,6 @@ Indeterminate
 ## Ressources
 
 https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications
+
+
 

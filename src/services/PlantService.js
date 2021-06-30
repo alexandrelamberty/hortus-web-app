@@ -53,7 +53,7 @@ export const plants = [
 
 export async function getPlants() {
   const response = await fetch(
-    "http://localhost:3333/crops"
+    "http://192.168.1.49:3333/crops"
   );
   return await response.json();
 }
