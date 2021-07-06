@@ -2,7 +2,7 @@
  * Return a range of month numbers ie: 1 to 12
  * for an input in quarter of month ie: 1 to 48 
  */
-export function monthQuarterToMonthRange(start,end) {
+export function monthQuarterToMonth(start,end) {
     let ratio = 4;
     return [Math.ceil(start/ratio), Math.ceil(end/ratio)];
 }
