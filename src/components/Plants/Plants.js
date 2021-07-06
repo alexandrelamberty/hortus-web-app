@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import { getAll } from "../../services/PlantService";
+import { getAllPlant } from "../../services/PlantService";
 import { Modal } from "../modal/Modal";
 import { PlantCard } from "./PlantCard";
 import { PlantForm } from "./PlantForm";
@@ -14,7 +14,7 @@ export function Plants() {
   const [showCard, setShowCard] = useState(0);
 
   useEffect(() => {
-    getAll()
+    getAllPlant()
       .then((data) => {
         setPlants(data);
       })

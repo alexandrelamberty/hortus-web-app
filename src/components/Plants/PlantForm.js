@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import {createPlant } from "../../services/PlantService";
+import { createPlant } from "../../services/PlantService";
 export function PlantForm({ plant, handleClose }) {
   const {
     register,
@@ -132,7 +132,7 @@ export function PlantForm({ plant, handleClose }) {
 
       {/* Phase Seeding */}
       <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
           Seeding
         </label>
         <input

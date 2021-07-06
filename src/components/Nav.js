@@ -228,6 +228,6 @@ export function Nav() {
           </Disclosure.Panel>
         </>
       )}
-    </Disclosure>
+    </Disclosure> 
   );
 }

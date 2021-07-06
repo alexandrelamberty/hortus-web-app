@@ -1,89 +1,21 @@
-export const plantations = [
-  {
-    name: "Aubergine",
-    events: [
-      {
-        name: "seeding", //
-        start: 1,
-        end: 7,
-      },
-      {
-        name: "transplanting",
-        start: 9,
-        end: 10,
-      },
-      {
-        name: "planting",
-        start: 14,
-        end: 15,
-      },
-      {
-        name: "harvesting",
-        start: 18,
-        end: 19,
-      },
-    ],
-  },
-  {
-    name: "Carrots",
-    events: [
-      {
-        name: "seeding",
-        start: 1,
-        end: 2,
-      },
-      {
-        name: "transplanting",
-        start: 9,
-        end: 10,
-      },
-      {
-        name: "planting",
-        start: 14,
-        end: 15,
-      },
-      {
-        name: "harvesting",
-        start: 18,
-        end: 19,
-      },
-    ],
-  },
-  {
-    name: "Laitue",
-    events: [
-      {
-        name: "seeding",
-        start: 1,
-        end: 2,
-      },
-      {
-        name: "transplanting",
-        start: 9,
-        end: 10,
-      },
-      {
-        name: "planting",
-        start: 14,
-        end: 15,
-      },
-      {
-        name: "harvesting",
-        start: 18,
-        end: 19,
-      },
-    ],
-  },
-];
+const URL = "http://192.168.1.51:3333/crops";
 
-export async function getAll() {
-  const response = await fetch(
-    "http://api.countryside-collection.com/v1/categories?lang=fr&format=json"
-  );
+
+export async function getAllCulture() {
+  const response = await fetch(URL);
   return await response.json();
 }
 
-export async function create(data) {
+export async function createCutlure(data) {
+  const response = await fetch(URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: data }),
+  });
+  return await response.json();
+}
+
+export async function readCulture(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -92,7 +24,7 @@ export async function create(data) {
   return await response.json();
 }
 
-export async function read(data) {
+export async function updateCulture(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -101,16 +33,7 @@ export async function read(data) {
   return await response.json();
 }
 
-export async function update(data) {
-  const response = await fetch(`/api/user`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user: data }),
-  });
-  return await response.json();
-}
-
-export async function remove(data) {
+export async function removeCulture(data) {
   const response = await fetch(`/api/user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
