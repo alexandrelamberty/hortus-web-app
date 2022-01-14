@@ -12,6 +12,7 @@ import { SeedRoute } from 'src/routes/SeedRoute'
 import RequireAuth from './RequireAuth'
 import { AppLayout } from './AppLayout'
 import { SettingsRoute } from 'src/routes/SettingsRoute'
+import { ProfileRoute } from 'src/routes/ProfileRoute'
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
 		  <Route path='/seeds' element={<RequireAuth><SeedRoute/></RequireAuth>}/>
 		  <Route path='/plants' element={<RequireAuth><PlantRoute/></RequireAuth>}/>
 		  <Route path='/settings' element={<RequireAuth><SettingsRoute/></RequireAuth>}/>
+		  <Route path='/profile' element={<RequireAuth><ProfileRoute/></RequireAuth>}/>
 		</Route>
       </Routes>
     </AuthProvider>

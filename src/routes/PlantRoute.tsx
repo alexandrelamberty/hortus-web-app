@@ -1,3 +1,9 @@
+import SpeciesList from 'src/components/SpeciesTable'
+
 export function PlantRoute() {
-  return <h3>PlantRoute</h3>;
+  return (
+    <>
+      <SpeciesList />
+    </>
+  )
 }

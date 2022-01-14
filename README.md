@@ -4,6 +4,15 @@
 
 Gardening planner monitoring and automation web application that connect to [Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
 
+---
+## Features Roadmap:
+- [x] Routing with React-Router
+- [ ] Redux 
+- [ ] Auth
+- [ ] API
+- [ ] ...
+---
+
 ## Technologies
 
 - [NPM](https://www.npmjs.com/)
