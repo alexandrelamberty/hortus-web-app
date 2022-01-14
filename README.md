@@ -2,41 +2,51 @@
 
 # Hortus Web Client
 
-Gardening planner monitoring and automation web application that connect to [Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
+Gardening planner, monitoring and automation web application. It connect to [Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
 
----
-## Features Roadmap:
-- [x] Routing with React-Router
-- [ ] Redux 
-- [ ] Auth
-- [ ] API
-- [ ] ...
----
+It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
+
+## Development Roadmap:
+
+- [ ] Architecture
+	- [x] React-Router
+	- [ ] Redux 
+- [ ] UI
+	- [ ] Screens
+	- [ ] Modal
+	- [ ] Form and List
 
 ## Technologies
 
 - [NPM](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/)
-- [React](https://www.docker.com/)
+- [React](https://reactjs.org/)
 
 ## Requirements
 
 - [NPM](https://www.npmjs.com/)
-- [Docker](https://www.docker.com/)
 
 ## Installation
 
-TailwindCSS and PostCSS errors
-
-[PostCSS 7 compatibility build](https://tailwindcss.com/docs/installation#post-css-7-compatibility-build)
-
 ## Configuration
 
-Configuration is done via environment variables. Create an `.env` file 
-## Build
-
-## Deployement
+Rename the `.env.sample` to `.env`.
 
 ## Development
 
+This project depends on [Hortus Server](https://github.com/alexandrelamberty/hortus-server/)
+
+Once the server is up and running you can start the web application
+```bash
+npm run start
+```
+
+
+
 ## Test
+
+## Deployement
+
+## Reference
+
+- [PostCSS 7 compatibility build](https://tailwindcss.com/docs/installation#post-css-7-compatibility-build)
