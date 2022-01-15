@@ -1,3 +1,5 @@
+import SeedList from 'src/components/SeedList'
+
 export function SeedRoute() {
-  return <h3>Seed</h3>;
+  return <SeedList />
 }

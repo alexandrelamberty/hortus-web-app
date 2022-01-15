@@ -37,16 +37,15 @@ Rename the `.env.sample` to `.env`.
 This project depends on [Hortus Server](https://github.com/alexandrelamberty/hortus-server/)
 
 Once the server is up and running you can start the web application
+
 ```bash
 npm run start
 ```
 
-
-
 ## Test
 
-## Deployement
+## Deployment
 
 ## Reference
-
+- [React Context](https://wanago.io/2020/09/28/react-context-api-hooks-typescript/)
 - [PostCSS 7 compatibility build](https://tailwindcss.com/docs/installation#post-css-7-compatibility-build)

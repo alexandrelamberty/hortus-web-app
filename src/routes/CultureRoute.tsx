@@ -1,3 +1,5 @@
+import CultureList from 'src/components/CultureList'
+
 export function CultureRoute() {
-  return <h3>Culture</h3>;
+  return <CultureList />
 }
