@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+
+  webapp:
+    container_name: hortus-webapp
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - '1337:80'
