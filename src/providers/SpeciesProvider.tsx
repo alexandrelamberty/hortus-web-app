@@ -29,7 +29,7 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
     fetch('http://localhost:3333/species')
       .then((response) => response.json())
       .then((fetchedPosts) => {
-	  console.log(fetchedPosts)
+        console.log(fetchedPosts)
         setSpecies(fetchedPosts)
       })
       .finally(() => {
@@ -38,20 +38,18 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   }, [setSpecies])
 
   const createSpecies = React.useCallback(
-    (postId: number) => {
+    (newSpecies: number) => {
       setIsLoading(true)
-      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-        method: 'DELETE',
+      fetch(`http://localhost:3333/species/`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify(newSpecies),
       })
         .then(() => {
-          const newPosts = [...species]
-          const removedPostIndex = newPosts.findIndex(
-            (post : Species) => post._id === postId
-          )
-          if (removedPostIndex > -1) {
-            newPosts.splice(removedPostIndex, 1)
-          }
-          setSpecies(newPosts)
+				fetchSpecies()
         })
         .finally(() => {
           setIsLoading(false)
@@ -69,7 +67,7 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
         .then(() => {
           const newPosts = [...species]
           const removedPostIndex = newPosts.findIndex(
-            (post : Species) => post._id === postId
+            (post: Species) => post._id === postId
           )
           if (removedPostIndex > -1) {
             newPosts.splice(removedPostIndex, 1)
@@ -82,6 +80,7 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
     },
     [setSpecies, species]
   )
+
   return (
     <SpeciesContext.Provider
       value={{

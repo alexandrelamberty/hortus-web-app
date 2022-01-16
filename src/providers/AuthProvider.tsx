@@ -1,5 +1,4 @@
 import * as React from "react";
-import { fakeAuthProvider } from "../services/AuthService";
 
 interface AuthContextType {
   user: any;
@@ -10,20 +9,16 @@ interface AuthContextType {
 export const AuthContext = React.createContext<AuthContextType>(null!);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  let [user, setUser] = React.useState<any>(null);
+  let [user, setUser] = React.useState<any>("eevos");
 
   let signin = (newUser: string, callback: VoidFunction) => {
-    return fakeAuthProvider.signin(() => {
-      setUser(newUser);
-      callback();
-    });
+	setUser(newUser);
+	callback()
   };
 
   let signout = (callback: VoidFunction) => {
-    return fakeAuthProvider.signout(() => {
-      setUser(null);
-      callback();
-    });
+	setUser(null)
+	callback()
   };
 
   let value = { user, signin, signout };

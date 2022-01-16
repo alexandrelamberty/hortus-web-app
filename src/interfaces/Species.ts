@@ -1,3 +1,7 @@
+/**
+ * Species represent a plant species with some additional informations
+ * 
+ */
 export interface Species {
   _id: number
   name: string

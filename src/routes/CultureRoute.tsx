@@ -1,5 +1,11 @@
-import CultureList from 'src/components/CultureList'
+import { CultureForm } from 'src/components/form/CultureForm'
+import CultureList from 'src/components/list/CultureList'
 
 export function CultureRoute() {
-  return <CultureList />
+  return (
+    <div className='flex'>
+      <CultureList />
+	  <CultureForm />
+    </div>
+  )
 }

@@ -1,3 +1,7 @@
+/**
+ * Culture represent the culture of a seed.
+ * 
+ */
 export interface Culture {
   _id: number
   seed: string
