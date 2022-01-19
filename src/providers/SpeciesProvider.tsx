@@ -23,10 +23,11 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   let [species, setSpecies] = React.useState<Species[]>([])
   let [selectedSpecies, setSelectedSpecies] = React.useState<any>(null)
   const [isLoading, setIsLoading] = React.useState(false)
+  const URI = process.env.REACT_APP_API_URL;
 
   const fetchSpecies = React.useCallback(() => {
     setIsLoading(true)
-    fetch('http://localhost:3333/species')
+    fetch(URI + '/species')
       .then((response) => response.json())
       .then((fetchedPosts) => {
         console.log(fetchedPosts)
@@ -49,7 +50,7 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify(newSpecies),
       })
         .then(() => {
-				fetchSpecies()
+          fetchSpecies()
         })
         .finally(() => {
           setIsLoading(false)
