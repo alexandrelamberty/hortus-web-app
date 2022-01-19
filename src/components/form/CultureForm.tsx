@@ -1,7 +1,7 @@
 import React from 'react'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { Culture } from 'src/interfaces/Culture'
-import { Button, Dropdown, Form } from 'semantic-ui-react'
+import { Button, Dropdown, DropdownProps, Form } from 'semantic-ui-react'
 import { CultureContext } from 'src/providers/CultureProvider'
 import { SeedContext } from 'src/providers/SeedProvider'
 
@@ -13,11 +13,13 @@ export function CultureForm() {
 	fetchSeeds()
 	const seedsOption = seeds.map( sd => ({ value: sd._id, key: sd._id, text: sd.name}))
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.SyntheticEvent<HTMLElement>, data : DropdownProps): void => {
     setFormData({
       ...formData,
-      [e.currentTarget.id]: e.currentTarget.value,
+      ["seed"]: data
     })
+		console.log(formData)
+		console.log(data)
   }
 
   const handleSubmit = (e: React.FormEvent, formData: Culture | any) => {
@@ -31,7 +33,7 @@ export function CultureForm() {
       <Form.Field>
         <label>Seed</label>
         <Dropdown
-					key="name"
+					id="seed"
           button
           className='icon'
           floating
@@ -41,6 +43,7 @@ export function CultureForm() {
           search
 					label="name"
           text='Select Language'
+					onChange={handleChange}
         />
       </Form.Field>
       <Button type='submit'>Submit</Button>
