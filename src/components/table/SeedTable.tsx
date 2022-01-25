@@ -14,9 +14,23 @@ export default function SeedTable() {
      <Table celled  selectable>
     <Table.Header>
       <Table.Row>
+        <Table.HeaderCell>Species</Table.HeaderCell>
         <Table.HeaderCell>Name</Table.HeaderCell>
-        <Table.HeaderCell>Status</Table.HeaderCell>
-        <Table.HeaderCell>Notes</Table.HeaderCell>
+        <Table.HeaderCell>Description</Table.HeaderCell>
+        <Table.HeaderCell>Type</Table.HeaderCell>
+        <Table.HeaderCell>Harvest</Table.HeaderCell>
+        <Table.HeaderCell>Season</Table.HeaderCell>
+        <Table.HeaderCell>Sun</Table.HeaderCell>
+        <Table.HeaderCell>Frost</Table.HeaderCell>
+        <Table.HeaderCell>Water</Table.HeaderCell>
+        <Table.HeaderCell>Companions</Table.HeaderCell>
+        <Table.HeaderCell>Competitors</Table.HeaderCell>
+        <Table.HeaderCell>Seeding</Table.HeaderCell>
+        <Table.HeaderCell>Transplanting</Table.HeaderCell>
+        <Table.HeaderCell>Planting</Table.HeaderCell>
+        <Table.HeaderCell>Harvesting</Table.HeaderCell>
+        <Table.HeaderCell>Spacing</Table.HeaderCell>
+        <Table.HeaderCell>Rows</Table.HeaderCell>
       </Table.Row>
     </Table.Header>
 

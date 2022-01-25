@@ -1,3 +1,4 @@
+import axios from 'axios'
 import * as React from 'react'
 import { Seed } from 'src/interfaces/Seed'
 
@@ -5,7 +6,7 @@ export interface SeedContextType {
   seeds: Seed[]
   isLoading: boolean
   fetchSeeds: () => void
-  createSeed: (postId: number) => void
+  createSeed: (seed: Seed) => void
   removeSeed: (postId: number) => void
 }
 
@@ -19,6 +20,8 @@ export const seedContextDefaultValue: SeedContextType = {
 
 export const SeedContext = React.createContext<SeedContextType>(null!)
 
+const URI = process.env.REACT_APP_API_URL
+
 export function SeedProvider({ children }: { children: React.ReactNode }) {
   let [seeds, setSeeds] = React.useState<Seed[]>([])
   let [seed, setSeed] = React.useState<any>(null)
@@ -26,34 +29,29 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
 
   const fetchSeeds = React.useCallback(() => {
     setIsLoading(true)
-    fetch('http://localhost:3333/seeds')
-      .then((response) => response.json())
-      .then((fetchedPosts) => {
-        setSeeds(fetchedPosts)
-      })
-      .finally(() => {
+    axios
+      .get(URI + '/seeds')
+      .then(function (response) {
+        setSeeds(response.data)
         setIsLoading(false)
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   }, [setSeeds])
 
   const createSeed = React.useCallback(
-    (postId: number) => {
+    (newSeed: Seed) => {
+	  console.log(newSeed)
       setIsLoading(true)
-      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-        method: 'DELETE',
-      })
-        .then(() => {
-          const newPosts = [...seeds]
-          const removedPostIndex = newPosts.findIndex(
-            (post : Seed) => post._id === postId
-          )
-          if (removedPostIndex > -1) {
-            newPosts.splice(removedPostIndex, 1)
-          }
-          setSeeds(newPosts)
-        })
-        .finally(() => {
+      axios
+        .post(URI + '/seeds', newSeed)
+        .then(function (response) {
+		  setSeeds([...seeds].concat(response.data))
           setIsLoading(false)
+        })
+        .catch(function (error) {
+          console.log(error)
         })
     },
     [setSeeds, seeds]

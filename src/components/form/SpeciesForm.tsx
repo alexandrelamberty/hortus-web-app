@@ -13,6 +13,7 @@ export function SpeciesForm() {
       ...formData,
       [e.currentTarget.id]: e.currentTarget.value,
     })
+	console.log(formData)
   }
 
   const handleSubmit = (e: React.FormEvent, formData: Species | any) => {

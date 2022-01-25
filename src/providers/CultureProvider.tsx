@@ -1,3 +1,4 @@
+import axios from 'axios'
 import * as React from 'react'
 import { Culture } from 'src/interfaces/Culture'
 
@@ -19,6 +20,8 @@ export const seedContextDefaultValue: CultureContextType = {
 
 export const CultureContext = React.createContext<CultureContextType>(null!)
 
+const URI = process.env.REACT_APP_API_URL
+
 export function CultureProvider({ children }: { children: React.ReactNode }) {
   let [cultures, setCultures] = React.useState<Culture[]>([])
   let [seed, setSeed] = React.useState<any>(null)
@@ -26,34 +29,29 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
 
   const fetchCultures = React.useCallback(() => {
     setIsLoading(true)
-    fetch('http://localhost:3333/cultures')
-      .then((response) => response.json())
-      .then((fetchedPosts) => {
-        setCultures(fetchedPosts)
-      })
-      .finally(() => {
+    axios
+      .get(URI + '/seeds')
+      .then(function (response) {
+        setCultures(response.data)
         setIsLoading(false)
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   }, [setCultures])
 
   const createCulture = React.useCallback(
-    (postId: number) => {
+    (newCulture: number) => {
+	  console.log(newCulture)
       setIsLoading(true)
-      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-        method: 'DELETE',
-      })
-        .then(() => {
-          const newPosts = [...cultures]
-          const removedPostIndex = newPosts.findIndex(
-            (post : Culture) => post._id === postId
-          )
-          if (removedPostIndex > -1) {
-            newPosts.splice(removedPostIndex, 1)
-          }
-          setCultures(newPosts)
-        })
-        .finally(() => {
+      axios
+        .post(URI + '/cultures', newCulture)
+        .then(function (response) {
+		  setCultures([...cultures].concat(response.data))
           setIsLoading(false)
+        })
+        .catch(function (error) {
+          console.log(error)
         })
     },
     [setCultures, cultures]

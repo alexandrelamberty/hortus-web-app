@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { Species } from 'src/interfaces/Species'
+import axios, { AxiosResponse } from 'axios'
 
 export interface SpeciesContextType {
   species: Species[]
   isLoading: boolean
   fetchSpecies: () => void
-  createSpecies: (postId: number) => void
-  removeSpecies: (postId: number) => void
+  createSpecies: (newSpecies: Species) => void
+  removeSpecies: (speciesId: number) => void
 }
 
 export const speciesContextDefaultValue: SpeciesContextType = {
@@ -19,41 +20,38 @@ export const speciesContextDefaultValue: SpeciesContextType = {
 
 export const SpeciesContext = React.createContext<SpeciesContextType>(null!)
 
+const URI = process.env.REACT_APP_API_URL
+
 export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   let [species, setSpecies] = React.useState<Species[]>([])
   let [selectedSpecies, setSelectedSpecies] = React.useState<any>(null)
   const [isLoading, setIsLoading] = React.useState(false)
-  const URI = process.env.REACT_APP_API_URL;
 
   const fetchSpecies = React.useCallback(() => {
     setIsLoading(true)
-    fetch(URI + '/species')
-      .then((response) => response.json())
-      .then((fetchedPosts) => {
-        console.log(fetchedPosts)
-        setSpecies(fetchedPosts)
-      })
-      .finally(() => {
+    axios
+      .get(URI + '/species')
+      .then(function (response) {
+        setSpecies(response.data)
         setIsLoading(false)
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   }, [setSpecies])
 
   const createSpecies = React.useCallback(
-    (newSpecies: number) => {
+    (newSpecies: Species) => {
+	  console.log(newSpecies)
       setIsLoading(true)
-      fetch(`http://localhost:3333/species/`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(newSpecies),
-      })
-        .then(() => {
-          fetchSpecies()
-        })
-        .finally(() => {
+      axios
+        .post(URI + '/species', newSpecies)
+        .then(function (response) {
+		  setSpecies([...species].concat(response.data))
           setIsLoading(false)
+        })
+        .catch(function (error) {
+          console.log(error)
         })
     },
     [setSpecies, species]
