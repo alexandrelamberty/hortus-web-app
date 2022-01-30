@@ -4,10 +4,8 @@ import { Grid } from 'semantic-ui-react'
 
 export function SpeciesRoute() {
   return (
-    <div className="flex">
-			<div>
-      <SpeciesTable />
-			</div>
+    <div className='flex'>
+        <SpeciesTable />
       <SpeciesForm />
     </div>
   )

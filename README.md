@@ -10,6 +10,7 @@ It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 
 - [ ] Architecture
 	- [x] React-Router
+	- [ ] Redux form
 	- [ ] Redux 
 - [ ] UI
 	- [ ] Screens

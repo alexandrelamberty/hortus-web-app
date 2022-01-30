@@ -12,11 +12,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   let [user, setUser] = React.useState<any>("eevos");
 
   let signin = (newUser: string, callback: VoidFunction) => {
+	// Login in user and retrieve token.  TODO: See refresh token
 	setUser(newUser);
 	callback()
   };
 
   let signout = (callback: VoidFunction) => {
+	// Remove token ? TODO: See refresh token
 	setUser(null)
 	callback()
   };
