@@ -30,7 +30,7 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
   const fetchCultures = React.useCallback(() => {
     setIsLoading(true)
     axios
-      .get(URI + '/seeds')
+      .get(URI + '/cultures')
       .then(function (response) {
         setCultures(response.data)
         setIsLoading(false)

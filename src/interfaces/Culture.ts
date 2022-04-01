@@ -1,10 +1,12 @@
+import { Seed } from "./Seed";
+
 /**
  * Culture represent the culture of a seed.
  * 
  */
 export interface Culture {
   _id: number
-  seed: string
+  seed: Seed
   seeding: string
   transpanting: string
   planting: string

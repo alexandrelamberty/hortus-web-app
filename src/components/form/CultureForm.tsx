@@ -1,31 +1,47 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { Culture } from 'src/interfaces/Culture'
 import { Button, Dropdown, DropdownProps, Form } from 'semantic-ui-react'
 import { CultureContext } from 'src/providers/CultureProvider'
 import { SeedContext } from 'src/providers/SeedProvider'
 
-export function CultureForm() {
+type FormProps = {
+	onSubmitted: () => void;
+	onCancel: () => void;
+}
+
+export function CultureForm(props: FormProps) {
   const { seeds, fetchSeeds } = React.useContext(SeedContext)
   const { createCulture } = React.useContext(CultureContext)
   const [formData, setFormData] = React.useState<Culture | {}>()
 
-	fetchSeeds()
-	const seedsOption = seeds.map( sd => ({ value: sd._id, key: sd._id, text: sd.name}))
+  useEffect(() => {
+    fetchSeeds()
+  }, [fetchSeeds])
 
-  const handleChange = (e: React.SyntheticEvent<HTMLElement>, data : DropdownProps): void => {
+  const seedsOption = seeds.map((sd) => ({
+    value: sd._id,
+    key: sd._id,
+    text: sd.name,
+  }))
+
+  const handleChange = (
+    e: React.SyntheticEvent<HTMLElement>,
+    data: DropdownProps
+  ): void => {
     setFormData({
       ...formData,
-      ["seed"]: data
+      ['seed']: data,
     })
-		console.log(formData)
-		console.log(data)
+    console.log(formData)
+    console.log(data)
   }
 
   const handleSubmit = (e: React.FormEvent, formData: Culture | any) => {
     e.preventDefault()
     console.log(formData)
     createCulture(formData)
+		props.onSubmitted()
   }
 
   return (
@@ -33,7 +49,7 @@ export function CultureForm() {
       <Form.Field>
         <label>Seed</label>
         <Dropdown
-					id="seed"
+          id='seed'
           button
           className='icon'
           floating
@@ -41,9 +57,9 @@ export function CultureForm() {
           icon='world'
           options={seedsOption}
           search
-					label="name"
+          label='name'
           text='Select Language'
-					onChange={handleChange}
+          onChange={handleChange}
         />
       </Form.Field>
       <Button type='submit'>Submit</Button>

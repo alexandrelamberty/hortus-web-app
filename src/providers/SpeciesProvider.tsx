@@ -1,18 +1,24 @@
 import * as React from 'react'
 import { Species } from 'src/interfaces/Species'
 import axios, { AxiosResponse } from 'axios'
+import { SpeciesPagination } from 'src/interfaces/SpeciesPagination'
+import { SpeciesFormData } from 'src/interfaces/SpeciesFormData'
 
 export interface SpeciesContextType {
+  count: number
   species: Species[]
   isLoading: boolean
+  isFormOpen: boolean
   fetchSpecies: () => void
-  createSpecies: (newSpecies: Species) => void
+  createSpecies: (newSpecies: SpeciesFormData, callback: VoidFunction) => void
   removeSpecies: (speciesId: number) => void
 }
 
 export const speciesContextDefaultValue: SpeciesContextType = {
+  count: 0,
   species: [],
   isLoading: false,
+  isFormOpen: false,
   fetchSpecies: () => null,
   createSpecies: () => null,
   removeSpecies: () => null,
@@ -23,16 +29,19 @@ export const SpeciesContext = React.createContext<SpeciesContextType>(null!)
 const URI = process.env.REACT_APP_API_URL
 
 export function SpeciesProvider({ children }: { children: React.ReactNode }) {
+  let [count, setCount] = React.useState<number>(0)
   let [species, setSpecies] = React.useState<Species[]>([])
   let [selectedSpecies, setSelectedSpecies] = React.useState<any>(null)
   const [isLoading, setIsLoading] = React.useState(false)
+  const [isFormOpen, setIsFormOpen] = React.useState(false)
 
   const fetchSpecies = React.useCallback(() => {
     setIsLoading(true)
     axios
       .get(URI + '/species')
       .then(function (response) {
-        setSpecies(response.data)
+        setSpecies(response.data.results)
+        setCount(response.data.count)
         setIsLoading(false)
       })
       .catch(function (error) {
@@ -41,14 +50,15 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   }, [setSpecies])
 
   const createSpecies = React.useCallback(
-    (newSpecies: Species) => {
-	  console.log(newSpecies)
+    (newSpecies: SpeciesFormData, callback: VoidFunction) => {
+      console.log(newSpecies)
       setIsLoading(true)
       axios
         .post(URI + '/species', newSpecies)
         .then(function (response) {
-		  setSpecies([...species].concat(response.data))
+          setSpecies([...species].concat(response.data))
           setIsLoading(false)
+          callback()
         })
         .catch(function (error) {
           console.log(error)
@@ -83,7 +93,9 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   return (
     <SpeciesContext.Provider
       value={{
+        count,
         isLoading,
+        isFormOpen,
         species,
         fetchSpecies,
         createSpecies,

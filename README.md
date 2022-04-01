@@ -20,6 +20,7 @@ It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 ## Architecture
 
 ![Hortus Docker Architecture](hortus-docker-architecture.png)
+
 ## Technologies
 
 - [NPM](https://www.npmjs.com/)

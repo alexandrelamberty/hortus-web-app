@@ -7,7 +7,7 @@ import { Species } from "./Species";
  */
 export interface Seed {
   _id: number
-  species: string
+  species: Species
   name: string
   description: string
   image: string

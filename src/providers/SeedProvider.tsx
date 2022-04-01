@@ -4,6 +4,7 @@ import { Seed } from 'src/interfaces/Seed'
 
 export interface SeedContextType {
   seeds: Seed[]
+  seed?: Seed
   isLoading: boolean
   fetchSeeds: () => void
   createSeed: (seed: Seed) => void
@@ -12,6 +13,7 @@ export interface SeedContextType {
 
 export const seedContextDefaultValue: SeedContextType = {
   seeds: [],
+  seed: undefined,
   isLoading: false,
   fetchSeeds: () => null,
   createSeed: () => null,
@@ -24,7 +26,7 @@ const URI = process.env.REACT_APP_API_URL
 
 export function SeedProvider({ children }: { children: React.ReactNode }) {
   let [seeds, setSeeds] = React.useState<Seed[]>([])
-  let [seed, setSeed] = React.useState<any>(null)
+  let [seed, setSeed] = React.useState<Seed>()
   const [isLoading, setIsLoading] = React.useState(false)
 
   const fetchSeeds = React.useCallback(() => {
@@ -42,16 +44,16 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
 
   const createSeed = React.useCallback(
     (newSeed: Seed) => {
-	  console.log(newSeed)
+      console.log("SeedProviver:", newSeed)
       setIsLoading(true)
       axios
         .post(URI + '/seeds', newSeed)
         .then(function (response) {
-		  setSeeds([...seeds].concat(response.data))
+          setSeeds([...seeds].concat(response.data))
           setIsLoading(false)
         })
         .catch(function (error) {
-          console.log(error)
+          console.log(error.message)
         })
     },
     [setSeeds, seeds]
@@ -66,7 +68,7 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
         .then(() => {
           const newPosts = [...seeds]
           const removedPostIndex = newPosts.findIndex(
-            (post : Seed) => post._id === postId
+            (post: Seed) => post._id === postId
           )
           if (removedPostIndex > -1) {
             newPosts.splice(removedPostIndex, 1)
@@ -79,11 +81,13 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
     },
     [setSeeds, seeds]
   )
+
   return (
     <SeedContext.Provider
       value={{
         isLoading,
         seeds,
+        seed,
         fetchSeeds,
         createSeed,
         removeSeed,

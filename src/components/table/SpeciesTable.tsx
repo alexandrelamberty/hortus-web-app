@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useContext } from 'react'
 import { SpeciesContext } from 'src/providers/SpeciesProvider'
-import { Icon, Label, Menu, Table } from 'semantic-ui-react'
+import { Checkbox, Icon, Label, Menu, Table } from 'semantic-ui-react'
 
 export default function SpeciesTable() {
-  const { species, fetchSpecies } = useContext(SpeciesContext)
+  const { count, species, fetchSpecies } = useContext(SpeciesContext)
 
   // TODO: make custom hook
   useEffect(() => {
@@ -12,9 +12,10 @@ export default function SpeciesTable() {
   }, [fetchSpecies])
 
   return (
-    <Table selectable celled>
+    <Table size='small' selectable celled compact>
       <Table.Header>
         <Table.Row>
+          <Table.HeaderCell></Table.HeaderCell>
           <Table.HeaderCell>Name</Table.HeaderCell>
           <Table.HeaderCell>Family</Table.HeaderCell>
           <Table.HeaderCell>Genus</Table.HeaderCell>
@@ -26,6 +27,9 @@ export default function SpeciesTable() {
       <Table.Body>
         {species.map((obj) => (
           <Table.Row key={obj._id}>
+            <Table.Cell>
+              <Checkbox />
+            </Table.Cell>
             <Table.Cell>{obj.name}</Table.Cell>
             <Table.Cell>{obj.family}</Table.Cell>
             <Table.Cell>{obj.genus}</Table.Cell>
@@ -34,7 +38,7 @@ export default function SpeciesTable() {
           </Table.Row>
         ))}
       </Table.Body>
-
+      <Table.Footer>{count}</Table.Footer>
     </Table>
   )
 }

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useContext } from 'react'
 import { SeedContext } from 'src/providers/SeedProvider'
 import { List } from 'semantic-ui-react'
+import { Seed } from 'src/interfaces/Seed'
 
 export default function SeedList() {
   const { seeds, fetchSeeds } = useContext(SeedContext)
@@ -12,7 +13,7 @@ export default function SeedList() {
 
   return (
     <List selection divided relaxed>
-      {seeds.map((seed) => (
+      {seeds.map((seed : Seed) => (
         <List.Item>
           <List.Icon name='github' size='large' verticalAlign='middle' />
           <List.Content>
