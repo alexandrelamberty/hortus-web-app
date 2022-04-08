@@ -11,7 +11,7 @@ export const SpeciesForm = () => {
   const { createSpecies } = React.useContext(SpeciesContext)
   // Schema validation
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Email is required'),
+    name: Yup.string().required('Name is required'),
   })
 
   // Deconstruct useForm
@@ -25,9 +25,15 @@ export const SpeciesForm = () => {
     resolver: yupResolver(validationSchema),
   })
 
-  const onSubmit = (data: SpeciesFormData) => {
+  const onSubmit = (data :any ) => {
     console.log(data)
-	createSpecies(data, onCreated)
+		const formData = new FormData();
+		formData.append('image', data.image[0])
+		formData.append('name', data.name)
+		formData.append('genus', data.genus)
+		formData.append('family', data.family)
+		formData.append('species', data.species)
+		createSpecies(formData, onCreated)
     // reset()
   }
 
@@ -37,8 +43,6 @@ export const SpeciesForm = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Grid columns='equal'>
-        <Grid.Column>
           <Form.Field>
             <label>Image</label>
             <Button as='label' htmlFor='file' type='button' animated='fade'>
@@ -49,8 +53,6 @@ export const SpeciesForm = () => {
             </Button>
             <input id="image" type='file' {...register('image')} />
           </Form.Field>
-        </Grid.Column>
-        <Grid.Column width={8}>
           <Form.Field>
             <label>Name</label>
             <input className="login-input" placeholder='Name' {...register('name')} />
@@ -71,15 +73,10 @@ export const SpeciesForm = () => {
             <label>Subspecies</label>
             <input id='subspecies' placeholder='Subspecies' {...register('subspecies')}/>
           </Form.Field>
-        </Grid.Column>
-      </Grid>
       <div className='form-control'>
         <button className='form-submit' type='submit'>
-          Sign In
-        </button>
-        <a className='form-option' href='/forgot-password'>
-          Forgot Password?
-        </a>
+        Save  
+				 </button>
       </div>
     </Form>
   )

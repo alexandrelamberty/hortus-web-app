@@ -1,5 +1,5 @@
 export interface SpeciesFormData {
-  image: FileList
+  image: File
   name: string
   family: string
   genus: string

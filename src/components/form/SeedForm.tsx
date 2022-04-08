@@ -17,11 +17,37 @@ import { Type } from 'src/enums/Type'
 import { SeedContext } from 'src/providers/SeedProvider'
 import { Seed } from 'src/interfaces/Seed'
 import { SpeciesContext } from 'src/providers/SpeciesProvider'
+import * as Yup from 'yup'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SeedFormData } from 'src/interfaces/SeedFormData'
 
 export function SeedForm() {
   const { species, fetchSpecies } = React.useContext(SpeciesContext)
   const { seeds, createSeed } = React.useContext(SeedContext)
   const [formData, setFormData] = React.useState<Seed | {}>()
+
+// Schema validation
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    description: Yup.string().required('Description is required'),
+    species: Yup.string().required('Species is required'),
+    type: Yup.string().required('Type is required'),
+    season: Yup.string().required('Season is required'),
+  })
+
+  // Deconstruct useForm
+  const {
+		control,
+    register,
+    handleSubmit,
+    reset,
+		setValue,
+    formState: { errors },
+  } = useForm<SeedFormData>({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+  })
 
   useEffect(() => {
     fetchSpecies()
@@ -61,173 +87,125 @@ export function SeedForm() {
     value: value,
   }))
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
-    console.log(formData)
-    setFormData({
-      ...formData,
-      [e.currentTarget.id]: e.currentTarget.value,
-    })
+  const onSubmit = (data :any ) => {
+    console.log("onSubmit")
+    console.log(data)
+		const formData = new FormData();
+		// createSpecies(formData, onCreated)
+    // reset()
   }
-
-  const handleTextAreaChange = (
-    e: React.FormEvent<HTMLTextAreaElement>
-  ): void => {
-    console.log(formData)
-    setFormData({
-      ...formData,
-      [e.currentTarget.id]: e.currentTarget.value,
-    })
-  }
-
-  const handleSpeciesChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      species: data.value,
-    })
-	console.log(formData)
-  }
-  
-  const handleTypeChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      type: data.value,
-    })
-	console.log(formData)
-  }
-
-  const handleSeasonChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      season: data.value,
-    })
-	console.log(data)
-  }
-
-  const handleFrostChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      frost: data.value,
-    })
-	console.log(data)
-  }
-  
-  const handleSunChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      sun: data.value,
-    })
-	console.log(data)
-  }
-  
-  const handleWateringChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      water: data.value,
-    })
-	console.log(data)
-  }
-  
-  const handleCompanionsChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      companions: data.value,
-    })
-	console.log(data)
-  }
-
-  const handleCompetitorsChange = (
-    e: React.SyntheticEvent<HTMLElement>,
-    data: any
-  ): void => {
-    setFormData({
-      ...formData,
-      competitors: data.value,
-    })
-	console.log(data)
-  }
-  const handleSubmit = (e: React.FormEvent, formData: Seed | any) => {
-    e.preventDefault()
-    console.log(formData)
-    createSeed(formData)
-  }
-
+	
+	console.log(errors)
   return (
-    <Form onSubmit={(e) => handleSubmit(e, formData)}>
-      <Grid>
-        <Grid.Column width={3}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+     
           <Image
             src='/images/wireframe/square-image.png'
             size='medium'
             rounded
           />
-
           <Form.Field>
-            <Form.Input
-              id='name'
-              label='Name'
-              placeholder='Name'
-              onChange={handleInputChange}
-            />
+						<Controller
+							control={control}
+							name="name"
+							render={({
+								field: { onChange, onBlur, value, name, ref },
+								fieldState: { invalid, isTouched, isDirty, error },
+								formState,
+							}) => (
+								<Form.Input
+									label="Name"
+									placeholder='Name'
+									onBlur={onBlur} // notify when input is touched
+									onChange={onChange} // send value to hook form
+									error={errors.name ? true : false}
+								/>
+							)}
+						/>
           </Form.Field>
           <Form.Field>
-            <Form.TextArea
-              id='description'
+            	<Controller
+							control={control}
+							name="description"
+							render={({
+								field: { onChange, onBlur, value, name, ref },
+								fieldState: { invalid, isTouched, isDirty, error },
+								formState,
+							}) => (
+					<Form.TextArea
               label='About'
               placeholder='Tell us more about you...'
-              onChange={handleTextAreaChange}
+									onBlur={onBlur} // notify when input is touched
+									onChange={onChange} // send value to hook form
+									error={errors.description ? true : false}
             />
+							)}
+						/>
           </Form.Field>
           <FormGroup>
+      	<Controller
+							control={control}
+							name="species"
+							render={({
+								field: { onChange, onBlur, value, name, ref },
+								fieldState: { invalid, isTouched, isDirty, error },
+								formState,
+							}) => (
             <Form.Dropdown
-              id='species'
+							name="species"
               label='Species'
               placeholder='Select Species'
               search
               selection
               fluid
               options={speciesOptions}
-              onChange={handleSpeciesChange}
+							onChange={async (e, { name, value }) => {
+												setValue(name, value);
+												onChange(value)
+											}}
+						error={errors.species ? true : false}
             />
-            <Form.Dropdown
-              id='type'
+           			)}
+						/>
+
+	<Controller
+							control={control}
+							name="species"
+							render={({
+								field: { onChange, onBlur, value, name, ref },
+								fieldState: { invalid, isTouched, isDirty, error },
+								formState,
+							}) => (
+						<Form.Dropdown
+              name='type'
               label='Type'
               placeholder='Select Type'
               selection
               fluid
               options={seed_type}
-              onChange={handleTypeChange}
+							onChange={async (e, { name, value }) => {
+												setValue(name, value);
+												onChange(value)
+											}}
+							error={errors.type ? true : false}
+
             />
+ 			)}
+						/>
+
           </FormGroup>
-        </Grid.Column>
-        <Grid.Column width={3}>
+  
           <FormGroup>
             <Form.Dropdown
               label='Season'
+							name='season'
               placeholder='Select Season'
               selection
               options={seasons}
-              onChange={handleSeasonChange}
+						onChange={async (e, { name, value }) => {
+												setValue(name, value);
+											}}
+							error={errors.season ? true : false}
             />
           </FormGroup>
             <Form.Dropdown
@@ -235,21 +213,18 @@ export function SeedForm() {
               placeholder='Select Sun Exposition'
               selection
               options={sun}
-              onChange={handleSunChange}
             />
             <Form.Dropdown
               label='Frost tolerance'
               placeholder='Select Frost Tolerance'
               selection
               options={frost}
-              onChange={handleFrostChange}
             />
             <Form.Dropdown
               label='Watering'
               placeholder='Select Watering'
               selection
               options={water}
-              onChange={handleWateringChange}
             />
 
           <Form.Field>
@@ -260,7 +235,6 @@ export function SeedForm() {
               selection
               search
               options={speciesOptions}
-              onChange={handleCompanionsChange}
             />
           </Form.Field>
           <Form.Field>
@@ -271,28 +245,26 @@ export function SeedForm() {
               selection
               search
               options={speciesOptions}
-              onChange={handleCompetitorsChange}
             />
           </Form.Field>
-        </Grid.Column>
-        <Grid.Column width={2}>
+    
           <Form.Field>
             <label>Seeding</label>
             <FormGroup>
               <Form.Input
                 id='seeding.start'
                 placeholder='Start'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='seeding.end'
                 placeholder='End'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='seeding.germination'
                 placeholder='Duration'
-                onChange={handleInputChange}
+                
               />
             </FormGroup>
           </Form.Field>
@@ -302,17 +274,17 @@ export function SeedForm() {
               <Form.Input
                 id='transplanting.start'
                 placeholder='Start'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='transplanting.end'
                 placeholder='End'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='transplanting.growth'
                 placeholder='Duration'
-                onChange={handleInputChange}
+                
               />
             </FormGroup>
           </Form.Field>
@@ -322,17 +294,17 @@ export function SeedForm() {
               <Form.Input
                 id='planting.start'
                 placeholder='Start'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='planting.end'
                 placeholder='End'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='planting.maturity'
                 placeholder='Duration'
-                onChange={handleInputChange}
+                
               />
             </FormGroup>
           </Form.Field>
@@ -342,17 +314,17 @@ export function SeedForm() {
               <Form.Input
                 id='harvesting.start'
                 placeholder='Start'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id='harvesting.end'
                 placeholder='End'
-                onChange={handleInputChange}
+                
               />
               <Form.Input
                 id="harvesting.duration"
                 placeholder='Duration'
-                onChange={handleInputChange}
+                
               />
             </FormGroup>
           </Form.Field>
@@ -364,7 +336,7 @@ export function SeedForm() {
                 label={{ basic: true, content: 'cm' }}
                 labelPosition='right'
                 placeholder='spacing'
-                onChange={handleInputChange}
+                
               />
             </Form.Field>
             <Form.Field>
@@ -374,18 +346,16 @@ export function SeedForm() {
                 label={{ basic: true, content: 'cm' }}
                 labelPosition='right'
                 placeholder='Rows'
-                onChange={handleInputChange}
+                
               />
             </Form.Field>
           </Form.Group>
-          <Button
-            disabled={formData === undefined ? true : false}
-            type='submit'
-          >
-            Submit
-          </Button>
-        </Grid.Column>
-      </Grid>
+           <div className='form-control'>
+        <button className='form-submit' type='submit'>
+          Sign In
+        </button>
+      </div>
+   
     </Form>
   )
 }

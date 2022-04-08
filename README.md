@@ -37,6 +37,11 @@ It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 
 Rename the `.env.sample` to `.env`.
 
+```.env
+REACT_APP_NODE_ENV=development
+REACT_APP_API_URL=http://127.0.0.1:3333
+```
+
 ## Development
 
 This project depends on [Hortus Server](https://github.com/alexandrelamberty/hortus-server/)

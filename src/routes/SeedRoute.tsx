@@ -10,17 +10,14 @@ export function SeedRoute() {
   }
   return (
     <Container>
-      <Button icon positive labelPosition='left' onClick={handleClick}>
-        <Icon name='add' />
-        Seed
-      </Button>
-	  <Button icon='trash' />
+      <Button icon='add' positive onClick={handleClick} />
+			<Button icon='trash' />
       <SeedGrid />
       <Modal
+			size='small'
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
-        size='large'
       >
         <Modal.Header>Seed</Modal.Header>
         <Modal.Content image>

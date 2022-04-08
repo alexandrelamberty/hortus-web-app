@@ -4,7 +4,7 @@ import { Seed } from 'src/interfaces/Seed'
 
 export interface SeedContextType {
   seeds: Seed[]
-  seed?: Seed
+  selectedSeeds: Seed[]
   isLoading: boolean
   fetchSeeds: () => void
   createSeed: (seed: Seed) => void
@@ -13,7 +13,7 @@ export interface SeedContextType {
 
 export const seedContextDefaultValue: SeedContextType = {
   seeds: [],
-  seed: undefined,
+  selectedSeeds: [],
   isLoading: false,
   fetchSeeds: () => null,
   createSeed: () => null,
@@ -25,8 +25,9 @@ export const SeedContext = React.createContext<SeedContextType>(null!)
 const URI = process.env.REACT_APP_API_URL
 
 export function SeedProvider({ children }: { children: React.ReactNode }) {
+  let [count, setCount] = React.useState<number>(0)
   let [seeds, setSeeds] = React.useState<Seed[]>([])
-  let [seed, setSeed] = React.useState<Seed>()
+  let [selectedSeeds, setSelectedSeeds] = React.useState<Seed[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
 
   const fetchSeeds = React.useCallback(() => {
@@ -44,7 +45,6 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
 
   const createSeed = React.useCallback(
     (newSeed: Seed) => {
-      console.log("SeedProviver:", newSeed)
       setIsLoading(true)
       axios
         .post(URI + '/seeds', newSeed)
@@ -87,7 +87,7 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
       value={{
         isLoading,
         seeds,
-        seed,
+        selectedSeeds,
         fetchSeeds,
         createSeed,
         removeSeed,

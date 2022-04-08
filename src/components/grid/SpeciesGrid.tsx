@@ -17,8 +17,8 @@ export default function SpeciesGrid() {
 	  <Grid.Row columns={5}>
 		
         {species.map((specie:Species) => (
-		<Grid.Column>
-		  <SpeciesGridCard species={specie}/>
+		<Grid.Column key={specie._id}>
+		  <SpeciesGridCard  species={specie}/>
 
 		</Grid.Column>
         ))}

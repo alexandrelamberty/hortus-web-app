@@ -13,15 +13,15 @@ export default class SpeciesGridCard extends React.Component<CardProps> {
   render() {
     return (
       <Card>
-        <Image src='/images/avatar/large/matthew.png' wrapped ui={false} />
+        <Image src={`http://localhost:8080/${this.props.species.image}`} wrapped ui={false} />
         <Card.Content>
           <Card.Header>{this.props.species.name}</Card.Header>
           <Card.Meta>
-            <span className='date'>{this.props.species.genus}</span>
+            <span className='date'>{this.props.species.family}</span>
           </Card.Meta>
           <Card.Description>
-            Matthew is a musician living in Nashville.
-          </Card.Description>
+            {this.props.species.genus}
+					</Card.Description>
         </Card.Content>
         <Card.Content extra>
           <a>

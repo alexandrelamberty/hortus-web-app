@@ -53,16 +53,12 @@ export function SpeciesRoute() {
   return (
     <Container>
 	  <div>
-      <Button icon positive labelPosition='left' onClick={handleAdd}>
-        <Icon name='add' />
-        Culture
-      </Button>
-      <Button content='Delete' onClick={handleDelete} />
+      <Button icon='add' positive onClick={handleAdd} />
+      <Button icon='trash' onClick={handleDelete} />
       <SpeciesFilters />
-	  </div>
+		</div>
       <SpeciesGrid />
       <Modal
-        size='mini'
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}

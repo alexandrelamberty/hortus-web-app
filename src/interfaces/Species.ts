@@ -9,6 +9,7 @@ export interface Species {
   genus: string
   species: string
   subspecies: string
+	image:string
   createdAt: Date
   updatedAt: Date
 }

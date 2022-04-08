@@ -10,7 +10,7 @@ export interface SpeciesContextType {
   isLoading: boolean
   isFormOpen: boolean
   fetchSpecies: () => void
-  createSpecies: (newSpecies: SpeciesFormData, callback: VoidFunction) => void
+  createSpecies: (newSpecies: FormData, callback: VoidFunction) => void
   removeSpecies: (speciesId: number) => void
 }
 
@@ -26,7 +26,7 @@ export const speciesContextDefaultValue: SpeciesContextType = {
 
 export const SpeciesContext = React.createContext<SpeciesContextType>(null!)
 
-const URI = process.env.REACT_APP_API_URL
+const URI = process.env.REACT_APP_API_URL + '/species'
 
 export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   let [count, setCount] = React.useState<number>(0)
@@ -38,7 +38,7 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   const fetchSpecies = React.useCallback(() => {
     setIsLoading(true)
     axios
-      .get(URI + '/species')
+      .get(URI)
       .then(function (response) {
         setSpecies(response.data.results)
         setCount(response.data.count)
@@ -50,11 +50,13 @@ export function SpeciesProvider({ children }: { children: React.ReactNode }) {
   }, [setSpecies])
 
   const createSpecies = React.useCallback(
-    (newSpecies: SpeciesFormData, callback: VoidFunction) => {
+    (newSpecies: FormData, callback: VoidFunction) => {
       console.log(newSpecies)
       setIsLoading(true)
       axios
-        .post(URI + '/species', newSpecies)
+        .post(URI, newSpecies, {headers: {
+      "Content-Type": "multipart/form-data",
+    }})
         .then(function (response) {
           setSpecies([...species].concat(response.data))
           setIsLoading(false)

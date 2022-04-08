@@ -17,7 +17,7 @@ export default function CultureList() {
   return (
     <List selection divided relaxed>
       {cultures.map((culture: Culture) => (
-        <List.Item>
+        <List.Item key={culture._id}>
           <List.Icon name='github' size='large' verticalAlign='middle' />
           <List.Content>
             <List.Header as='a'>{culture.seed.name}</List.Header>
