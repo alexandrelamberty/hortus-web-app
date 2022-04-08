@@ -10,13 +10,11 @@ import RequireAuth from 'src/components/auth/RequireAuth'
 import { AppLayout } from 'src/components/app/AppLayout'
 import { SettingsRoute } from 'src/routes/SettingsRoute'
 import { ProfileRoute } from 'src/routes/ProfileRoute'
-import { SeedProvider } from 'src/providers/SeedProvider'
-import { CultureProvider } from 'src/providers/CultureProvider'
-import { SpeciesProvider } from 'src/providers/SpeciesProvider'
 import { AppContextProvider } from 'src/providers/AppContextProvider'
 import { RegisterPage } from 'src/routes/Register'
 import { ForgotPasswordPage } from 'src/routes/ForgotPassword'
 import { PublicLayout } from './PublicLayout'
+import { SpeciesCalendarRoute } from 'src/routes/SpeciesCalendarRoute'
 
 export default function App() {
   return (
@@ -58,6 +56,14 @@ export default function App() {
               element={
                 <RequireAuth>
                   <SpeciesRoute />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path='/plants/calendar'
+              element={
+                <RequireAuth>
+                  <SpeciesCalendarRoute />
                 </RequireAuth>
               }
             />

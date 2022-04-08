@@ -13,14 +13,10 @@ export default function SeedGrid() {
   }, [fetchSeeds])
 
   return (
-    <Grid>
-      <Grid.Row columns={5}>
-        {seeds.map((seed: Seed) => (
-          <Grid.Column>
-            <SeedGridCard key={seed._id} seed={seed} />
-          </Grid.Column>
-        ))}
-      </Grid.Row>
-    </Grid>
+    <div className='grid grid-cols-1 md:grid-cols-6'>
+      {seeds.map((seed: Seed) => (
+        <SeedGridCard key={seed._id} seed={seed} />
+      ))}
+    </div>
   )
 }
