@@ -10,7 +10,7 @@ export default class SeedGridCard extends React.Component<CardProps> {
 
   render() {
     return (
-      <Card key={this.props.seed._id}>
+      <div key={this.props.seed._id}>
         <Image src={this.props.seed.image} wrapped ui={false} />
         <Card.Content>
           <Card.Header>{this.props.seed.name}</Card.Header>
@@ -27,7 +27,7 @@ export default class SeedGridCard extends React.Component<CardProps> {
             22 Friends
           </a>
         </Card.Content>
-      </Card>
+      </div>
     )
   }
 }

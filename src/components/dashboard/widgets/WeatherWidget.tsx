@@ -1,41 +1,23 @@
 import React from 'react'
-import { LockClosedIcon } from '@heroicons/react/solid'
 import { Culture } from 'src/interfaces/Culture'
-import { Button, Dropdown, DropdownProps, Form, Message } from 'semantic-ui-react'
+import {
+  Button,
+  Dropdown,
+  DropdownProps,
+  Form,
+  Message,
+} from 'semantic-ui-react'
 import { CultureContext } from 'src/providers/CultureProvider'
 import { SeedContext } from 'src/providers/SeedProvider'
 
 export function WeatherWidget() {
-  const { seeds, fetchSeeds } = React.useContext(SeedContext)
-  const { createCulture } = React.useContext(CultureContext)
-  const [formData, setFormData] = React.useState<Culture | {}>()
-
-	fetchSeeds()
-	const seedsOption = seeds.map( sd => ({ value: sd._id, key: sd._id, text: sd.name}))
-
-  const handleChange = (e: React.SyntheticEvent<HTMLElement>, data : DropdownProps): void => {
-    setFormData({
-      ...formData,
-      ["seed"]: data
-    })
-		console.log(formData)
-		console.log(data)
-  }
-
-  const handleSubmit = (e: React.FormEvent, formData: Culture | any) => {
-    e.preventDefault()
-    console.log(formData)
-    createCulture(formData)
-  }
-
   return (
-<Message>
-        <Message.Header>Weather</Message.Header>
-        <p>
-          Local weather from an external source.
-        </p>
-      </Message>
-
+    <div className="bg-slate-300 rounded h-full">
+      <div className="">Icon</div>
+      <p className="absolute top-0 right-0">11:30</p>
+      <p className="font-bold">Weather</p>
+      <p className="text-sm">1450 Chastre - Belgium</p>
+      <p className="text-3xl">40 %</p>
+    </div>
   )
 }
-

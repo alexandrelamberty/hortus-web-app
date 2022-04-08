@@ -19,9 +19,6 @@ export default class SpeciesGridCard extends React.Component<CardProps> {
           <Card.Meta>
             <span className='date'>{this.props.species.genus}</span>
           </Card.Meta>
-          <Card.Description>
-            Matthew is a musician living in Nashville.
-          </Card.Description>
         </Card.Content>
         <Card.Content extra>
           <a>

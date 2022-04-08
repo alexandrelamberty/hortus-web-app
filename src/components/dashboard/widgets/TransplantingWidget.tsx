@@ -16,7 +16,6 @@ export function TransplantingWidget() {
   const { createCulture } = React.useContext(CultureContext)
   const [formData, setFormData] = React.useState<Culture | {}>()
 
-  fetchSeeds()
   const seedsOption = seeds.map((sd) => ({
     value: sd._id,
     key: sd._id,
