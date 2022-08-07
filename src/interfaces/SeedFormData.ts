@@ -1,8 +1,8 @@
 import { PhaseInfo } from "./PhaseInfo";
-import { Species } from "./Species";
+import { Plant } from "./Plant";
 
 export interface SeedFormData {
-  species: Species
+  species: Plant
   name: string
   description: string
   image: string
@@ -12,12 +12,12 @@ export interface SeedFormData {
   sun: string
   frost: string
   water: string
-  companions: Species[]
-  competitors: Species[]
+  companions: Plant[]
+  competitors: Plant[]
   seeding: PhaseInfo
   transplanting: PhaseInfo
   planting: PhaseInfo
-  harvesting: PhaseInfo 
+  harvesting: PhaseInfo
   spacing: number
   rows: number
 }

@@ -1,12 +1,15 @@
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useForm, useFormState } from 'react-hook-form'
 import { Button, Checkbox, Form } from 'semantic-ui-react'
 import { RegistrationFormData } from 'src/interfaces/RegistrationFormData'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { wait, waitFor } from '@testing-library/react'
+import { AuthContext } from 'src/providers/AuthProvider'
 
 export const RegistrationForm = () => {
+  const { user, registerUser } = React.useContext(AuthContext)
+  
   // Schema validation
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
@@ -14,7 +17,7 @@ export const RegistrationForm = () => {
       .required('Password is required')
       .min(6, 'Password must be at least 6 characters')
       .max(40, 'Password must not exceed 40 characters'),
-    passwordConfirmation: Yup.string()
+    confirmPassword: Yup.string()
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
   })
@@ -22,8 +25,8 @@ export const RegistrationForm = () => {
   // Deconstruct the useForm
   const {
     control,
-    register,
     handleSubmit,
+    register,
     reset,
     formState: { errors },
   } = useForm<RegistrationFormData>({
@@ -40,12 +43,13 @@ export const RegistrationForm = () => {
 
   // Submit the form and clear the data
   const onSubmit = async (data: RegistrationFormData) => {
-    console.log(data)
+    console.log("RegistrationForm.onSubmit", data)
+    console.log('isValid', isValid)
+    console.log('isSubmitted', isSubmitted)
+    console.log('isSubmittedSuccessful', isSubmitSuccessful)
+    registerUser(data)
+    // 
   }
-
-  console.log('isValid', isValid)
-  console.log('isSubmitted', isSubmitted)
-  console.log('isSubmittedSuccessful', isSubmitSuccessful)
 
   return (
     <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
@@ -77,17 +81,17 @@ export const RegistrationForm = () => {
         <p className='login-error'>{errors.password?.message}</p>
       </div>
       <div className='mb-6'>
-        <label className='login-label' htmlFor='passwordConfirmation'>
+        <label className='login-label' htmlFor='confirmPassword'>
           Password
         </label>
         <input
           className='login-input'
-          id='passwordConfirmation'
+          id='confirmPassword'
           type='password'
           placeholder='password'
-          {...register('passwordConfirmation')}
+          {...register('confirmPassword')}
         />
-        <p className='login-error'>{errors.passwordConfirmation?.message}</p>
+        <p className='login-error'>{errors.confirmPassword?.message}</p>
       </div>
       <div className='form-control'>
         <button className='form-submit' type='submit'>

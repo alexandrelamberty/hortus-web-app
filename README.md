@@ -2,20 +2,22 @@
 
 # Hortus Web Client
 
-Gardening planner, monitoring and automation web application. It connect to [Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
+Gardening planner, monitoring and automation web application. It connect to
+[Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
 
 It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 
-## Development Roadmap:
+## Development Roadmap
 
-- [ ] Architecture
-	- [x] React-Router
-	- [ ] Redux form
-	- [ ] Redux 
-- [ ] UI
-	- [ ] Screens
-	- [ ] Modal
-	- [ ] Form and List
+- [_] Architecture
+  - [x] React-Router
+  - [x] Context
+- [_] UI
+  - [_] User settings
+  - [_] Modals actions and messages
+  - [_] Edit forms
+  - [_] Data Controlls
+- [_] Tests ?
 
 ## Architecture
 
@@ -26,6 +28,7 @@ It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 - [NPM](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/)
 - [React](https://reactjs.org/)
+- [Semantic UI React](https://react.semantic-ui.com/)
 
 ## Requirements
 
@@ -33,29 +36,34 @@ It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 
 ## Installation
 
+Clone the repository
+
+Install NPM dependencies
+
+```bash
+npm install
+```
+
 ## Configuration
 
-Rename the `.env.sample` to `.env`.
+This project depends on [Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
+
+You will need to run the server application before runing the web client.
+
+Once your server is configured and running you can create an `.env` file and fill it accordingly with the settings you choose for the server.
 
 ```.env
-REACT_APP_NODE_ENV=development
+REACT_APP_NODE_ENV=development | production
 REACT_APP_API_URL=http://127.0.0.1:3333
 ```
 
 ## Development
 
-This project depends on [Hortus Server](https://github.com/alexandrelamberty/hortus-server/)
-
-Once the server is up and running you can start the web application
-
 ```bash
 npm run start
 ```
 
-## Test
-
-## Deployment
-
 ## Reference
+
 - [React Context](https://wanago.io/2020/09/28/react-context-api-hooks-typescript/)
 - [PostCSS 7 compatibility build](https://tailwindcss.com/docs/installation#post-css-7-compatibility-build)

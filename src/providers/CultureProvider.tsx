@@ -1,95 +1,149 @@
-import axios from 'axios'
-import * as React from 'react'
-import { Culture } from 'src/interfaces/Culture'
+import axios from "axios";
+import * as React from "react";
+import { Culture } from "src/interfaces/Culture";
+import { CultureFormData } from "src/interfaces/CultureFormData";
+import { isConstructorDeclaration } from "typescript";
 
 export interface CultureContextType {
-  cultures: Culture[]
-  isLoading: boolean
-  fetchCultures: () => void
-  createCulture: (postId: number) => void
-  removeCulture: (postId: number) => void
+  isLoading: boolean;
+  formOpen: boolean;
+  setFormOpen: any;
+  count: number;
+  cultures: Culture[];
+  selected: number[];
+  setSelected: any;
+  fetchCultures: () => void;
+  createCulture: (data: any) => void;
+  updateCulture: (culture: CultureFormData, callback: VoidFunction) => void;
+  deleteCulture: (id: number) => void;
+  deleteCultures: () => void;
 }
 
-export const seedContextDefaultValue: CultureContextType = {
-  cultures: [],
-  isLoading: false,
-  fetchCultures: () => null,
-  createCulture: () => null,
-  removeCulture: () => null,
-}
+export const CultureContext = React.createContext<CultureContextType>(null!);
 
-export const CultureContext = React.createContext<CultureContextType>(null!)
-
-const URI = process.env.REACT_APP_API_URL
+const URI = process.env.REACT_APP_API_URL;
 
 export function CultureProvider({ children }: { children: React.ReactNode }) {
-  let [cultures, setCultures] = React.useState<Culture[]>([])
-  let [seed, setSeed] = React.useState<any>(null)
-  const [isLoading, setIsLoading] = React.useState(false)
+  let [count, setCount] = React.useState<number>(0);
+  let [cultures, setCultures] = React.useState<Culture[]>([]);
+  let [culture, setCulture] = React.useState<any>(null);
+  let [selected, setSelected] = React.useState<number[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [formOpen, setFormOpen] = React.useState<boolean>(false);
 
   const fetchCultures = React.useCallback(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     axios
-      .get(URI + '/cultures')
+      .get(URI + "/cultures")
       .then(function (response) {
-        setCultures(response.data)
-        setIsLoading(false)
+        console.log(response);
+        setCultures(response.data.results);
+        setCount(response.data.count);
+        setIsLoading(false);
       })
       .catch(function (error) {
-        console.log(error)
-      })
-  }, [setCultures])
+        console.log(error);
+      });
+  }, [setCultures]);
 
   const createCulture = React.useCallback(
     (newCulture: number) => {
-	  console.log(newCulture)
-      setIsLoading(true)
+      console.log("createCulture", newCulture);
+      setIsLoading(true);
       axios
-        .post(URI + '/cultures', newCulture)
+        .post(URI + "/cultures", newCulture)
         .then(function (response) {
-		  setCultures([...cultures].concat(response.data))
-          setIsLoading(false)
+          setCultures([...cultures].concat(response.data));
+          setIsLoading(false);
         })
         .catch(function (error) {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     [setCultures, cultures]
-  )
+  );
 
-  const removeCulture = React.useCallback(
-    (postId: number) => {
-      setIsLoading(true)
-      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-        method: 'DELETE',
-      })
-        .then(() => {
-          const newPosts = [...cultures]
-          const removedPostIndex = newPosts.findIndex(
-            (post : Culture) => post._id === postId
-          )
-          if (removedPostIndex > -1) {
-            newPosts.splice(removedPostIndex, 1)
-          }
-          setCultures(newPosts)
+  const updateCulture = React.useCallback(
+    (culture: CultureFormData, callback: VoidFunction) => {
+      console.log(culture);
+      setIsLoading(true);
+      axios
+        .put(URI + "/cultures ", culture, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(function (response) {
+          setCultures([...cultures].concat(response.data));
+          setIsLoading(false);
+          callback();
+        })
+        .catch(function (error) {
+          console.log(error);
         })
         .finally(() => {
-          setIsLoading(false)
-        })
+          setIsLoading(false);
+        });
     },
     [setCultures, cultures]
-  )
+  );
+
+  const deleteCulture = React.useCallback(
+    (id: number) => {
+      setIsLoading(true);
+      axios
+        .delete(URI + "/cultures" + id)
+        .then(function (response) {
+          setCultures([...cultures].concat(response.data));
+          setIsLoading(false);
+          //callback();
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [setCultures, cultures]
+  );
+
+  const deleteCultures = React.useCallback(() => {
+    setIsLoading(true);
+    axios
+      .delete(URI + `/cultures/${selected}`)
+      .then(function (response) {
+        console.log(response.data);
+        setIsLoading(false);
+        //setCultures([...cultures].concat(response.data));
+        //callback();
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [setCultures, cultures]);
+
   return (
     <CultureContext.Provider
       value={{
+        count,
         isLoading,
+        formOpen,
+        setFormOpen,
         cultures,
+        selected,
+        setSelected,
         fetchCultures,
         createCulture,
-        removeCulture,
+        updateCulture,
+        deleteCulture,
+        deleteCultures,
       }}
     >
       {children}
     </CultureContext.Provider>
-  )
+  );
 }

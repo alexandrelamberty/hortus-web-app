@@ -1,5 +1,5 @@
 import { PhaseInfo } from "./PhaseInfo";
-import { Species } from "./Species";
+import { Plant } from "./Plant";
 
 /**
  * Seed represent a plant seeding.
@@ -7,22 +7,22 @@ import { Species } from "./Species";
  */
 export interface Seed {
   _id: number
-  species: Species
+  plant: Plant
   name: string
   description: string
-  image: string
+  picture: string
   type: string
   harvest: number[]
   season: string
   sun: string
   frost: string
   water: string
-  companions: Species[]
-  competitors: Species[]
+  companions: Plant[]
+  competitors: Plant[]
   seeding: PhaseInfo
   transplanting: PhaseInfo
   planting: PhaseInfo
-  harvesting: PhaseInfo 
+  harvesting: PhaseInfo
   spacing: number
   rows: number
   createdAt: Date

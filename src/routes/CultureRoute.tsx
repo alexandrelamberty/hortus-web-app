@@ -1,54 +1,47 @@
-import React from 'react'
-import { Button, Container, Icon, Modal } from 'semantic-ui-react'
-import { CultureForm } from 'src/components/form/CultureForm'
-import CultureList from 'src/components/list/CultureList'
+import React from "react";
+import { Button, Container, Icon, Modal } from "semantic-ui-react";
+import ActionControlls from "src/components/ActionControlls";
+import { CultureForm } from "src/components/form/CultureForm";
+import CultureList from "src/components/list/CultureList";
+import CultureTable from "src/components/table/CultureTable";
+import { CultureContext } from "src/providers/CultureProvider";
 
 export function CultureRoute() {
-  const [open, setOpen] = React.useState(false)
+  const { formOpen, setFormOpen, selected, deleteCultures } =
+    React.useContext(CultureContext);
 
-  const handleClick = () => {
-    setOpen(!open)
-  }
+  const handleAdd = () => {
+    setFormOpen(!formOpen);
+  };
 
-	const onSubmit = () => {
-		console.log("onSubmit")
-	}
-	
-	const onCancel = () => {
-		console.log("onCancel")
-	}
+  const handleDelete = () => {
+    console.log("deleteHandler", selected);
+    deleteCultures();
+  };
 
   return (
     <Container>
-      <Button icon positive labelPosition='left' onClick={handleClick}>
-        <Icon name='add' />
-        Culture
-      </Button>
-      <CultureList />
+      <ActionControlls
+        name="Cultures"
+        selected={selected.length != 0}
+        handleAdd={handleAdd}
+        handleDelete={handleDelete}
+      />
+
+      <CultureTable />
+
       <Modal
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        open={open}
+        onClose={() => setFormOpen(false)}
+        onOpen={() => setFormOpen(true)}
+        open={formOpen}
       >
-        <Modal.Header>Select a Seed</Modal.Header>
+        <Modal.Header>New Culture</Modal.Header>
         <Modal.Content image>
           <Modal.Description>
-            <CultureForm onSubmitted={onSubmit} onCancel={onCancel} />
+            <CultureForm />
           </Modal.Description>
         </Modal.Content>
-        <Modal.Actions>
-          <Button color='black' onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            content="Create"
-            labelPosition='right'
-            icon='checkmark'
-            onClick={() => setOpen(false)}
-            positive
-          />
-        </Modal.Actions>
       </Modal>
     </Container>
-  )
+  );
 }

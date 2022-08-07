@@ -1,15 +1,16 @@
 /**
- * Species represent a plant species with some additional informations
+ * Plant represent a plant species with some additional informations
  * 
  */
-export interface Species {
+export interface Plant {
   _id: number
   name: string
   family: string
   genus: string
   species: string
   subspecies: string
-	image:string
+  variant: string
+  picture: string
   createdAt: Date
   updatedAt: Date
 }

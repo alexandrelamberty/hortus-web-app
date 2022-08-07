@@ -1,30 +1,53 @@
-import React, { useEffect } from 'react'
-import { useContext } from 'react'
-import { CultureContext } from 'src/providers/CultureProvider'
-import { List } from 'semantic-ui-react'
-import { Culture } from 'src/interfaces/Culture'
+import React, { useEffect } from "react";
+import { useContext } from "react";
+import { CultureContext } from "src/providers/CultureProvider";
+import {
+  Button,
+  Grid,
+  GridRow,
+  Item,
+  Label,
+  List,
+  Progress,
+} from "semantic-ui-react";
+import { Culture } from "src/interfaces/Culture";
+import { Seed } from "src/interfaces/Seed";
+import { PhaseCalendar } from "../calendar/PhaseCalendar";
+import { PhaseItem } from "../calendar/PhaseItem";
+import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 
 export default function CultureList() {
-  // Extract to parent
-  const { cultures, fetchCultures } = useContext(CultureContext)
+  const { cultures, fetchCultures } = useContext(CultureContext);
 
   useEffect(() => {
-    fetchCultures()
-  }, [fetchCultures])
-
-  console.log('CultureList: ', cultures)
+    fetchCultures();
+    console.log(cultures);
+  }, [fetchCultures]);
 
   return (
-    <List selection divided relaxed>
+    <Grid>
       {cultures.map((culture: Culture) => (
-        <List.Item key={culture._id}>
-          <List.Icon name='github' size='large' verticalAlign='middle' />
-          <List.Content>
-            <List.Header as='a'>{culture.seed.name}</List.Header>
-            <List.Description as='a'>{culture.createdAt}</List.Description>
-          </List.Content>
-        </List.Item>
+        <CultureListItem culture={culture} />
       ))}
-    </List>
-  )
+    </Grid>
+  );
 }
+
+type CultureItemProps = {
+  culture: Culture;
+};
+
+export const CultureListItem = (item: CultureItemProps) => {
+  return (
+    <Grid.Row key={item.culture._id}>
+      <Grid columns={2}>
+        <Button>Test</Button>
+        <div>
+          <PhaseItem phase={item.culture.seeding} />
+          <PhaseItem phase={item.culture.planting} />
+          <PhaseItem phase={item.culture.harvesting} />
+        </div>
+      </Grid>
+    </Grid.Row>
+  );
+};

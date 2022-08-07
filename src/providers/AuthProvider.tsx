@@ -1,36 +1,73 @@
-import * as React from 'react'
+import axios from "axios";
+import * as React from "react";
+import { LoginFormData } from "src/interfaces/LoginFormData";
+import { RegistrationFormData } from "src/interfaces/RegistrationFormData";
+import { User } from "src/interfaces/User";
+
+export type AuthUser = {
+  email: string;
+};
 
 interface AuthContextType {
-  user: any
-  register: (user: string, callback: VoidFunction) => void
-  signin: (user: string, callback: VoidFunction) => void
-  signout: (callback: VoidFunction) => void
+  user: AuthUser | null;
+  // FIXME: No need to expose this method
+  setUser: React.Dispatch<React.SetStateAction<AuthUser | null>>;
+  registerUser: (user: RegistrationFormData) => void;
+  login: (user: LoginFormData, callback: VoidFunction) => void;
+  logout: (callback: VoidFunction) => void;
 }
 
-export const AuthContext = React.createContext<AuthContextType>(null!)
+type AuthContextProviderProps = {
+  children: React.ReactNode;
+};
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  let [user, setUser] = React.useState<any>('eevos')
+export const AuthContext = React.createContext<AuthContextType>(null!);
 
-  let register = (newUser: string, callback: VoidFunction) => {
+const URI = process.env.REACT_APP_API_URL;
+
+export function AuthProvider({ children }: AuthContextProviderProps) {
+  let [user, setUser] = React.useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  let registerUser = (newUser: RegistrationFormData) => {
     // Login in user and retrieve token.  TODO: See refresh token
-    setUser(newUser)
-    callback()
-  }
+    setIsLoading(true);
+    axios
+      .post(URI + "/auth/register", newUser)
+      .then(function (response) {
+        setUser(response.data);
+        setIsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  };
 
-  let signin = (newUser: string, callback: VoidFunction) => {
-    // Login in user and retrieve token.  TODO: See refresh token
-    setUser(newUser)
-    callback()
-  }
+  let login = (newUser: LoginFormData, callback: VoidFunction) => {
+    console.log("login");
+    setIsLoading(true);
+    axios
+      .post(URI + "/auth/login", newUser)
+      .then(function (response) {
+        setUser(response.data);
+        setIsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.message);
+      });
+    callback();
+  };
 
-  let signout = (callback: VoidFunction) => {
-    // Remove token ? TODO: See refresh token
-    setUser(null)
-    callback()
-  }
+  let logout = (callback: VoidFunction) => {
+    setUser(null);
+    callback();
+  };
 
-  let value = { user, register, signin, signout }
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{ user, setUser, registerUser, login, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

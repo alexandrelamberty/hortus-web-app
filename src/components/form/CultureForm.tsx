@@ -1,68 +1,126 @@
-import React, { useEffect } from 'react'
-import { LockClosedIcon } from '@heroicons/react/solid'
-import { Culture } from 'src/interfaces/Culture'
-import { Button, Dropdown, DropdownProps, Form } from 'semantic-ui-react'
-import { CultureContext } from 'src/providers/CultureProvider'
-import { SeedContext } from 'src/providers/SeedProvider'
+import React, { useEffect } from "react";
+import { LockClosedIcon } from "@heroicons/react/solid";
+import { Culture } from "src/interfaces/Culture";
+import {
+  Button,
+  ButtonGroup,
+  Dropdown,
+  DropdownProps,
+  Form,
+  Grid,
+  Image,
+} from "semantic-ui-react";
+import { CultureContext } from "src/providers/CultureProvider";
+import { SeedContext } from "src/providers/SeedProvider";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Seed } from "src/interfaces/Seed";
 
 type FormProps = {
-	onSubmitted: () => void;
-	onCancel: () => void;
-}
+  onSubmitted: () => void;
+  onCancel: () => void;
+};
 
-export function CultureForm(props: FormProps) {
-  const { seeds, fetchSeeds } = React.useContext(SeedContext)
-  const { createCulture } = React.useContext(CultureContext)
-  const [formData, setFormData] = React.useState<Culture | {}>()
+export function CultureForm() {
+  const { seeds, fetchSeeds } = React.useContext(SeedContext);
+  const { setFormOpen, createCulture } = React.useContext(CultureContext);
 
-  useEffect(() => {
-    fetchSeeds()
-  }, [fetchSeeds])
+  //
+  const [formData, setFormData] = React.useState<Culture | {}>();
+  const [seed, setSeed] = React.useState<Seed>();
+  // Schema validation
+  const validationSchema = Yup.object().shape({
+    //seed: Yup.string().required("Seed is required"),
+  });
+
+  // Deconstruct useForm
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<any>({
+    mode: "onChange",
+    resolver: yupResolver(validationSchema),
+  });
 
   const seedsOption = seeds.map((sd) => ({
     value: sd._id,
     key: sd._id,
     text: sd.name,
-  }))
+  }));
 
-  const handleChange = (
+  useEffect(() => {
+    fetchSeeds();
+  }, [fetchSeeds]);
+
+  const selectSeed = (
     e: React.SyntheticEvent<HTMLElement>,
     data: DropdownProps
   ): void => {
+    e.preventDefault();
+    // Find the seed in the context
+    const s = seeds.find((obj) => {
+      return obj._id === data.value;
+    });
+    // Set the selected seed
+    setSeed(s);
+    // Set the form data with the selected seed
     setFormData({
       ...formData,
-      ['seed']: data,
-    })
-    console.log(formData)
-    console.log(data)
-  }
+      ["seed"]: s,
+    });
+  };
 
-  const handleSubmit = (e: React.FormEvent, formData: Culture | any) => {
-    e.preventDefault()
-    console.log(formData)
-    createCulture(formData)
-		props.onSubmitted()
-  }
+  const onSubmit = (data: Culture | any) => {
+    console.log("onSubmit");
+    console.log("formData", formData);
+    createCulture(formData);
+  };
 
+  const cancel = () => {
+    setFormOpen(false);
+    reset();
+  };
+
+  const onCreated = () => {
+    setFormOpen(false);
+    reset();
+  };
   return (
-    <Form onSubmit={(e) => handleSubmit(e, formData)}>
-      <Form.Field>
-        <label>Seed</label>
-        <Dropdown
-          id='seed'
-          button
-          className='icon'
-          floating
-          labeled
-          icon='world'
-          options={seedsOption}
-          search
-          label='name'
-          text='Select Language'
-          onChange={handleChange}
-        />
-      </Form.Field>
-      <Button type='submit'>Submit</Button>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Grid columns={2}>
+        <Grid.Row>
+          <Grid.Column mobile={16} tablet={8} computer={8}>
+            <Form.Field>
+              <label>Select your seed</label>
+              <Dropdown
+                id="seed"
+                options={seedsOption}
+                search
+                selection
+                placeholder="Search or select a seed"
+                onChange={selectSeed}
+              />
+            </Form.Field>
+          </Grid.Column>
+          <Grid.Column mobile={16} tablet={8} computer={8}>
+            <p>{seed?.name}</p>
+            <Image src={seed?.picture} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column mobile={16} tablet={8} computer={16}>
+            <ButtonGroup floated="right">
+              <Button onClick={() => cancel()}>Cancel</Button>
+              <Button type="submit" primary>
+                Save
+              </Button>
+            </ButtonGroup>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </Form>
-  )
+  );
 }
