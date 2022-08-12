@@ -26,7 +26,7 @@ export const AuthContext = React.createContext<AuthContextType>(null!);
 const URI = process.env.REACT_APP_API_URL;
 
 export function AuthProvider({ children }: AuthContextProviderProps) {
-  let [user, setUser] = React.useState<AuthUser | null>(null);
+  let [user, setUser] = React.useState<AuthUser | null>({ email: "test" });
   const [isLoading, setIsLoading] = React.useState(false);
 
   let registerUser = (newUser: RegistrationFormData) => {

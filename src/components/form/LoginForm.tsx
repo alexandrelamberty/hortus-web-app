@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
 export const LoginForm = ({ handleNavigation }: LoginFormProps) => {
   const { user, login } = React.useContext(AuthContext);
   // Yup validation schema the form inputs register to theses schema shapes
-  handleNavigation = React.forwardRef(handleNavigation);
+  //handleNavigation = React.forwardRef(handleNavigation);
 
   const {
     register,
