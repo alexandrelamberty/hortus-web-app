@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   webapp:
@@ -7,4 +7,4 @@ services:
       context: .
       dockerfile: ./.docker/Dockerfile
     ports:
-      - '1337:80'
+      - "80:80"
