@@ -9,19 +9,17 @@ It is part of the [Hortus](https://github.com/alexandrelamberty/hortus) project
 
 ## Development Roadmap
 
-- [_] Architecture
+- [ ] Architecture
   - [x] React-Router
   - [x] Context
-- [_] UI
-  - [_] User settings
-  - [_] Modals actions and messages
-  - [_] Edit forms
-  - [_] Data Controlls
-- [_] Tests ?
-
-## Architecture
-
-![Hortus Docker Architecture](hortus-docker-architecture.png)
+- [ ] UI
+  - [ ] User settings
+  - [ ] Modals actions and messages
+  - [ ] Forms
+  - [ ] Data Controlls
+    - [ ] Pagination
+    - [ ] Actions (Sort, filter, ...)
+- [ ] Tests
 
 ## Technologies
 
@@ -50,7 +48,8 @@ This project depends on [Hortus Server](https://github.com/alexandrelamberty/hor
 
 You will need to run the server application before runing the web client.
 
-Once your server is configured and running you can create an `.env` file and fill it accordingly with the settings you choose for the server.
+Once your server is configured and running you can create an `.env` file and
+fill it accordingly with the settings you choose for the server.
 
 ```.env
 REACT_APP_NODE_ENV=development | production
@@ -62,6 +61,22 @@ REACT_APP_API_URL=http://127.0.0.1:3333
 ```bash
 npm run start
 ```
+
+## Docker
+
+### Building
+
+```bash
+docker build . -f .docker/Dockerfile -t alexandrelamberty/hortus-webapp:latest
+```
+
+### Running
+
+```bash
+docker run --env-file .env -p 80:80 --network=network alexandrelamberty/hortus-webapp:latest
+```
+
+### Docker compose
 
 ## Reference
 
