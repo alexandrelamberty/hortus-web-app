@@ -2,8 +2,7 @@
 
 # Hortus Web Client
 
-Gardening planner, monitoring and automation web application. It connect to the
-[Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
+Gardening planner web application.
 
 This repository is part of the
 [Hortus](https://github.com/alexandrelamberty/hortus) project.
@@ -28,43 +27,13 @@ Clone the repository and install NPM dependencies
 npm install
 ```
 
-## Configuration
+## Usage
 
 This project depends on [Hortus Server](https://github.com/alexandrelamberty/hortus-server/).
 
 You will need to run the server application before runing the web client.
 
 Once your server is configured and running you can create an `.env` file and
-fill it accordingly with the settings you choose for the server.
-
-```.environment
-REACT_APP_NODE_ENV=development | production
-REACT_APP_API_URL=http://127.0.0.1:3333
-```
-
-## Running with Docker
-
-### Building
-
-```bash
-docker build . -f .docker/Dockerfile -t alexandrelamberty/hortus-webapp:latest
-```
-
-### Running
-
-```bash
-docker run --env-file .env -p 80:80 --network=network alexandrelamberty/hortus-webapp:latest
-```
-
-### Docker compose
-
-## Development
-
-```bash
-npm run start
-```
-
-## Tests
 
 ## Reference
 
