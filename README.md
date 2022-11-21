@@ -2,17 +2,22 @@
 
 Gardening planner web application part of the [Hortus](https://github.com/alexandrelamberty/hortus) project.
 
-## Technologies
+## Architecture
 
-- [NPM](https://www.npmjs.com/)
+This web application run as a Docker service and use HTTP to communicate with the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service.
+
+## Technologies, languages, frameworks...
+
 - [Docker](https://www.docker.com/)
+- [NPM](https://www.npmjs.com/)
+- [Typescript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
 - [Semantic UI React](https://react.semantic-ui.com/)
 
 ## Requirements
 
-- [NPM](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/)
+- [NPM](https://www.npmjs.com/) for development
 
 ## Usage
 
@@ -23,12 +28,13 @@ complete stack.
 ## Development
 
 To run the application the
-[API](https://github.com/alexandrelamberty/hortus-api) also need to be running.
+[Hortus API](https://github.com/alexandrelamberty/hortus-api) service also need to be running
+in order to retreve the data.
 
 ### Run with NPM
 
-If the api service is up and running, create an .env file and fill it
-accordingly with the service configuration.
+If the API service is up and running, create an .env file and fill it
+accordingly with the API service configuration.
 
 ```properties
 REACT_APP_ENV=dev
