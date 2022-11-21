@@ -7,7 +7,7 @@ on:
     branches: ["master"]
 
 jobs:
-  docker:
+  build:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
