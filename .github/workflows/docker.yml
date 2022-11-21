@@ -2,7 +2,7 @@ name: Docker
 
 on:
   push:
-ve set-ouveve    branches: ["develop"]
+    branches: ["master", "develop"]
   pull_request:
     branches: ["master", "stagging"]
 
