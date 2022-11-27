@@ -1,9 +1,8 @@
+import axios from "axios";
 import * as React from "react";
+import { getConfig } from "src/config";
 import { Plant } from "src/interfaces/Plant";
-import axios, { AxiosResponse } from "axios";
 import { PlantFormData } from "src/interfaces/PlantFormData";
-import _ from "lodash";
-import { PlantReducer } from "../store/PlantReducer";
 
 export interface PlantContextType {
   isLoading: boolean;
@@ -12,7 +11,9 @@ export interface PlantContextType {
   formOpen: boolean;
   setFormOpen: any;
   count: number;
+  // The Plants
   plants: Plant[];
+  // The selected Plant IDs
   selected: number[];
   setSelected: any;
   fetchPlants: () => void;
@@ -24,7 +25,9 @@ export interface PlantContextType {
 
 export const PlantContext = React.createContext<PlantContextType>(null!);
 
-const URI = process.env.REACT_APP_API_URL + "/plants";
+const URI = getConfig("REACT_APP_API_URL") + "/plants";
+
+console.log(URI);
 
 export function PlantContextProvider({
   children,
@@ -37,7 +40,7 @@ export function PlantContextProvider({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
   const [viewOpen, setViewOpen] = React.useState<boolean>(false);
-  const [test, setTest] = React.useState(false);
+
   // FIXME: Pagination
   const fetchPlants = React.useCallback(() => {
     setIsLoading(true);
@@ -97,38 +100,32 @@ export function PlantContextProvider({
     [setPlants, plants]
   );
 
-  const deletePlant = React.useCallback(
-    (id: number) => {
-      setIsLoading(true);
-      axios
-        .post(URI, id)
-        .then(function (response) {
-          //setPlants([...plants].concat(response.data));
-          setIsLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    [setPlants, plants]
-  );
+  const deletePlant = React.useCallback((id: number) => {
+    setIsLoading(true);
+    axios
+      .post(URI, id)
+      .then(function (response) {
+        //setPlants([...plants].concat(response.data));
+        setIsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
-  const deletePlants = React.useCallback(
-    (ids) => {
-      setIsLoading(true);
-      console.log(ids);
-      axios
-        .delete(URI + `/${ids}`)
-        .then(function (response) {
-          //setPlants([...plants].concat(response.data));
-          setIsLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    [setPlants, plants]
-  );
+  const deletePlants = React.useCallback((ids) => {
+    setIsLoading(true);
+    console.log(ids);
+    axios
+      .delete(URI + `/${ids}`)
+      .then(function (response) {
+        //setPlants([...plants].concat(response.data));
+        setIsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <PlantContext.Provider

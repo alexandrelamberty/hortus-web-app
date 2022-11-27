@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import { getConfig } from "src/config";
 import { Culture } from "src/interfaces/Culture";
 import { CultureFormData } from "src/interfaces/CultureFormData";
 import { isConstructorDeclaration } from "typescript";
@@ -21,7 +22,7 @@ export interface CultureContextType {
 
 export const CultureContext = React.createContext<CultureContextType>(null!);
 
-const URI = process.env.REACT_APP_API_URL;
+const URI = getConfig("REACT_APP_API_URL");
 
 export function CultureProvider({ children }: { children: React.ReactNode }) {
   let [count, setCount] = React.useState<number>(0);

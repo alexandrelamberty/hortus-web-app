@@ -1,30 +1,43 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
+import { CultureLocation } from "src/enums/CultureLocation";
+import { PhaseStatus } from "src/enums/PhaseStatus";
 import { Culture } from "src/interfaces/Culture";
 import { CultureContext } from "src/providers/CultureProvider";
-import CulturePhaseCell from "./CulturePhaseCell";
+import PhaseCell from "./PhaseCell";
+
+// FIXME:
+const locations = Object.entries(CultureLocation).map(([key, value]) => ({
+  key: value,
+  text: key,
+  value: value,
+}));
+
+type CultureTableProps = {};
 
 export default function CultureTable() {
   const { cultures, fetchCultures, selected, setSelected } =
     useContext(CultureContext);
   const [activeRowId, setActiveRowId] = useState(0);
   const [mouseDownId, setMouseDownId] = useState(0);
-  const onPhaseStart = (phase: string, id: number) => {
-    console.log("onPhaseStart", phase, id);
-  };
-  const onPhaseStop = (phase: string, id: number) => {
-    console.log("onPhaseStop", phase, id);
-  };
-  const onPhaseSkip = (phase: string, id: number) => {
-    console.log("onPhaseSkip", phase, id);
-  };
+
+  // FIXME:
+  // move me
   useEffect(() => {
     fetchCultures();
   }, [fetchCultures]);
 
+  // onPhaseChange
+  const onPhaseChange = (phase: string, culture_id: number) => {
+    console.log("onPhaseChange", phase, culture_id);
+    // ask for soil and number ?
+    // save
+    // update or refetch
+  };
+
   function onRowClicked(id: number) {
     console.log("onRowClicked()", id, mouseDownId);
-    if (id != mouseDownId) {
+    if (id !== mouseDownId) {
       setActiveRowId(id);
     }
     // TODO: Clean on mouse up
@@ -43,6 +56,7 @@ export default function CultureTable() {
     setMouseDownId(0);
   }
 
+  // Set the context to the selected rows
   function onCheckboxChange(event: any, data: any) {
     console.log("onCheckboxChange()", data.id);
     console.log(data.checked);
@@ -71,31 +85,25 @@ export default function CultureTable() {
           />
         </Table.Cell>
         <Table.Cell onClick={() => onRowClicked(culture._id)}>
-          {culture.seed.name}
+          {culture.seed?.name}
         </Table.Cell>
-        <CulturePhaseCell
-          culture={culture}
-          onStart={() => onPhaseStart("seeding", culture._id)}
-          onStop={() => onPhaseStop("seeding", culture._id)}
-          onSkip={() => onPhaseSkip("seeding", culture._id)}
+        <PhaseCell
+          phase={culture.seeding}
+          onPhaseChange={(status: PhaseStatus) =>
+            onPhaseChange("seeding", culture._id)
+          }
         />
-        <CulturePhaseCell
-          culture={culture}
-          onStart={() => onPhaseStart("transplanting", culture._id)}
-          onStop={() => onPhaseStop("transplanting", culture._id)}
-          onSkip={() => onPhaseSkip("transplanting", culture._id)}
+        <PhaseCell
+          phase={culture.transplanting}
+          onPhaseChange={() => onPhaseChange("transplanting", culture._id)}
         />
-        <CulturePhaseCell
-          culture={culture}
-          onStart={() => onPhaseStart("planting", culture._id)}
-          onStop={() => onPhaseStop("planting", culture._id)}
-          onSkip={() => onPhaseSkip("planting", culture._id)}
+        <PhaseCell
+          phase={culture.planting}
+          onPhaseChange={() => onPhaseChange("planting", culture._id)}
         />
-        <CulturePhaseCell
-          culture={culture}
-          onStart={() => onPhaseStart("harvesting", culture._id)}
-          onStop={() => onPhaseStop("harvesting", culture._id)}
-          onSkip={() => onPhaseSkip("harvesting", culture._id)}
+        <PhaseCell
+          phase={culture.harvesting}
+          onPhaseChange={() => onPhaseChange("seeding", culture._id)}
         />
       </Table.Row>
     );
@@ -106,7 +114,7 @@ export default function CultureTable() {
       size="small"
       definition
       sortable
-      selectable
+      // selectable
       celled
       compact
       structured

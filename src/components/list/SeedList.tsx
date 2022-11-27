@@ -28,8 +28,8 @@ export function SeedListItem({ seed }: any) {
       <Item.Content>
         <Item.Header as="a">{seed.name}</Item.Header>
         <Item.Meta>
-          <span className="">{seed.plant.name}</span>
-          <span className="cinema">{seed.plant.species}</span>
+          <span className="">{seed.plant?.name}</span>
+          <span className="cinema">{seed.plant?.species}</span>
         </Item.Meta>
         <Item.Description>{seed.description}</Item.Description>
         <Item.Extra>

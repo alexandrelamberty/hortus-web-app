@@ -10,12 +10,16 @@ type CardProps = {
 export default class PlantGridCard extends React.Component<CardProps> {
   render() {
     return (
-      <Card>
-        <Image src={this.props.plant.picture} wrapped ui={false} />
+      <Card key={this.props.plant._id}>
+        <Image
+          src={"http://localhost:3333/static/" + this.props.plant.picture}
+          wrapped
+          ui={false}
+        />
         <Card.Content>
-          <Card.Header>{this.props.plant.name}</Card.Header>
+          <Card.Header>{this.props.plant.binomial}</Card.Header>
           <Card.Meta>
-            <span className="date">{this.props.plant.name}</span>
+            <span className="date">{this.props.plant.family}</span>
           </Card.Meta>
           <Card.Description>
             <Label color="red" horizontal>
@@ -27,11 +31,11 @@ export default class PlantGridCard extends React.Component<CardProps> {
             </Label>
             <Label color="red" horizontal as="a">
               <Icon name="mail" />
-              {this.props.plant.subspecies}
+              {this.props.plant.cultivar}
             </Label>
             <Label color="red" horizontal as="a">
               <Icon name="mail" />
-              {this.props.plant.variant}
+              {this.props.plant.variety}
             </Label>
           </Card.Description>
         </Card.Content>

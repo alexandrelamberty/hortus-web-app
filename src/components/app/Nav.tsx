@@ -18,7 +18,7 @@ export function Nav() {
     { name: "Plants", href: "/plants", current: false },
     { name: "Seeds", href: "/seeds", current: false },
     { name: "Cultures", href: "/cultures", current: false },
-    { name: "Gardens", href: "/gardens", current: false },
+    // { name: "Gardens", href: "/gardens", current: false },
     //{ name: 'Sensors', href: '/sensors', current: false },
   ];
   /*   const user = [

@@ -22,4 +22,4 @@ COPY .env .
 RUN chmod +x environment.sh
 #
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/environment.sh && nginx -g \"daemon off;\""]

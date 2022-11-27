@@ -1,24 +1,20 @@
-import React, { useEffect } from "react";
 import { useContext } from "react";
-import { Container, Grid } from "semantic-ui-react";
-import PlantGridCard from "./PlantGridCard";
-import { PlantContext } from "src/providers/PlantContextProvider";
+import { Grid } from "semantic-ui-react";
 import { Plant } from "src/interfaces/Plant";
+import { PlantContext } from "src/providers/PlantContextProvider";
+import PlantGridCard from "./PlantGridCard";
 
-export default function PlantGrid() {
+const PlantGrid = () => {
   const { plants } = useContext(PlantContext);
 
-  useEffect(() => {
-    // dispatch("FETCH_PLANT", null);
-  }, [plants]);
-
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <Grid>
       {plants.map((plant: Plant) => (
-        <Grid.Column>
+        <Grid.Column key={plant._id} mobile={16} tablet={8} computer={4}>
           <PlantGridCard plant={plant} />
         </Grid.Column>
       ))}
-    </div>
+    </Grid>
   );
-}
+};
+export default PlantGrid;

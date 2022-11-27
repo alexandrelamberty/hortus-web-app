@@ -6,15 +6,8 @@ import SensorsTable from "src/components/table/SensorTable";
 import { SensorContext } from "src/providers/SensorProvider";
 
 export function SensorRoute() {
-  const { sensors, fetchSensors } = useContext(SensorContext);
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  const handleAdd = () => {
-    setOpen(!open);
-  };
+  const handleClick = () => {};
+  const handleAdd = () => {};
 
   const onSubmit = () => {
     console.log("onSubmit");
@@ -25,47 +18,10 @@ export function SensorRoute() {
   };
 
   const handleDelete = () => {};
-  useEffect(() => {
-    fetchSensors();
-  }, [fetchSensors]);
 
-  return (
-    <Container>
-      <ActionControlls
-        name="Sensors"
-        handleAdd={handleAdd}
-        handleDelete={handleDelete}
-      />
+  const handleChange = () => {};
 
-      <SensorsTable />
+  useEffect(() => {}, []);
 
-      {/* Sensors scan list */}
-
-      <Modal
-        size="small"
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        open={open}
-      >
-        <Modal.Header>Seed</Modal.Header>
-        <Modal.Content image>
-          <Modal.Description>
-            <SeedForm />
-          </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button color="black" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            content="Save"
-            labelPosition="right"
-            icon="checkmark"
-            onClick={() => setOpen(false)}
-            positive
-          />
-        </Modal.Actions>
-      </Modal>
-    </Container>
-  );
+  return <Container></Container>;
 }

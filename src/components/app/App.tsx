@@ -1,21 +1,20 @@
-import * as React from "react";
-import { Routes, Route } from "react-router-dom";
-import { AuthProvider } from "src/providers/AuthProvider";
-import { LoginRoute } from "src/routes/LoginRoute";
-import { DashboardRoute } from "src/routes/DashboardRoute";
-import { CultureRoute } from "src/routes/CultureRoute";
-import { PlantRoute } from "src/routes/PlantRoute";
-import { SeedRoute } from "src/routes/SeedRoute";
-import RequireAuth from "src/components/auth/RequireAuth";
+import { Route, Routes } from "react-router-dom";
 import { AppLayout } from "src/components/app/AppLayout";
-import { SettingsRoute } from "src/routes/SettingsRoute";
-import { ProfileRoute } from "src/routes/ProfileRoute";
+import RequireAuth from "src/components/auth/RequireAuth";
 import { AppContextProvider } from "src/providers/AppContextProvider";
-import { RegisterRoute } from "src/routes/RegisterRoute";
+import { AuthProvider } from "src/providers/AuthProvider";
+import { CultureRoute } from "src/routes/CultureRoute";
+import { DashboardRoute } from "src/routes/DashboardRoute";
 import { ForgotPasswordRoute } from "src/routes/ForgotPasswordRoute";
-import { PublicLayout } from "./PublicLayout";
+import { GardenRoute } from "src/routes/GardenRoute";
+import { LoginRoute } from "src/routes/LoginRoute";
+import { PlantRoute } from "src/routes/PlantRoute";
+import { ProfileRoute } from "src/routes/ProfileRoute";
+import { RegisterRoute } from "src/routes/RegisterRoute";
+import { SeedRoute } from "src/routes/SeedRoute";
+import { SettingsRoute } from "src/routes/SettingsRoute";
 import { SpeciesCalendarRoute } from "src/routes/SpeciesCalendarRoute";
-import { SensorRoute } from "src/routes/SensorRoute";
+import { PublicLayout } from "./PublicLayout";
 
 export default function App() {
   return (
@@ -63,19 +62,12 @@ export default function App() {
                 </RequireAuth>
               }
             />
+            {/* TODO: Move to seeds */}
             <Route
               path="/plants/calendar"
               element={
                 <RequireAuth>
                   <SpeciesCalendarRoute />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/sensors"
-              element={
-                <RequireAuth>
-                  <SensorRoute />
                 </RequireAuth>
               }
             />

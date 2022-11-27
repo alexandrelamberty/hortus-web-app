@@ -4,7 +4,7 @@ import { Seed } from "src/interfaces/Seed";
 import { SeedContext } from "src/providers/SeedProvider";
 import SeedGridCard from "./SeedGridCard";
 
-export default function SeedGrid() {
+const SeedGrid = () => {
   const { seeds, fetchSeeds } = useContext(SeedContext);
 
   useEffect(() => {
@@ -12,12 +12,14 @@ export default function SeedGrid() {
   }, [fetchSeeds]);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+    <Grid>
       {seeds.map((seed: Seed) => (
         <Grid.Column>
           <SeedGridCard key={seed._id} seed={seed} />
         </Grid.Column>
       ))}
-    </div>
+    </Grid>
   );
-}
+};
+
+export default SeedGrid;

@@ -1,7 +1,4 @@
-/**
- *
- */
-export interface PlantFormData {
+export interface PlantDTO {
   name: string;
   binomial: string;
   family: string;
@@ -10,7 +7,5 @@ export interface PlantFormData {
   variety: string;
   subspecies: string;
   forma: string;
-  cultivar: string;
-  hybrid: string;
-  image: FileList;
+  image: File;
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as React from "react";
+import { getConfig } from "src/config";
 import { Seed } from "src/interfaces/Seed";
 import { SeedFormData } from "src/interfaces/SeedFormData";
 
@@ -19,17 +20,18 @@ export interface SeedContextType {
   deleteSeed: (id: number) => void;
   deleteSeeds: (ids: number[]) => void;
 }
+const URI = getConfig("REACT_APP_API_URL");
 
 export const SeedContext = React.createContext<SeedContextType>(null!);
 
 export function SeedProvider({ children }: { children: React.ReactNode }) {
-  const URI = process.env.REACT_APP_API_URL;
-  let [count, setCount] = React.useState<number>(0);
   let [seeds, setSeeds] = React.useState<Seed[]>([]);
+  let [count, setCount] = React.useState<number>(0);
   let [selected, setSelected] = React.useState<number[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
   const [viewOpen, setViewOpen] = React.useState<boolean>(false);
+
   // FIXME: Pagination
   const fetchSeeds = React.useCallback(() => {
     setIsLoading(true);
@@ -83,21 +85,18 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
     [setSeeds, seeds]
   );
 
-  const deleteSeed = React.useCallback(
-    (id: number) => {
-      setIsLoading(true);
-      axios
-        .post(URI + "/seeds", id)
-        .then(function (response) {
-          //setPlants([...plants].concat(response.data));
-          setIsLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    [setSeeds, seeds]
-  );
+  const deleteSeed = React.useCallback((id: number) => {
+    setIsLoading(true);
+    axios
+      .post(URI + "/seeds", id)
+      .then(function (response) {
+        //setPlants([...plants].concat(response.data));
+        setIsLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   const deleteSeeds = React.useCallback(
     (ids: number[]) => {
@@ -108,7 +107,7 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
       axios
         .post(URI + `/seeds/${ids}`)
         .then(function (response) {
-          //setPlants([...plants].concat(`esponse.data));
+          //setPlants([...plants].concat(`response.data));
           setIsLoading(false);
         })
         .catch(function (error) {
@@ -116,7 +115,7 @@ export function SeedProvider({ children }: { children: React.ReactNode }) {
         });
         */
     },
-    [setSeeds, seeds]
+    [selected]
   );
 
   return (

@@ -1,20 +1,21 @@
-import React, { useContext, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox, Image, Item, Label, List } from "semantic-ui-react";
 import { Plant } from "src/interfaces/Plant";
-import { PlantContext } from "src/providers/PlantContextProvider";
 
-export default function PlantList() {
-  const { plants, fetchPlants } = useContext(PlantContext);
+type PlantListProps = {
+  list: Array<Plant>;
+};
+export default function PlantList({ list }: PlantListProps) {
+  //const { plants, fetchPlants } = useContext(PlantContext);
+  const [plants, setPlants] = useState<Array<Plant>>([]);
 
-  // TODO: make custom hook
   useEffect(() => {
-    // TODO: dispatch load plants
-    fetchPlants();
-  }, [fetchPlants]);
+    setPlants(list);
+  }, [list]);
 
   return (
-    <List selection divided relaxed="very">
-      {plants.map((plant: Plant) => (
+    <List>
+      {list.map((plant: Plant) => (
         <PlantListItem plant={plant} />
       ))}
     </List>
@@ -22,24 +23,13 @@ export default function PlantList() {
 }
 
 export function PlantListItem({ plant }: any) {
-  console.log(plant);
   return (
     <List.Item>
-      {/*<Item.Image src="./images/image.png" /> */}
-      <Image src={plant.picture} size="tiny" />
-      <Item.Content>
-        <Checkbox primary floated="right" />
-        <Item.Header as="a">{plant.name}</Item.Header>
-        <Item.Header as="h2">{plant.species}</Item.Header>
-        <Item.Meta>
-          <span className="cinema">{plant.family}</span>
-        </Item.Meta>
-        <Item.Description>{plant.genus}</Item.Description>
-        <Item.Extra>
-          {plant.subspecies ? <Label>{plant.subspecies}</Label> : ""}
-          {plant.variant ? <Label>{plant.variant}</Label> : ""}
-        </Item.Extra>
-      </Item.Content>
+      <Image avatar src={"http://localhost:3333/static/" + plant.picture} />
+      <List.Content>
+        <List.Header as="a">{plant.binomial}</List.Header>
+        <List.Description>{plant.name}</List.Description>
+      </List.Content>
     </List.Item>
   );
 }

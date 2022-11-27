@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect } from "react";
+import { equal } from "assert";
+import React, { ReactElement, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
@@ -25,7 +26,11 @@ import { PlantContext } from "src/providers/PlantContextProvider";
 import { SeedContext } from "src/providers/SeedProvider";
 import * as Yup from "yup";
 
-export function SeedForm() {
+/**
+ *
+ * @returns
+ */
+export function SeedForm(): ReactElement {
   const { plants, fetchPlants } = React.useContext(PlantContext);
   const { seeds, fetchSeeds, createSeed, setFormOpen } =
     React.useContext(SeedContext);
@@ -89,8 +94,9 @@ export function SeedForm() {
   const sun = useListEnum(Sun);
   const seed_type = useListEnum(Type);
 
+  // SeedFormData ?
   const onSubmit = (data: any) => {
-    console.log(data);
+    console.log("onSubmit", data);
     let fd = new FormData();
     fd.append("image", data.image[0]);
     fd.append("name", data.name);
@@ -99,7 +105,9 @@ export function SeedForm() {
     fd.append("species", data.species);
     fd.append("subspecies", data.subspecies);
     fd.append("variant", data.variant);
-    createSeed(fd, onCreated);
+
+    //
+    //createSeed(fd, onCreated);
   };
 
   const cancel = () => {
@@ -107,110 +115,282 @@ export function SeedForm() {
     reset();
   };
 
+  // Callback
   const onCreated = () => {
     setFormOpen(false);
     reset();
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Grid columns={2}>
-        <Grid.Row>
-          <Grid.Column mobile={16} tablet={8} computer={6}>
-            <Segment placeholder style={{ height: "360px" }}>
-              <Header icon>
-                <Icon name="image" />
-                <Header.Content>
-                  Add a picture
-                  <Header.Subheader>
-                    Choose a picture from your computer.
-                  </Header.Subheader>
-                </Header.Content>
-              </Header>
-              <Button as="label" htmlFor="image" type="button" primary>
-                Choose a File
-              </Button>
-            </Segment>
-            <Form.Field>
+    <Form onSubmit={handleSubmit(onSubmit)} size="mini">
+      <Grid columns={3}>
+        {/*  */}
+        <Grid.Column mobile={16} tablet={4} computer={5}>
+          {/* Picture */}
+          <Segment placeholder style={{ height: "360px" }}>
+            <Header icon>
+              <Icon name="image" />
+              <Header.Content>
+                Add a picture
+                <Header.Subheader>
+                  Choose a picture from your computer.
+                </Header.Subheader>
+              </Header.Content>
+            </Header>
+            <Button as="label" htmlFor="image" type="button" primary>
+              Choose a File
+            </Button>
+          </Segment>
+
+          <Form.Field>
+            <Controller
+              control={control}
+              name="species"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Dropdown
+                  name="species"
+                  label="Species"
+                  placeholder="Species"
+                  search
+                  selection
+                  fluid
+                  options={plantsOptions}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.species ? true : false}
+                />
+              )}
+            />
+          </Form.Field>
+        </Grid.Column>
+        {/*  */}
+        <Grid.Column mobile={16} tablet={4} computer={5}>
+          <Form.Field>
+            <Controller
+              control={control}
+              name="name"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Input
+                  label="Name"
+                  placeholder="Name"
+                  onBlur={onBlur} // notify when input is touched
+                  onChange={onChange} // send value to hook form
+                  error={errors.name ? true : false}
+                />
+              )}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Controller
+              control={control}
+              name="description"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.TextArea
+                  label="About"
+                  rows="5"
+                  placeholder="More about the seed..."
+                  onBlur={onBlur} // notify when input is touched
+                  onChange={onChange} // send value to hook form
+                  error={errors.description ? true : false}
+                />
+              )}
+            />
+          </Form.Field>
+          <FormGroup widths="equal">
+            <Controller
+              control={control}
+              name="type"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Dropdown
+                  name="type"
+                  label="Type"
+                  placeholder="Type"
+                  selection
+                  fluid
+                  options={seed_type}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.type ? true : false}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="season"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Dropdown
+                  label="Season"
+                  name="season"
+                  placeholder="Season"
+                  selection
+                  fluid
+                  options={seasons}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                  }}
+                  error={errors.season ? true : false}
+                />
+              )}
+            />
+          </FormGroup>
+          <FormGroup widths="equal">
+            <Controller
+              control={control}
+              name="sun"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Dropdown
+                  label="Sun exposition"
+                  placeholder="Sun"
+                  selection
+                  fluid
+                  options={sun}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.type ? true : false}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="frost"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Dropdown
+                  label="Frost tolerance"
+                  placeholder="Frost"
+                  selection
+                  fluid
+                  options={frost}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.type ? true : false}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="water"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Dropdown
+                  label="Watering"
+                  placeholder="Watering"
+                  selection
+                  fluid
+                  options={water}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.type ? true : false}
+                />
+              )}
+            />
+          </FormGroup>
+          <Form.Field>
+            <label>Companions</label>
+            <Controller
+              control={control}
+              name="companions"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Dropdown
+                  placeholder="Companions"
+                  multiple
+                  selection
+                  search
+                  options={plantsOptions}
+                />
+              )}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Competitors</label>
+            <Controller
+              control={control}
+              name="competitors"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Dropdown
+                  placeholder="Competitors"
+                  multiple
+                  selection
+                  search
+                  options={plantsOptions}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.type ? true : false}
+                />
+              )}
+            />
+          </Form.Field>
+        </Grid.Column>
+        {/*  */}
+        <Grid.Column mobile={16} tablet={4} computer={5}>
+          <Form.Field>
+            <label>Seeding</label>
+            <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="name"
-                render={({
-                  field: { onChange, onBlur, value, name, ref },
-                  fieldState: { invalid, isTouched, isDirty, error },
-                  formState,
-                }) => (
-                  <Form.Input
-                    label="Name"
-                    placeholder="Name"
-                    onBlur={onBlur} // notify when input is touched
-                    onChange={onChange} // send value to hook form
-                    error={errors.name ? true : false}
-                  />
-                )}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Controller
-                control={control}
-                name="description"
-                render={({
-                  field: { onChange, onBlur, value, name, ref },
-                  fieldState: { invalid, isTouched, isDirty, error },
-                  formState,
-                }) => (
-                  <Form.TextArea
-                    label="About"
-                    rows="5"
-                    placeholder="More about the seed..."
-                    onBlur={onBlur} // notify when input is touched
-                    onChange={onChange} // send value to hook form
-                    error={errors.description ? true : false}
-                  />
-                )}
-              />
-            </Form.Field>
-            <FormGroup>
-              <Controller
-                control={control}
-                name="species"
+                name="seeding.start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
                   <Form.Dropdown
-                    name="species"
-                    label="Species"
-                    placeholder="Species"
+                    deburr
+                    fluid
+                    options={months}
+                    placeholder="Start"
                     search
                     selection
-                    fluid
-                    options={plantsOptions}
-                    onChange={async (e, { name, value }) => {
-                      setValue(name, value);
-                      onChange(value);
-                    }}
-                    error={errors.species ? true : false}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="species"
-                render={({
-                  field: { onChange, onBlur, value, name, ref },
-                  fieldState: { invalid, isTouched, isDirty, error },
-                  formState,
-                }) => (
-                  <Form.Dropdown
-                    name="type"
-                    label="Type"
-                    placeholder="Type"
-                    selection
-                    fluid
-                    options={seed_type}
                     onChange={async (e, { name, value }) => {
                       setValue(name, value);
                       onChange(value);
@@ -219,188 +399,192 @@ export function SeedForm() {
                   />
                 )}
               />
-              <Form.Dropdown
-                label="Season"
-                name="season"
-                placeholder="Season"
-                selection
-                fluid
-                options={seasons}
-                onChange={async (e, { name, value }) => {
-                  setValue(name, value);
-                }}
-                error={errors.season ? true : false}
+              <Controller
+                control={control}
+                name="seeding.start"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    fluid
+                    options={months}
+                    placeholder="Stop"
+                    search
+                    selection
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.type ? true : false}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="seeding.duration"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Input
+                    id="seeding.germination"
+                    placeholder="Duration"
+                    onChange={onChange}
+                  />
+                )}
               />
             </FormGroup>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={8}>
-            <FormGroup>
-              <Form.Dropdown
-                label="Sun exposition"
-                placeholder="Sun"
-                selection
-                fluid
-                options={sun}
+          </Form.Field>
+          <Form.Field>
+            <label>Transplanting</label>
+            <FormGroup widths="equal">
+              <Controller
+                control={control}
+                name="transplanting.start"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    fluid
+                    options={months}
+                    placeholder="Start"
+                    search
+                    selection
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.type ? true : false}
+                  />
+                )}
               />
-              <Form.Dropdown
-                label="Frost tolerance"
-                placeholder="Frost"
-                selection
-                fluid
-                options={frost}
+              <Controller
+                control={control}
+                name="transplanting.start"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    fluid
+                    options={months}
+                    placeholder="Stop"
+                    search
+                    selection
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.type ? true : false}
+                  />
+                )}
               />
-              <Form.Dropdown
-                label="Watering"
-                placeholder="Watering"
-                selection
-                fluid
-                options={water}
+              <Controller
+                control={control}
+                name="transplanting.duration"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Input
+                    id="transplanting.germination"
+                    placeholder="Duration"
+                    onChange={onChange}
+                  />
+                )}
               />
             </FormGroup>
-            <Form.Field>
-              <label>Companions</label>
-              <Dropdown
-                placeholder="Companions"
-                multiple
-                selection
+          </Form.Field>
+          <Form.Field>
+            <label>Planting</label>
+            <FormGroup widths="equal">
+              <Form.Dropdown
+                deburr
+                fluid
+                options={months}
+                placeholder="Start"
                 search
-                options={plantsOptions}
+                selection
+              />
+              <Form.Dropdown
+                deburr
+                fluid
+                options={months}
+                placeholder="Stop"
+                search
+                selection
+              />
+              <Form.Input id="planting.maturity" placeholder="Duration" />
+            </FormGroup>
+          </Form.Field>
+          <Form.Field>
+            <label>Harvesting</label>
+            <FormGroup widths="equal">
+              <Form.Dropdown
+                deburr
+                options={months}
+                placeholder="Start"
+                search
+                selection
+                fluid
+              />
+              <Form.Dropdown
+                deburr
+                options={months}
+                placeholder="Stop"
+                search
+                selection
+                fluid
+              />
+              <Form.Input id="harvesting.duration" placeholder="Duration" />
+            </FormGroup>
+          </Form.Field>
+          {/*  */}
+          <Form.Group widths="equal">
+            <Form.Field>
+              <label>Spacing</label>
+              <Input
+                id="spacing"
+                label={{ basic: true, content: "cm" }}
+                labelPosition="right"
+                placeholder="spacing"
+                fluid
               />
             </Form.Field>
             <Form.Field>
-              <label>Competitors</label>
-              <Dropdown
-                placeholder="Competitors"
-                multiple
-                selection
-                search
-                options={plantsOptions}
+              <label>Rows</label>
+              <Input
+                id="rows"
+                label={{ basic: true, content: "cm" }}
+                labelPosition="right"
+                placeholder="Rows"
+                fluid
               />
             </Form.Field>
-
-            <Form.Field>
-              <label>Seeding</label>
-              <FormGroup>
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Start"'
-                  search
-                  selection
-                />
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Stop"'
-                  search
-                  selection
-                />
-                <Form.Input id="seeding.germination" placeholder="Duration" />
-              </FormGroup>
-            </Form.Field>
-            <Form.Field>
-              <label>Transplanting</label>
-              <FormGroup>
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Start"'
-                  search
-                  selection
-                />
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Stop"'
-                  search
-                  selection
-                />
-                <Form.Input id="planting.maturity" placeholder="Duration" />
-              </FormGroup>
-            </Form.Field>
-            <Form.Field>
-              <label>Planting</label>
-              <FormGroup widths="equal">
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Start"'
-                  search
-                  selection
-                />
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Stop"'
-                  search
-                  selection
-                />
-                <Form.Input id="planting.maturity" placeholder="Duration" />
-              </FormGroup>
-            </Form.Field>
-            <Form.Field>
-              <label>Harvesting</label>
-              <FormGroup>
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Start"'
-                  search
-                  selection
-                />
-                <Form.Dropdown
-                  deburr
-                  fluid
-                  options={months}
-                  placeholder='Stop"'
-                  search
-                  selection
-                />
-                <Form.Input id="harvesting.duration" placeholder="Duration" />
-              </FormGroup>
-            </Form.Field>
-            <Form.Group widths="equal">
-              <Form.Field>
-                <label>Spacing</label>
-                <Input
-                  id="spacing"
-                  fluid
-                  label={{ basic: true, content: "cm" }}
-                  labelPosition="right"
-                  placeholder="spacing"
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Rows</label>
-                <Input
-                  id="rows"
-                  fluid
-                  label={{ basic: true, content: "cm" }}
-                  labelPosition="right"
-                  placeholder="Rows"
-                />
-              </Form.Field>
-            </Form.Group>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column mobile={16} tablet={8} computer={16}>
-            <ButtonGroup floated="right">
-              <Button onClick={() => cancel()}>Cancel</Button>
-              <Button type="submit" primary>
-                Save
-              </Button>
-            </ButtonGroup>
-          </Grid.Column>
-        </Grid.Row>
+          </Form.Group>
+        </Grid.Column>
       </Grid>
+      {/*  */}
+      <Grid.Row>
+        <Grid.Column mobile={16} tablet={8} computer={16}>
+          <ButtonGroup floated="right">
+            <Button onClick={() => cancel()}>Cancel</Button>
+            <Button type="submit" primary>
+              Save
+            </Button>
+          </ButtonGroup>
+        </Grid.Column>
+      </Grid.Row>
     </Form>
   );
 }
