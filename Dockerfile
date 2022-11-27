@@ -12,7 +12,14 @@ RUN npm run build
 # production environment
 FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
-# new
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+# Add bash
+RUN apk add --no-cache bash
+# Copy .env file and shell script to container
+WORKDIR /usr/share/nginx/html
+COPY ./environment.sh .
+COPY .env .
+RUN chmod +x environment.sh
+#
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
