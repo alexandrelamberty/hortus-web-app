@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Container, Modal } from "semantic-ui-react";
-import ActionControlls, { View } from "src/components/ActionControlls";
+import ActionControlls, { View } from "src/components/menu/ActionControlls";
 import { SeedForm } from "src/components/form/SeedForm";
 import SeedGrid from "src/components/grid/SeedGrid";
 import SeedList from "src/components/list/SeedList";
 import SeedTable from "src/components/table/SeedTable";
-import { SeedContext } from "src/providers/SeedProvider";
+import { SeedContext } from "src/contexts/SeedProvider";
 
 export function SeedRoute() {
   const { seeds, formOpen, setFormOpen } = React.useContext(SeedContext);
@@ -77,19 +77,6 @@ export function SeedRoute() {
         size="large"
       >
         <Modal.Header>New Seed</Modal.Header>
-        <Modal.Content image>
-          <Modal.Description>
-            <SeedForm />
-          </Modal.Description>
-        </Modal.Content>
-      </Modal>
-
-      <Modal
-        open={viewOpen}
-        onOpen={() => setViewOpen(true)}
-        onClose={() => setViewOpen(false)}
-      >
-        <Modal.Header>View Seed</Modal.Header>
         <Modal.Content image>
           <Modal.Description>
             <SeedForm />

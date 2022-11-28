@@ -3,7 +3,7 @@ import { Checkbox, Table } from "semantic-ui-react";
 import { CultureLocation } from "src/enums/CultureLocation";
 import { PhaseStatus } from "src/enums/PhaseStatus";
 import { Culture } from "src/interfaces/Culture";
-import { CultureContext } from "src/providers/CultureProvider";
+import { CultureContext } from "src/contexts/CultureProvider";
 import PhaseCell from "./PhaseCell";
 
 // FIXME:

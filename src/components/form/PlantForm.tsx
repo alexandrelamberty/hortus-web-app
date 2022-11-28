@@ -10,9 +10,8 @@ import {
   Icon,
   Segment,
 } from "semantic-ui-react";
-import { PlantDTO } from "src/interfaces/PlantDTO";
+import { PlantContext } from "src/contexts/PlantContextProvider";
 import { PlantFormData } from "src/interfaces/PlantFormData";
-import { PlantContext } from "src/providers/PlantContextProvider";
 import * as Yup from "yup";
 
 export const PlantForm = () => {
@@ -47,7 +46,7 @@ export const PlantForm = () => {
 
   const onSubmit = (form: PlantFormData) => {
     console.log("submit", form);
-    // Encoding form data to multipart/form-data
+    // content types to multipart/form-data
     const fd = new FormData();
     fd.append("name", name);
     fd.append("binomial", binomial);
@@ -59,22 +58,8 @@ export const PlantForm = () => {
     fd.append("forma", form.forma);
     fd.append("image", form.image[0]);
 
-    // let dto: PlantDTO = {
-    //   name: name,
-    //   binomial: binomial,
-    //   family: data.family,
-    //   genus: data.genus,
-    //   species: data.species,
-    //   variety: data.variety,
-    //   subspecies: data.subspecies,
-    //   forma: data.forma,
-    //   image: data.image[0],
-    // };
-
     // Call context
     createPlant(fd, onCreated);
-    // Call useForm reset
-    reset();
   };
 
   const cancel = () => {
@@ -113,12 +98,7 @@ export const PlantForm = () => {
             {/* Family */}
             <Form.Field>
               <label>Family</label>
-              <input
-                id="family"
-                placeholder="Family"
-                {...register("family")}
-                required={false}
-              />
+              <input id="family" placeholder="Family" {...register("family")} />
             </Form.Field>
             {/* Genus */}
             <Form.Field>

@@ -16,12 +16,6 @@
 # misc
 .DS_Store
 
-# environment variables
-!.env.sample
-.env
-*.env
-.env*
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

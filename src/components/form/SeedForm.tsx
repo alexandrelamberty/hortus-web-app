@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { equal } from "assert";
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
@@ -14,71 +13,46 @@ import {
   Input,
   Segment,
 } from "semantic-ui-react";
+import { PlantContext } from "src/contexts/PlantContextProvider";
+import { SeedContext } from "src/contexts/SeedProvider";
 import { Frost } from "src/enums/Frost";
 import { Season } from "src/enums/Season";
 import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
 import { useListEnum } from "src/hooks/useListEnum";
-import { Seed } from "src/interfaces/Seed";
+import { SeedDTO } from "src/interfaces/SeedDTO";
 import { SeedFormData } from "src/interfaces/SeedFormData";
-import { PlantContext } from "src/providers/PlantContextProvider";
-import { SeedContext } from "src/providers/SeedProvider";
 import * as Yup from "yup";
 
+const months = [
+  { key: "1", value: "1", text: "January" },
+  { key: "2", value: "2", text: "February" },
+  { key: "3", value: "3", text: "March" },
+  { key: "4", value: "4", text: "April" },
+  { key: "5", value: "5", text: "May" },
+  { key: "6", value: "6", text: "June" },
+  { key: "7", value: "7", text: "July" },
+  { key: "8", value: "8", text: "August" },
+  { key: "9", value: "9", text: "September" },
+  { key: "10", value: "10", text: "October" },
+  { key: "11", value: "11", text: "November" },
+  { key: "12", value: "12", text: "December" },
+];
+
 /**
- *
+ * SeedForm
  * @returns
  */
 export function SeedForm(): ReactElement {
+  // Plant context used for the Seed species, companions and competitors
   const { plants, fetchPlants } = React.useContext(PlantContext);
-  const { seeds, fetchSeeds, createSeed, setFormOpen } =
-    React.useContext(SeedContext);
-  const [formData, setFormData] = React.useState<Seed | {}>();
 
-  // Schema validation
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    description: Yup.string().required("Description is required"),
-    species: Yup.string().required("Species is required"),
-    type: Yup.string().required("Type is required"),
-  });
+  // Seed context
+  const { fetchSeeds, createSeed, setFormOpen } = React.useContext(SeedContext);
 
-  // Deconstruct useForm
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<SeedFormData>({
-    mode: "onChange",
-    resolver: yupResolver(validationSchema),
-  });
-
-  useEffect(() => {
-    fetchSeeds();
-  }, [fetchSeeds]);
-
-  useEffect(() => {
-    fetchPlants();
-  }, [fetchPlants]);
-
-  const months = [
-    { key: "1", value: "1", text: "January" },
-    { key: "2", value: "2", text: "February" },
-    { key: "3", value: "3", text: "March" },
-    { key: "4", value: "4", text: "April" },
-    { key: "5", value: "5", text: "May" },
-    { key: "6", value: "6", text: "June" },
-    { key: "7", value: "7", text: "July" },
-    { key: "8", value: "8", text: "August" },
-    { key: "9", value: "9", text: "September" },
-    { key: "10", value: "10", text: "October" },
-    { key: "11", value: "11", text: "November" },
-    { key: "12", value: "12", text: "December" },
-  ];
+  // Internal state
+  const [picture, setPicture] = useState("");
 
   // Remapping collection for dropdown
   const plantsOptions = plants.map((sd) => ({
@@ -94,29 +68,46 @@ export function SeedForm(): ReactElement {
   const sun = useListEnum(Sun);
   const seed_type = useListEnum(Type);
 
-  // SeedFormData ?
-  const onSubmit = (data: any) => {
+  // Schema validation
+  const validationSchema = Yup.object().shape({
+    species: Yup.string().required("Species is required"),
+    name: Yup.string().required("Name is required"),
+    description: Yup.string().required("Description is required"),
+    // type: Yup.string().required("Type is required"),
+    // planting: Yup.string().required("Type is required"),
+  });
+
+  //
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<SeedFormData>({
+    mode: "onTouched",
+    resolver: yupResolver(validationSchema),
+  });
+
+  useEffect(() => {
+    console.log("SeedForm");
+    fetchPlants();
+  }, [fetchPlants]);
+
+  const onSubmit = (data: SeedFormData) => {
     console.log("onSubmit", data);
-    let fd = new FormData();
-    fd.append("image", data.image[0]);
-    fd.append("name", data.name);
-    fd.append("family", data.family);
-    fd.append("genus", data.genus);
-    fd.append("species", data.species);
-    fd.append("subspecies", data.subspecies);
-    fd.append("variant", data.variant);
-
-    //
-    //createSeed(fd, onCreated);
-  };
-
-  const cancel = () => {
-    setFormOpen(false);
-    reset();
+    createSeed(data, onCreated);
   };
 
   // Callback
   const onCreated = () => {
+    // We need to post the form
+    setFormOpen(false);
+    reset();
+  };
+
+  const cancel = () => {
     setFormOpen(false);
     reset();
   };
@@ -127,7 +118,14 @@ export function SeedForm(): ReactElement {
         {/*  */}
         <Grid.Column mobile={16} tablet={4} computer={5}>
           {/* Picture */}
-          <Segment placeholder style={{ height: "360px" }}>
+          <Segment
+            placeholder
+            style={{
+              height: "360px",
+              backgroundImage: `url(${"http://localhost:3333/static/cb38583d8e35a7caab3f29402141197a"})`,
+              backgroundSize: "cover",
+            }}
+          >
             <Header icon>
               <Icon name="image" />
               <Header.Content>
@@ -140,6 +138,10 @@ export function SeedForm(): ReactElement {
             <Button as="label" htmlFor="image" type="button" primary>
               Choose a File
             </Button>
+            <Form.Field>
+              <input id="image" type="file" {...register("image")} hidden />
+              {picture && <img src={picture} alt={picture} />}
+            </Form.Field>
           </Segment>
 
           <Form.Field>
@@ -251,6 +253,7 @@ export function SeedForm(): ReactElement {
                   options={seasons}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
+                    onChange(value);
                   }}
                   error={errors.season ? true : false}
                 />
@@ -276,7 +279,7 @@ export function SeedForm(): ReactElement {
                     setValue(name, value);
                     onChange(value);
                   }}
-                  error={errors.type ? true : false}
+                  error={errors.sun ? true : false}
                 />
               )}
             />
@@ -298,7 +301,7 @@ export function SeedForm(): ReactElement {
                     setValue(name, value);
                     onChange(value);
                   }}
-                  error={errors.type ? true : false}
+                  error={errors.frost ? true : false}
                 />
               )}
             />
@@ -320,7 +323,7 @@ export function SeedForm(): ReactElement {
                     setValue(name, value);
                     onChange(value);
                   }}
-                  error={errors.type ? true : false}
+                  error={errors.water ? true : false}
                 />
               )}
             />
@@ -340,7 +343,13 @@ export function SeedForm(): ReactElement {
                   multiple
                   selection
                   search
+                  fluid
                   options={plantsOptions}
+                  onChange={async (e, { name, value }) => {
+                    setValue(name, value);
+                    onChange(value);
+                  }}
+                  error={errors.companions ? true : false}
                 />
               )}
             />
@@ -361,11 +370,12 @@ export function SeedForm(): ReactElement {
                   selection
                   search
                   options={plantsOptions}
+                  wrapSelection={true}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
                     onChange(value);
                   }}
-                  error={errors.type ? true : false}
+                  error={errors.competitors ? true : false}
                 />
               )}
             />
@@ -395,13 +405,13 @@ export function SeedForm(): ReactElement {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.type ? true : false}
+                    error={errors.seeding ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="seeding.start"
+                name="seeding.end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -418,7 +428,7 @@ export function SeedForm(): ReactElement {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.type ? true : false}
+                    error={errors.seeding ? true : false}
                   />
                 )}
               />
@@ -461,13 +471,13 @@ export function SeedForm(): ReactElement {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.type ? true : false}
+                    error={errors.transplanting ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="transplanting.start"
+                name="transplanting.end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -484,7 +494,7 @@ export function SeedForm(): ReactElement {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.type ? true : false}
+                    error={errors.transplanting ? true : false}
                   />
                 )}
               />
@@ -508,67 +518,168 @@ export function SeedForm(): ReactElement {
           <Form.Field>
             <label>Planting</label>
             <FormGroup widths="equal">
-              <Form.Dropdown
-                deburr
-                fluid
-                options={months}
-                placeholder="Start"
-                search
-                selection
+              <Controller
+                control={control}
+                name="planting.start"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    fluid
+                    options={months}
+                    placeholder="Start"
+                    search
+                    selection
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.planting ? true : false}
+                  />
+                )}
               />
-              <Form.Dropdown
-                deburr
-                fluid
-                options={months}
-                placeholder="Stop"
-                search
-                selection
+              <Controller
+                control={control}
+                name="planting.end"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    fluid
+                    options={months}
+                    placeholder="Stop"
+                    search
+                    selection
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.planting ? true : false}
+                  />
+                )}
               />
-              <Form.Input id="planting.maturity" placeholder="Duration" />
+              <Controller
+                control={control}
+                name="transplanting.duration"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Input
+                    id="planting.maturity"
+                    placeholder="Duration"
+                    onChange={onChange}
+                    error={errors.planting ? true : false}
+                  />
+                )}
+              />
             </FormGroup>
           </Form.Field>
           <Form.Field>
             <label>Harvesting</label>
             <FormGroup widths="equal">
-              <Form.Dropdown
-                deburr
-                options={months}
-                placeholder="Start"
-                search
-                selection
-                fluid
+              <Controller
+                control={control}
+                name="planting.start"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    options={months}
+                    placeholder="Start"
+                    search
+                    selection
+                    fluid
+                  />
+                )}
               />
-              <Form.Dropdown
-                deburr
-                options={months}
-                placeholder="Stop"
-                search
-                selection
-                fluid
+              <Controller
+                control={control}
+                name="planting.end"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Dropdown
+                    deburr
+                    options={months}
+                    placeholder="Stop"
+                    search
+                    selection
+                    fluid
+                  />
+                )}
               />
-              <Form.Input id="harvesting.duration" placeholder="Duration" />
+              <Controller
+                control={control}
+                name="planting.duration"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Form.Input
+                    id="planting.duration"
+                    placeholder="Duration"
+                    onChange={onChange}
+                  />
+                )}
+              />
             </FormGroup>
           </Form.Field>
           {/*  */}
           <Form.Group widths="equal">
             <Form.Field>
               <label>Spacing</label>
-              <Input
-                id="spacing"
-                label={{ basic: true, content: "cm" }}
-                labelPosition="right"
-                placeholder="spacing"
-                fluid
+              <Controller
+                control={control}
+                name="spacing"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Input
+                    id="spacing"
+                    label={{ basic: true, content: "cm" }}
+                    labelPosition="right"
+                    placeholder="spacing"
+                    fluid
+                    onChange={onChange}
+                  />
+                )}
               />
             </Form.Field>
             <Form.Field>
               <label>Rows</label>
-              <Input
-                id="rows"
-                label={{ basic: true, content: "cm" }}
-                labelPosition="right"
-                placeholder="Rows"
-                fluid
+              <Controller
+                control={control}
+                name="rows"
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <Input
+                    id="rows"
+                    label={{ basic: true, content: "cm" }}
+                    labelPosition="right"
+                    placeholder="Rows"
+                    fluid
+                    onChange={onChange}
+                  />
+                )}
               />
             </Form.Field>
           </Form.Group>

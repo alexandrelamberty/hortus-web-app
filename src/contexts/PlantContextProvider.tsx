@@ -19,29 +19,25 @@ export interface PlantContextType {
   fetchPlants: () => void;
   createPlant: (plant: FormData, callback: VoidFunction) => void;
   updatePlant: (plant: PlantFormData, callback: VoidFunction) => void;
-  deletePlant: (id: number) => void;
-  deletePlants: (ids: number[]) => void;
+  deletePlant: (id: number, callback?: VoidFunction) => void;
+  deletePlants: (ids: number[], callback?: VoidFunction) => void;
 }
 
 export const PlantContext = React.createContext<PlantContextType>(null!);
-
-const URI = getConfig("REACT_APP_API_URL") + "/plants";
-
-console.log(URI);
 
 export function PlantContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  let [count, setCount] = React.useState<number>(0);
-  let [plants, setPlants] = React.useState<Plant[]>([]);
-  let [selected, setSelected] = React.useState<number[]>([]);
+  const URI = getConfig("REACT_APP_API_URL") + "/plants";
+  const [count, setCount] = React.useState<number>(0);
+  const [plants, setPlants] = React.useState<Plant[]>([]);
+  const [selected, setSelected] = React.useState<number[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
   const [viewOpen, setViewOpen] = React.useState<boolean>(false);
 
-  // FIXME: Pagination
   const fetchPlants = React.useCallback(() => {
     setIsLoading(true);
     axios
@@ -54,7 +50,7 @@ export function PlantContextProvider({
       .catch(function (error) {
         console.log(error);
       });
-  }, [setPlants]);
+  }, [URI, setPlants]);
 
   const createPlant = React.useCallback(
     (plant: FormData, callback: VoidFunction) => {
@@ -100,32 +96,46 @@ export function PlantContextProvider({
     [setPlants, plants]
   );
 
-  const deletePlant = React.useCallback((id: number) => {
-    setIsLoading(true);
-    axios
-      .post(URI, id)
-      .then(function (response) {
-        //setPlants([...plants].concat(response.data));
-        setIsLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  const deletePlant = React.useCallback(
+    (id: number, callback?: VoidFunction) => {
+      setIsLoading(true);
+      axios
+        .post(URI, id)
+        .then(function (response) {
+          console.log(response);
+          setPlants([...plants].concat(response.data));
+          setIsLoading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    []
+  );
 
-  const deletePlants = React.useCallback((ids) => {
-    setIsLoading(true);
-    console.log(ids);
-    axios
-      .delete(URI + `/${ids}`)
-      .then(function (response) {
-        //setPlants([...plants].concat(response.data));
-        setIsLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  const deletePlants = React.useCallback(
+    (ids, callback?: VoidFunction) => {
+      setIsLoading(true);
+      console.log(ids);
+      axios
+        .delete(URI + `/multiple/${ids.concat()}`)
+        .then(function (response) {
+          console.log("response", response);
+          let ids: [] = response.data;
+          let temp = plants;
+          ids.forEach((id) => {
+            temp = temp.filter((plant) => plant._id !== id);
+          });
+          setPlants(temp);
+          setSelected([]);
+          setIsLoading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    [URI, plants]
+  );
 
   return (
     <PlantContext.Provider

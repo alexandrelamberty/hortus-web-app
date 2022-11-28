@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Container, Modal } from "semantic-ui-react";
-import ActionControlls, { View } from "src/components/ActionControlls";
+import ActionControlls, { View } from "src/components/menu/ActionControlls";
 import { CultureForm } from "src/components/form/CultureForm";
 import CultureTable from "src/components/table/CultureTable";
-import { CultureContext } from "src/providers/CultureProvider";
+import { CultureContext } from "src/contexts/CultureProvider";
+import { PhaseForm } from "src/components/form/PhaseForm";
 
 export function CultureRoute() {
   const { formOpen, setFormOpen, selected, deleteCultures } =
@@ -19,7 +20,7 @@ export function CultureRoute() {
 
   const onDeleteClicked = () => {
     console.log("CultureRoute.onDeleteClicked", selected);
-    deleteCultures();
+    deleteCultures(selected);
   };
 
   // Pagination display
@@ -50,7 +51,7 @@ export function CultureRoute() {
         onDisplayChange={() => onDisplayChange}
         onPageChange={() => onPageChange}
       />
-
+      <PhaseForm />
       <CultureTable />
 
       <Modal

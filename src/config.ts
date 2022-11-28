@@ -3,14 +3,13 @@ interface ExtendedWindow extends Window {
 }
 
 interface Environment {
-  REACT_APP_NODE_ENV: string;
   REACT_APP_API_URL: string;
 }
 
+// TODO: Move to a EnvironmentContext
 export const getConfig = (name: string): string | undefined => {
   // WIndow dom
   const eWindow: ExtendedWindow = window;
-  console.log("GET_CONFIG ---------------");
   console.log("process.env", process.env);
   let env = process.env.NODE_ENV;
   // If we are running with node we return .env file variable

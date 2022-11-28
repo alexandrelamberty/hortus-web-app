@@ -1,6 +1,6 @@
 import React from "react";
 // import { fieldEnhance } from "semantic-ui-redux-form-fields";
-import { compose } from "redux";
+// import { compose } from "redux";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 

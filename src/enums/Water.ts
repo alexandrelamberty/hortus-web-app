@@ -1,6 +1,5 @@
 export enum Water {
-  Once = 'once',
-  Twice = 'twice',
-  Everyday = 'everyday',
+  Once = "once_week",
+  Twice = "twice_week",
+  Everyday = "everyday",
 }
-

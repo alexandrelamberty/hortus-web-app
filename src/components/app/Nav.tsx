@@ -2,7 +2,6 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
 import { Link, useMatch, useNavigate, useResolvedPath } from "react-router-dom";
-import { AuthContext } from "src/providers/AuthProvider";
 
 // @ts-ignore
 function classNames(...classes) {
@@ -10,7 +9,6 @@ function classNames(...classes) {
 }
 
 export function Nav() {
-  let auth = React.useContext(AuthContext);
   let navigate = useNavigate();
 
   const navigation = [
@@ -137,23 +135,6 @@ export function Nav() {
                           >
                             Settings
                           </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="/auth/login"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                            onClick={() => {
-                              console.log("logout");
-                              auth.logout(() => navigate("/"));
-                            }}
-                          >
-                            Sign out
-                          </a>
                         )}
                       </Menu.Item>
                     </Menu.Items>

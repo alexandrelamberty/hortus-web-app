@@ -7,28 +7,24 @@ import { PhaseInfo } from "./PhaseInfo";
 import { Plant } from "./Plant";
 
 /**
- * Seed represent the stored document
+ * Seed
  */
-export interface Seed {
-  _id: number;
-  plant: Plant;
+export interface SeedDTO {
+  plant: string;
   name: string;
   description: string;
   type: Type;
-  harvest: number[];
+  // harvest: number[];
   season: Season;
   sun: Sun;
   frost: Frost;
   water: Water;
-  companions: Plant[];
-  competitors: Plant[];
+  companions: string[];
+  competitors: string[];
   seeding: PhaseInfo;
   transplanting: PhaseInfo;
   planting: PhaseInfo;
   harvesting: PhaseInfo;
   spacing: number;
   rows: number;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

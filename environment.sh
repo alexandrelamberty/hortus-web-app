@@ -4,9 +4,9 @@
 rm -rf ./env-config.js
 touch ./env-config.js
 
-echo "Create environment variable"
+echo "Create environment variables"
 
-# Add assignment
+# Replace environment variable in the the JavaScript Window Object
 echo "window._env_ = {" >> ./env-config.js
 
 # Read each line in .env file

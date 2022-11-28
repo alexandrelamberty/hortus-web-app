@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Container, Modal } from "semantic-ui-react";
-import ActionControlls, { View } from "src/components/ActionControlls";
+import ActionControlls, { View } from "src/components/menu/ActionControlls";
 import { PlantForm } from "src/components/form/PlantForm";
 import PlantGrid from "src/components/grid/PlantGrid";
 import PlantList from "src/components/list/PlantList";
 import PlantTable from "src/components/table/PlantTable";
-import { PlantContext } from "src/providers/PlantContextProvider";
+import { PlantContext } from "src/contexts/PlantContextProvider";
 
 export function PlantRoute() {
   // The plant context
@@ -44,7 +44,11 @@ export function PlantRoute() {
 
   const handleDelete = () => {
     console.log("PlantRoute.delete", selected);
-    deletePlants(selected);
+    deletePlants(selected, handleDeleted);
+  };
+
+  const handleDeleted = () => {
+    console.log("handleDeleted");
   };
 
   // Pagination display

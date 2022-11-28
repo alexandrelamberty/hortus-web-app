@@ -12,8 +12,8 @@ import {
 } from "semantic-ui-react";
 import { Culture } from "src/interfaces/Culture";
 import { Seed } from "src/interfaces/Seed";
-import { CultureContext } from "src/providers/CultureProvider";
-import { SeedContext } from "src/providers/SeedProvider";
+import { CultureContext } from "src/contexts/CultureProvider";
+import { SeedContext } from "src/contexts/SeedProvider";
 import * as Yup from "yup";
 
 type FormProps = {
@@ -74,7 +74,7 @@ export function CultureForm(props: FormProps) {
   const onSubmit = (data: Culture | any) => {
     console.log("onSubmit");
     console.log("formData", formData);
-    createCulture(formData);
+    createCulture(formData, onCreated);
   };
 
   const cancel = () => {
@@ -105,7 +105,7 @@ export function CultureForm(props: FormProps) {
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={8}>
             <p>{seed?.name}</p>
-            <Image src={seed?.picture} />
+            <Image src={seed?.image} />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

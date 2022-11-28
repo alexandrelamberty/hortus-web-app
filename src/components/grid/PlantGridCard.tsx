@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Image, Label } from "semantic-ui-react";
+import { Card, Icon, Image } from "semantic-ui-react";
 import { Plant } from "src/interfaces/Plant";
 
 type CardProps = {
@@ -21,29 +21,11 @@ export default class PlantGridCard extends React.Component<CardProps> {
           <Card.Meta>
             <span className="date">{this.props.plant.family}</span>
           </Card.Meta>
-          <Card.Description>
-            <Label color="red" horizontal>
-              Family
-              <Label.Detail>{this.props.plant.family}</Label.Detail>
-            </Label>
-            <Label color="purple" horizontal>
-              {this.props.plant.genus}
-            </Label>
-            <Label color="red" horizontal as="a">
-              <Icon name="mail" />
-              {this.props.plant.cultivar}
-            </Label>
-            <Label color="red" horizontal as="a">
-              <Icon name="mail" />
-              {this.props.plant.variety}
-            </Label>
-          </Card.Description>
+          <Card.Description></Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <a>
-            <Icon name="user" />
-            {this.props.plant.species}
-          </a>
+          <Icon name="leaf" />
+          {this.props.plant.name}
         </Card.Content>
       </Card>
     );

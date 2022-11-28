@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { Culture } from "src/interfaces/Culture";
-import { CultureContext } from "src/providers/CultureProvider";
+import { CultureContext } from "src/contexts/CultureProvider";
 import { PhaseItem } from "../calendar/PhaseItem";
 
 export default function CultureList() {

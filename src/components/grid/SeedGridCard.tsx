@@ -9,8 +9,12 @@ type CardProps = {
 export default class SeedGridCard extends React.Component<CardProps> {
   render() {
     return (
-      <Card>
-        <Image src={this.props.seed.picture} wrapped ui={false} />
+      <Card key={this.props.seed._id}>
+        <Image
+          src={"http://localhost:3333/static/" + this.props.seed.image}
+          wrapped
+          ui={false}
+        />
         <Card.Content>
           <Card.Header>{this.props.seed.name}</Card.Header>
           <Card.Meta>

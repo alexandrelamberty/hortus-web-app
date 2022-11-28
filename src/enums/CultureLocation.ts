@@ -1,21 +1,21 @@
 export enum CultureLocation {
-  Outside = 'outside',
-  Inside = 'inside',
-  Greenhouse = 'greenhouse',
-  Frame = 'frame',
+  Outside = "outside",
+  Inside = "inside",
+  Greenhouse = "greenhouse",
+  Frame = "frame",
 }
 
 function getLocation(senum: string) {
   switch (senum) {
     case CultureLocation.Outside:
-      return "Outside"
+      return "Outside";
     case CultureLocation.Inside:
-      return "Inside"
+      return "Inside";
     case CultureLocation.Greenhouse:
-      return "Greenhouse"
+      return "Greenhouse";
     case CultureLocation.Frame:
-      return "Frame"
+      return "Frame";
     default:
-      return CultureLocation.Outside
+      return CultureLocation.Outside;
   }
 }

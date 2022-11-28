@@ -6,7 +6,6 @@ import { SensorHumidityWidget } from "src/components/widgets/SensorHumidityWidge
 import { SensorTemperatureWidget } from "src/components/widgets/SensorTemperatureWidget";
 import { TransplantingWidget } from "src/components/widgets/TransplantingWidget";
 import { WeatherWidget } from "src/components/widgets/WeatherWidget";
-import { TestGroup } from "src/TestGroup";
 
 export function DashboardRoute() {
   return (

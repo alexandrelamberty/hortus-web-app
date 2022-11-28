@@ -1,5 +1,5 @@
 /**
- *
+ * PlantFormData
  */
 export interface PlantFormData {
   name: string;

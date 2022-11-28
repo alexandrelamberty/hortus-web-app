@@ -3,7 +3,6 @@ import * as React from "react";
 import { getConfig } from "src/config";
 import { Culture } from "src/interfaces/Culture";
 import { CultureFormData } from "src/interfaces/CultureFormData";
-import { isConstructorDeclaration } from "typescript";
 
 export interface CultureContextType {
   isLoading: boolean;
@@ -14,10 +13,10 @@ export interface CultureContextType {
   selected: number[];
   setSelected: any;
   fetchCultures: () => void;
-  createCulture: (data: any) => void;
+  createCulture: (data: any, callback: VoidFunction) => void;
   updateCulture: (culture: CultureFormData, callback: VoidFunction) => void;
-  deleteCulture: (id: number) => void;
-  deleteCultures: () => void;
+  deleteCulture: (id: number, callback: VoidFunction) => void;
+  deleteCultures: (ids: number[]) => void;
 }
 
 export const CultureContext = React.createContext<CultureContextType>(null!);
@@ -27,7 +26,6 @@ const URI = getConfig("REACT_APP_API_URL");
 export function CultureProvider({ children }: { children: React.ReactNode }) {
   let [count, setCount] = React.useState<number>(0);
   let [cultures, setCultures] = React.useState<Culture[]>([]);
-  let [culture, setCulture] = React.useState<any>(null);
   let [selected, setSelected] = React.useState<number[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
@@ -48,14 +46,16 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
   }, [setCultures]);
 
   const createCulture = React.useCallback(
-    (newCulture: number) => {
+    (newCulture: CultureFormData, callback: VoidFunction) => {
       console.log("createCulture", newCulture);
       setIsLoading(true);
       axios
         .post(URI + "/cultures", newCulture)
         .then(function (response) {
+          console.log("response", response);
           setCultures([...cultures].concat(response.data));
           setIsLoading(false);
+          callback();
         })
         .catch(function (error) {
           console.log(error);
@@ -109,24 +109,31 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
     [setCultures, cultures]
   );
 
-  const deleteCultures = React.useCallback(() => {
-    setIsLoading(true);
-    axios
-      .delete(URI + `/cultures/${selected}`)
-      .then(function (response) {
-        console.log(response.data);
-        setIsLoading(false);
-        //setCultures([...cultures].concat(response.data));
-        //callback();
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [setCultures, cultures]);
-
+  const deleteCultures = React.useCallback(
+    (ids: number[]) => {
+      console.log("ids", ids);
+      console.log("selected", selected);
+      setIsLoading(true);
+      axios
+        .delete(URI + `/cultures/multiple/${ids.concat()}`)
+        .then(function (response) {
+          console.log("response", response);
+          let ids: [] = response.data;
+          let temp = cultures;
+          ids.forEach((id) => {
+            temp = temp.filter((culture) => culture._id !== id);
+          });
+          setCultures(temp);
+          setSelected([]);
+          setFormOpen(false);
+          setIsLoading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    [selected]
+  );
   return (
     <CultureContext.Provider
       value={{

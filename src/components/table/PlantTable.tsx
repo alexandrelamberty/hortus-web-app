@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
 import { Plant } from "src/interfaces/Plant";
-import { PlantContext } from "src/providers/PlantContextProvider";
+import { PlantContext } from "src/contexts/PlantContextProvider";
 import { idText } from "typescript";
 
 interface PlantTableProps {
@@ -47,7 +47,6 @@ export default function PlantTable({ plants }: PlantTableProps) {
 
   // Return true if a plant
   const isSelected = (id: number): boolean => {
-    console.log("isSelected", id);
     return selected.includes(id);
   };
 

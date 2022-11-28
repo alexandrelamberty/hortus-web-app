@@ -1,6 +1,6 @@
 import React from "react";
 import { Seed } from "src/interfaces/Seed";
-import { SeedContext } from "src/providers/SeedProvider";
+import { SeedContext } from "src/contexts/SeedProvider";
 
 export function SeedingWidget() {
   const { seeds } = React.useContext(SeedContext);

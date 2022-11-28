@@ -1,57 +1,57 @@
-import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic"
+import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Represent the state of a Phase
  * @see interfaces/Phase
  */
 export enum PhaseStatus {
-  Pending = 'pending',
-  Started = 'started',
-  Skipped = 'skipped',
-  Stopped = 'stopped',
-  Done = 'done',
+  Pending = "pending",
+  Started = "started",
+  Skipped = "skipped",
+  Stopped = "stopped",
+  Done = "done",
 }
 
 /**
  * ? needed anymore
- * @param senum 
- * @returns 
+ * @param senum
+ * @returns
  */
 export function getStatus(senum: string): string {
   switch (senum) {
     case PhaseStatus.Pending:
-      return "Pending"
+      return "Pending";
     case PhaseStatus.Started:
-      return "Started"
+      return "Started";
     case PhaseStatus.Skipped:
-      return "Skipped"
+      return "Skipped";
     case PhaseStatus.Stopped:
-      return "Stopped"
+      return "Stopped";
     case PhaseStatus.Done:
-      return "Done"
+      return "Done";
     default:
-      return "Pending"
+      return "Pending";
   }
 }
 
 /**
- * Return 
+ * Return
  * @param senum The
  * @returns A SemanticCOLORS
  */
 export function getColor(senum: string): SemanticCOLORS {
   switch (senum) {
     case PhaseStatus.Pending:
-      return "red"
+      return "red";
     case PhaseStatus.Started:
-      return "teal"
+      return "teal";
     case PhaseStatus.Skipped:
-      return "grey"
+      return "grey";
     case PhaseStatus.Stopped:
-      return "yellow"
+      return "yellow";
     case PhaseStatus.Done:
-      return "green"
+      return "green";
     default:
-      return "red"
+      return "red";
   }
 }

@@ -6,10 +6,8 @@ import {
   Icon,
   Input,
   Menu,
-  Pagination,
   PaginationProps,
 } from "semantic-ui-react";
-import PaginationControlls from "./PaginationControlls";
 
 // Selection
 const selects = [
@@ -95,13 +93,13 @@ export default function ActionControlls(props: ControllsProps) {
   };
 
   // Pagination
-  const onPageChange = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    data: PaginationProps
-  ) => {
-    // console.log("Pagination::onPageChange", event, data);
-    props.onPageChange(data.activePage as number);
-  };
+  // const onPageChange = (
+  //   event: React.MouseEvent<HTMLAnchorElement>,
+  //   data: PaginationProps
+  // ) => {
+  //   // console.log("Pagination::onPageChange", event, data);
+  //   props.onPageChange(data.activePage as number);
+  // };
 
   // View
   const onViewChange = (
