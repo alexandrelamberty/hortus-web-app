@@ -7,7 +7,7 @@ import { CultureSoil } from "src/enums/CultureSoil";
 import { useListEnum } from "src/hooks/useListEnum";
 import * as Yup from "yup";
 
-export const PhaseForm = () => {
+export const HarvestingForm = () => {
   const locations = useListEnum(CultureLocation);
   const soils = useListEnum(CultureSoil);
   // Schema validation
@@ -36,58 +36,8 @@ export const PhaseForm = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} size="mini">
-      <Form.Group>
-        <Form.Field width={7}>
-          <Controller
-            control={control}
-            name="location"
-            render={({
-              field: { onChange, onBlur, value, name, ref },
-              fieldState: { invalid, isTouched, isDirty, error },
-              formState,
-            }) => (
-              <Form.Dropdown
-                name="location"
-                label="Location"
-                placeholder="Select"
-                selection
-                fluid
-                options={locations}
-                onChange={async (e, { name, value }) => {
-                  setValue(name, value);
-                  onChange(value);
-                }}
-                error={errors.type ? true : false}
-              />
-            )}
-          />
-        </Form.Field>
-        <Form.Field width={5}>
-          <Controller
-            control={control}
-            name="soil"
-            render={({
-              field: { onChange, onBlur, value, name, ref },
-              fieldState: { invalid, isTouched, isDirty, error },
-              formState,
-            }) => (
-              <Form.Dropdown
-                name="soil"
-                label="Soil"
-                placeholder="Select"
-                selection
-                fluid
-                options={soils}
-                onChange={async (e, { name, value }) => {
-                  setValue(name, value);
-                  onChange(value);
-                }}
-                error={errors.type ? true : false}
-              />
-            )}
-          />
-        </Form.Field>
-        <Form.Field width={6}>
+      <Form.Group widths="equal">
+        <Form.Field>
           <Controller
             control={control}
             name="soil"
@@ -104,6 +54,30 @@ export const PhaseForm = () => {
                 onChange={onChange}
                 error={errors.type ? true : false}
               />
+            )}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Controller
+            control={control}
+            name="soil"
+            render={({
+              field: { onChange, onBlur, value, name, ref },
+              fieldState: { invalid, isTouched, isDirty, error },
+              formState,
+            }) => (
+              <>
+                <label>Quantity</label>
+                <Input
+                  name="soil"
+                  label={{ basic: false, content: "kg" }}
+                  labelPosition="right"
+                  placeholder="ex: 200"
+                  fluid
+                  onChange={onChange}
+                  error={errors.type ? true : false}
+                />
+              </>
             )}
           />
         </Form.Field>

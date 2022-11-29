@@ -16,16 +16,15 @@ export default class SeedGridCard extends React.Component<CardProps> {
           ui={false}
         />
         <Card.Content>
-          <Card.Header>{this.props.seed.name}</Card.Header>
-          <Card.Meta>
-            <span className="date">{this.props.seed.name}</span>
-          </Card.Meta>
+          <Card.Header style={{ fontSize: "1em" }}>
+            {this.props.seed.name}
+          </Card.Header>
         </Card.Content>
         <Card.Content extra>
-          <a>
-            <Icon name="user" />
-            22 Friends
-          </a>
+          <p style={{ fontSize: ".8em" }}>
+            <Icon name="leaf" />
+            {this.props.seed.plant?.binomial}
+          </p>
         </Card.Content>
       </Card>
     );

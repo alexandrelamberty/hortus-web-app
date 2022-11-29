@@ -175,11 +175,11 @@ export const PlantForm = () => {
             <Segment size="mini">
               <Form.Field>
                 <label>Binomial name</label>
-                <p>{binomial}</p>
+                <p>{name}</p>
               </Form.Field>
               <Form.Field>
                 <label>Name</label>
-                <p>{name}</p>
+                <p>{binomial}</p>
               </Form.Field>
             </Segment>
             <Segment placeholder>

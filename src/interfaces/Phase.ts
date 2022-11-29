@@ -8,15 +8,18 @@ export interface Phase {
   type: string;
   // The status of the phase, ie: pending, started...
   status: PhaseStatus;
+  // FIXME: enum
   location?: string;
   // the quantity
   quantity?: number;
-  // the soil type, only for seeding, transplanting and planting
+  // FIXME: the soil type, only for seeding, transplanting and planting
   soil?: string;
   // count day from start
   duration?: number;
   // Set if a Phase is started
-  started?: string;
+  startedAt?: Date;
   // Set if a Phase is stopped
-  ended?: string;
+  endedAt?: Date;
+  // Set if a Phase is stopped
+  skippedAt?: Date;
 }

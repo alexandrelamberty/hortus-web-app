@@ -14,14 +14,13 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { PlantContext } from "src/contexts/PlantContextProvider";
-import { SeedContext } from "src/contexts/SeedProvider";
+import { SeedContext } from "src/contexts/SeedContextProvider";
 import { Frost } from "src/enums/Frost";
 import { Season } from "src/enums/Season";
 import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
 import { useListEnum } from "src/hooks/useListEnum";
-import { SeedDTO } from "src/interfaces/SeedDTO";
 import { SeedFormData } from "src/interfaces/SeedFormData";
 import * as Yup from "yup";
 
@@ -61,7 +60,6 @@ export function SeedForm(): ReactElement {
     value: sd._id,
   }));
 
-  // Todo make a hook
   const seasons = useListEnum(Season);
   const water = useListEnum(Water);
   const frost = useListEnum(Frost);

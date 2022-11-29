@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { Checkbox, Table } from "semantic-ui-react";
+import { Checkbox, Modal, Table } from "semantic-ui-react";
+import { CultureContext } from "src/contexts/CultureContextProvider";
 import { CultureLocation } from "src/enums/CultureLocation";
-import { PhaseStatus } from "src/enums/PhaseStatus";
+import { PhaseActions } from "src/enums/PhaseActions";
 import { Culture } from "src/interfaces/Culture";
-import { CultureContext } from "src/contexts/CultureProvider";
-import PhaseCell from "./PhaseCell";
+import { PhaseForm } from "../form/PhaseForm";
+import PhaseTableCell from "./PhaseTableCell";
 
 // FIXME:
 const locations = Object.entries(CultureLocation).map(([key, value]) => ({
@@ -18,8 +19,14 @@ type CultureTableProps = {};
 export default function CultureTable() {
   const { cultures, fetchCultures, selected, setSelected } =
     useContext(CultureContext);
+
+  // Internal state
   const [activeRowId, setActiveRowId] = useState(0);
   const [mouseDownId, setMouseDownId] = useState(0);
+  const [seedingPhaseModal, setSeedingPhaseModal] = useState(false);
+  const [transplantingPhaseModal, setTransplantingPhaseModal] = useState(false);
+  const [plantingPhaseModal, setPlantingPhaseModal] = useState(false);
+  const [harvestingPhaseModal, setHarvestingPhaseModal] = useState(false);
 
   // FIXME:
   // move me
@@ -27,12 +34,47 @@ export default function CultureTable() {
     fetchCultures();
   }, [fetchCultures]);
 
-  // onPhaseChange
-  const onPhaseChange = (phase: string, culture_id: number) => {
-    console.log("onPhaseChange", phase, culture_id);
-    // ask for soil and number ?
-    // save
-    // update or refetch
+  // onPhaseAction
+  const onPhaseAction = (phase: string, culture_id: number, action: string) => {
+    switch (action) {
+      case PhaseActions.START:
+        console.log("START", phase, culture_id);
+        if (phase === "harvesting") {
+          // call api
+        }
+        // show phase corresponding modal
+        showStartPhaseModal(phase);
+        break;
+      case PhaseActions.SKIP:
+        console.log("SKIP", phase, culture_id);
+        // call api
+        break;
+      case PhaseActions.END:
+        console.log("END", phase, culture_id);
+        // call api
+        break;
+      case PhaseActions.RESET:
+        console.log("RESET", phase, culture_id);
+        break;
+      case PhaseActions.UPDATE:
+        console.log("UPDATE3", phase, culture_id);
+        // call api
+        break;
+    }
+  };
+
+  const showStartPhaseModal = (phase: string) => {
+    switch (phase) {
+      case "seeding":
+        setSeedingPhaseModal(true);
+        break;
+      case "transplanting":
+        setTransplantingPhaseModal(true);
+        break;
+      case "planting":
+        setPlantingPhaseModal(true);
+        break;
+    }
   };
 
   function onRowClicked(id: number) {
@@ -87,60 +129,114 @@ export default function CultureTable() {
         <Table.Cell onClick={() => onRowClicked(culture._id)}>
           {culture.seed?.name}
         </Table.Cell>
-        <PhaseCell
+        <PhaseTableCell
+          type="seeding"
           phase={culture.seeding}
-          onPhaseChange={(status: PhaseStatus) =>
-            onPhaseChange("seeding", culture._id)
+          onPhaseChange={(action) =>
+            onPhaseAction("seeding", culture._id, action)
           }
         />
-        <PhaseCell
+        <PhaseTableCell
+          type="transplanting"
           phase={culture.transplanting}
-          onPhaseChange={() => onPhaseChange("transplanting", culture._id)}
+          onPhaseChange={(action) =>
+            onPhaseAction("transplanting", culture._id, action)
+          }
         />
-        <PhaseCell
+        <PhaseTableCell
+          type="planting"
           phase={culture.planting}
-          onPhaseChange={() => onPhaseChange("planting", culture._id)}
+          onPhaseChange={(action) =>
+            onPhaseAction("planting", culture._id, action)
+          }
         />
-        <PhaseCell
+        <PhaseTableCell
+          type="harvesting"
           phase={culture.harvesting}
-          onPhaseChange={() => onPhaseChange("seeding", culture._id)}
+          onPhaseChange={(action) =>
+            onPhaseAction("harvesting", culture._id, action)
+          }
         />
       </Table.Row>
     );
   };
 
   return (
-    <Table
-      size="small"
-      definition
-      sortable
-      // selectable
-      celled
-      compact
-      structured
-    >
-      <Table.Header fullWidth>
-        <Table.Row>
-          <Table.HeaderCell rowSpan="2" />
-          <Table.HeaderCell
-            rowSpan="2"
-            // onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
-          >
-            Name
-          </Table.HeaderCell>
-          <Table.HeaderCell colSpan={4}>Phases</Table.HeaderCell>
-        </Table.Row>
-        <Table.Row>
-          <Table.HeaderCell>Seeding</Table.HeaderCell>
-          <Table.HeaderCell>Transplanting</Table.HeaderCell>
-          <Table.HeaderCell>Planting</Table.HeaderCell>
-          <Table.HeaderCell>Harvesting</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
+    <>
+      <Table
+        size="small"
+        definition
+        sortable
+        // selectable
+        celled
+        compact
+        structured
+      >
+        <Table.Header fullWidth>
+          <Table.Row>
+            <Table.HeaderCell rowSpan="2" />
+            <Table.HeaderCell
+              rowSpan="2"
+              // onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
+            >
+              Name
+            </Table.HeaderCell>
+            <Table.HeaderCell colSpan={4}>Phases</Table.HeaderCell>
+          </Table.Row>
+          <Table.Row>
+            <Table.HeaderCell>Seeding</Table.HeaderCell>
+            <Table.HeaderCell>Transplanting</Table.HeaderCell>
+            <Table.HeaderCell>Planting</Table.HeaderCell>
+            <Table.HeaderCell>Harvesting</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
 
-      <Table.Body>
-        {cultures.map((culture: Culture) => tableRow(culture))}
-      </Table.Body>
-    </Table>
+        <Table.Body>
+          {cultures.map((culture: Culture) => tableRow(culture))}
+        </Table.Body>
+      </Table>
+      {/* Seeding Phase Details */}
+      <Modal
+        size="mini"
+        open={seedingPhaseModal}
+        onClose={() => setSeedingPhaseModal(false)}
+        onOpen={() => setSeedingPhaseModal(true)}
+      >
+        <Modal.Header>Start Seeding Phase</Modal.Header>
+        <Modal.Content image>
+          <Modal.Description>
+            <PhaseForm />
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
+      {/* Transplanting Phase Details */}
+      <Modal
+        size="mini"
+        open={transplantingPhaseModal}
+        onClose={() => setTransplantingPhaseModal(false)}
+        onOpen={() => setTransplantingPhaseModal(true)}
+      >
+        <Modal.Header>Start Transplanting Phase</Modal.Header>
+        <Modal.Content image>
+          <Modal.Description>
+            <PhaseForm />
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
+      {/* Planting Phase Details */}
+      <Modal
+        size="mini"
+        open={plantingPhaseModal}
+        onClose={() => setPlantingPhaseModal(false)}
+        onOpen={() => setPlantingPhaseModal(true)}
+      >
+        <Modal.Header>Start Planting Phase</Modal.Header>
+        <Modal.Content image>
+          <Modal.Description>
+            <PhaseForm />
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
+    </>
   );
 }

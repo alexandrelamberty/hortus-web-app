@@ -54,7 +54,7 @@ const options = [
 ];
 
 // View
-const views = [
+export const views = [
   {
     key: "list",
     icon: "list",

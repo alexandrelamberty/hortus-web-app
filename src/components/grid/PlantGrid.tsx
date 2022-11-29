@@ -8,7 +8,7 @@ const PlantGrid = () => {
   const { plants } = useContext(PlantContext);
 
   return (
-    <Grid>
+    <Grid inverted>
       {plants.map((plant: Plant) => (
         <Grid.Column key={plant._id} mobile={16} tablet={8} computer={4}>
           <PlantGridCard plant={plant} />

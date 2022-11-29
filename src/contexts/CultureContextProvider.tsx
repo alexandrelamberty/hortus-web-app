@@ -3,6 +3,7 @@ import * as React from "react";
 import { getConfig } from "src/config";
 import { Culture } from "src/interfaces/Culture";
 import { CultureFormData } from "src/interfaces/CultureFormData";
+import { ApplicationContext } from "./ApplicationContextProvider";
 
 export interface CultureContextType {
   isLoading: boolean;
@@ -21,19 +22,24 @@ export interface CultureContextType {
 
 export const CultureContext = React.createContext<CultureContextType>(null!);
 
-const URI = getConfig("REACT_APP_API_URL");
-
-export function CultureProvider({ children }: { children: React.ReactNode }) {
+export function CultureContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { apiUri } = React.useContext(ApplicationContext);
   let [count, setCount] = React.useState<number>(0);
   let [cultures, setCultures] = React.useState<Culture[]>([]);
   let [selected, setSelected] = React.useState<number[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
-
+  React.useEffect(() => {
+    console.log("CultureContextProvider::mount");
+  }, []);
   const fetchCultures = React.useCallback(() => {
     setIsLoading(true);
     axios
-      .get(URI + "/cultures")
+      .get(apiUri + "/cultures")
       .then(function (response) {
         console.log(response);
         setCultures(response.data.results);
@@ -50,7 +56,7 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
       console.log("createCulture", newCulture);
       setIsLoading(true);
       axios
-        .post(URI + "/cultures", newCulture)
+        .post(apiUri + "/cultures", newCulture)
         .then(function (response) {
           console.log("response", response);
           setCultures([...cultures].concat(response.data));
@@ -69,7 +75,7 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
       console.log(culture);
       setIsLoading(true);
       axios
-        .put(URI + "/cultures ", culture, {
+        .put(apiUri + "/cultures ", culture, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -93,7 +99,7 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
     (id: number) => {
       setIsLoading(true);
       axios
-        .delete(URI + "/cultures" + id)
+        .delete(apiUri + "/cultures" + id)
         .then(function (response) {
           setCultures([...cultures].concat(response.data));
           setIsLoading(false);
@@ -115,7 +121,7 @@ export function CultureProvider({ children }: { children: React.ReactNode }) {
       console.log("selected", selected);
       setIsLoading(true);
       axios
-        .delete(URI + `/cultures/multiple/${ids.concat()}`)
+        .delete(apiUri + `/cultures/multiple/${ids.concat()}`)
         .then(function (response) {
           console.log("response", response);
           let ids: [] = response.data;

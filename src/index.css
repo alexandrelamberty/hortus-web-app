@@ -5,6 +5,9 @@
   /* font-family: "ADELIA"; */
   /* src: url("../public/fonts/ADELIA.otf"); */
 }
+html, body, #app, #app>div {
+  height: 100%;
+}
 #root {
   height: 100vh;
 }

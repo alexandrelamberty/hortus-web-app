@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Container, Modal } from "semantic-ui-react";
+import { Button, Container, Icon, Input, Modal } from "semantic-ui-react";
 import ActionControlls, { View } from "src/components/menu/ActionControlls";
 import { CultureForm } from "src/components/form/CultureForm";
 import CultureTable from "src/components/table/CultureTable";
-import { CultureContext } from "src/contexts/CultureProvider";
+import { CultureContext } from "src/contexts/CultureContextProvider";
 import { PhaseForm } from "src/components/form/PhaseForm";
 
 export function CultureRoute() {
@@ -51,20 +51,28 @@ export function CultureRoute() {
         onDisplayChange={() => onDisplayChange}
         onPageChange={() => onPageChange}
       />
-      <PhaseForm />
+
       <CultureTable />
 
       <Modal
+        size="large"
         onClose={() => setFormOpen(false)}
         onOpen={() => setFormOpen(true)}
         open={formOpen}
       >
         <Modal.Header>New Culture</Modal.Header>
         <Modal.Content image>
-          <Modal.Description>
-            <CultureForm />
-          </Modal.Description>
+          <CultureForm />
         </Modal.Content>
+        <Modal.Actions>
+          <Input placeholder="Search" size="mini" />
+          <Button color="red" size="mini">
+            <Icon name="remove" /> Cancel
+          </Button>
+          <Button color="green" size="mini">
+            <Icon name="checkmark" /> Start
+          </Button>
+        </Modal.Actions>
       </Modal>
     </Container>
   );

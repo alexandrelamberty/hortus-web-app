@@ -12,9 +12,10 @@ import {
 } from "semantic-ui-react";
 import { Culture } from "src/interfaces/Culture";
 import { Seed } from "src/interfaces/Seed";
-import { CultureContext } from "src/contexts/CultureProvider";
-import { SeedContext } from "src/contexts/SeedProvider";
+import { CultureContext } from "src/contexts/CultureContextProvider";
+import { SeedContext } from "src/contexts/SeedContextProvider";
 import * as Yup from "yup";
+import SeedGrid from "../grid/SeedGrid";
 
 type FormProps = {
   onSubmitted?: () => void;
@@ -86,39 +87,19 @@ export function CultureForm(props: FormProps) {
     setFormOpen(false);
     reset();
   };
+
+  const divStyle: any = {
+    overflowY: "scroll",
+    overflowX: "hidden",
+    // border: "1px solid red",
+    height: "320px",
+    position: "relative",
+    padding: 5,
+  };
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Grid columns={2}>
-        <Grid.Row>
-          <Grid.Column mobile={16} tablet={8} computer={8}>
-            <Form.Field>
-              <label>Select your seed</label>
-              <Dropdown
-                id="seed"
-                options={seedsOption}
-                search
-                selection
-                placeholder="Search or select a seed"
-                onChange={selectSeed}
-              />
-            </Form.Field>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={8}>
-            <p>{seed?.name}</p>
-            <Image src={seed?.image} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column mobile={16} tablet={8} computer={16}>
-            <ButtonGroup floated="right">
-              <Button onClick={() => cancel()}>Cancel</Button>
-              <Button type="submit" primary>
-                Save
-              </Button>
-            </ButtonGroup>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Form>
+    <div style={divStyle}>
+      <SeedGrid />
+    </div>
   );
 }

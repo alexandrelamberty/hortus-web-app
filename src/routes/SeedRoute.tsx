@@ -5,7 +5,7 @@ import { SeedForm } from "src/components/form/SeedForm";
 import SeedGrid from "src/components/grid/SeedGrid";
 import SeedList from "src/components/list/SeedList";
 import SeedTable from "src/components/table/SeedTable";
-import { SeedContext } from "src/contexts/SeedProvider";
+import { SeedContext } from "src/contexts/SeedContextProvider";
 
 export function SeedRoute() {
   const { seeds, formOpen, setFormOpen } = React.useContext(SeedContext);

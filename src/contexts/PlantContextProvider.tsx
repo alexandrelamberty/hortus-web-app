@@ -3,6 +3,7 @@ import * as React from "react";
 import { getConfig } from "src/config";
 import { Plant } from "src/interfaces/Plant";
 import { PlantFormData } from "src/interfaces/PlantFormData";
+import { ApplicationContext } from "./ApplicationContextProvider";
 
 export interface PlantContextType {
   isLoading: boolean;
@@ -30,7 +31,7 @@ export function PlantContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const URI = getConfig("REACT_APP_API_URL") + "/plants";
+  const { apiUri } = React.useContext(ApplicationContext);
   const [count, setCount] = React.useState<number>(0);
   const [plants, setPlants] = React.useState<Plant[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
@@ -38,10 +39,15 @@ export function PlantContextProvider({
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
   const [viewOpen, setViewOpen] = React.useState<boolean>(false);
 
+  React.useEffect(() => {
+    console.log("PlantContextProvider::mount");
+  }, []);
+
   const fetchPlants = React.useCallback(() => {
+    console.log(apiUri + "/plants");
     setIsLoading(true);
     axios
-      .get(URI)
+      .get(apiUri + "/plants")
       .then(function (response) {
         setPlants(response.data.results);
         setCount(response.data.count);
@@ -50,14 +56,14 @@ export function PlantContextProvider({
       .catch(function (error) {
         console.log(error);
       });
-  }, [URI, setPlants]);
+  }, [setPlants]);
 
   const createPlant = React.useCallback(
     (plant: FormData, callback: VoidFunction) => {
       console.log("PlantContext::createPlant", plant);
       setIsLoading(true);
       axios
-        .post(URI, plant, {
+        .post(apiUri + "plants", plant, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -79,7 +85,7 @@ export function PlantContextProvider({
       console.log(plant);
       setIsLoading(true);
       axios
-        .post(URI, plant, {
+        .post(apiUri, plant, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -100,7 +106,7 @@ export function PlantContextProvider({
     (id: number, callback?: VoidFunction) => {
       setIsLoading(true);
       axios
-        .post(URI, id)
+        .post(apiUri, id)
         .then(function (response) {
           console.log(response);
           setPlants([...plants].concat(response.data));
@@ -118,7 +124,7 @@ export function PlantContextProvider({
       setIsLoading(true);
       console.log(ids);
       axios
-        .delete(URI + `/multiple/${ids.concat()}`)
+        .delete(apiUri + `/multiple/${ids.concat()}`)
         .then(function (response) {
           console.log("response", response);
           let ids: [] = response.data;
@@ -134,7 +140,7 @@ export function PlantContextProvider({
           console.log(error);
         });
     },
-    [URI, plants]
+    [apiUri, plants]
   );
 
   return (

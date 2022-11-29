@@ -2,8 +2,8 @@ import { Phase } from "./Phase";
 import { Seed } from "./Seed";
 
 /**
- * Culture represent the culture of a seed.
- *
+ * Culture represent a culture of a Seed.
+ * @see interfaces/Seed
  */
 export interface Culture {
   _id: number;

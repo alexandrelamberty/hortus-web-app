@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Checkbox, Label, Table } from "semantic-ui-react";
-import { SeedContext } from "src/contexts/SeedProvider";
+import { SeedContext } from "src/contexts/SeedContextProvider";
 
 export default function SeedTable() {
   const { seeds, fetchSeeds, selected, setSelected, setViewOpen } =

@@ -94,7 +94,7 @@ export default function PlantTable({ plants }: PlantTableProps) {
   };
 
   return (
-    <Table size="small" definition sortable selectable celled compact>
+    <Table size="small" definition sortable selectable celled compact inverted>
       <Table.Header fullWidth>
         <Table.Row>
           <Table.HeaderCell />
