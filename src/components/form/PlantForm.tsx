@@ -10,11 +10,42 @@ import {
   Icon,
   Segment,
 } from "semantic-ui-react";
+import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 import { PlantContext } from "src/contexts/PlantContextProvider";
+import { Plant } from "src/interfaces/Plant";
 import { PlantFormData } from "src/interfaces/PlantFormData";
 import * as Yup from "yup";
 
-export const PlantForm = () => {
+interface PlantFormProps {
+  plant?: Plant;
+}
+
+// FIXME: change isEdit:boolean ?
+type FormModeType = "add" | "edit";
+
+/**
+ *
+ * @param param0
+ * @returns
+ * @see Plant
+ */
+export const PlantForm = ({ plant }: PlantFormProps) => {
+  // Contexts
+  const { setViewPlantForm } = React.useContext(ApplicationContext);
+  const { createPlant, updatePlant, setSelected } =
+    React.useContext(PlantContext);
+
+  // Internal state
+  const mode: FormModeType = plant ? "edit" : "add";
+  // Concatenation of all the plant ?specification?
+  const [name, setName] = useState<string>(" ");
+  // Concatenation from the genus and the species form input
+  const [binomial, setBinomial] = useState<string>(" ");
+  // The file selected from the user
+  const [selectedFile, setSelectedFile] = useState();
+  // The picture url
+  const [preview, setPreview] = useState<string>();
+
   // Yup object schema validation
   const validationSchema = Yup.object().shape({
     genus: Yup.string().required("Genus is required"),
@@ -28,24 +59,46 @@ export const PlantForm = () => {
     watch,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isDirty, isSubmitting, touchedFields, submitCount },
   } = useForm<PlantFormData>({
-    mode: "onChange",
+    mode: "onSubmit",
     resolver: yupResolver(validationSchema),
   });
 
   // Used to watch the change on all fields so we can construct the name and
   // binomial name of the Plant
   const watchAllFields = watch();
-  // Internal state
-  const [name, setName] = useState<string>("");
-  const [binomial, setBinomial] = useState<string>("");
-  const [picture, setPicture] = useState("");
-  // FIXME:
-  const { setFormOpen, createPlant } = React.useContext(PlantContext);
 
+  // Handle the form submission
   const onSubmit = (form: PlantFormData) => {
-    console.log("submit", form);
+    console.log("PlantForm.onSubmit", mode, form);
+    if (mode === "add") create(form);
+    else update(form);
+  };
+
+  const create = (form: PlantFormData) => {
+    console.log("PlantFormCreate", form);
+    const fd = new FormData();
+    fd.append("name", name);
+    fd.append("binomial", binomial);
+    fd.append("family", form.family);
+    fd.append("genus", form.genus);
+    fd.append("species", form.species);
+    fd.append("subspecies", form.subspecies);
+    fd.append("variety", form.variety);
+    fd.append("forma", form.forma);
+    fd.append("cultivar", form.cultivar);
+    fd.append("hybrid", form.hybrid);
+    if (selectedFile) fd.append("image", form.image[0]);
+
+    // Call the context function
+    createPlant(fd, onSuccess);
+  };
+
+  // Create a FormData with form values and call the context function to create
+  // a plant
+  const update = (form: PlantFormData): void => {
     // content types to multipart/form-data
     const fd = new FormData();
     fd.append("name", name);
@@ -53,26 +106,88 @@ export const PlantForm = () => {
     fd.append("family", form.family);
     fd.append("genus", form.genus);
     fd.append("species", form.species);
-    fd.append("variety", form.variety);
+    // non-mandatory fields
     fd.append("subspecies", form.subspecies);
+    fd.append("variety", form.variety);
     fd.append("forma", form.forma);
-    fd.append("image", form.image[0]);
-
-    // Call context
-    createPlant(fd, onCreated);
+    fd.append("cultivar", form.cultivar);
+    fd.append("hybrid", form.hybrid);
+    if (selectedFile) fd.append("image", form.image[0]);
+    // FIXME:
+    let id = "";
+    if (plant) id = plant._id;
+    // Call context function
+    updatePlant(id, fd, onSuccess);
   };
 
-  const cancel = () => {
-    setFormOpen(false);
+  // Called when user click on the cancel button of the form
+  const cancel = (): void => {
+    console.log("PlantForm onCancel()");
+    setViewPlantForm(false);
+
     reset();
   };
 
-  const onCreated = () => {
-    setFormOpen(false);
+  /**
+   * Called when the context function is called with success
+   * @see PlantContextProvide
+   */
+  const onSuccess = () => {
+    console.log("PlantForm onSuccess");
+    setViewPlantForm(false);
+    setSelected(undefined);
     reset();
   };
 
-  // Update name and binomial values
+  // Called when a file is selected from the prompted browser GUI window
+  const onSelectFile = (e: any) => {
+    console.log(e);
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+    // update the form, input is not controller
+    setValue("image", e.target.files);
+
+    // set for the preview to update
+    setSelectedFile(e.target.files[0]);
+  };
+
+  // If the form is in `edit` mode and the plant to edit is set
+  // update the form values
+  useEffect(() => {
+    if (mode === "edit" && plant) {
+      console.log("PlantForm mode: edit", plant);
+      setValue("family", plant.family, { shouldDirty: true });
+      setValue("genus", plant.genus);
+      setValue("species", plant.species);
+      if (plant.subspecies) setValue("subspecies", plant.subspecies);
+      if (plant.variety) setValue("variety", plant.variety);
+      if (plant.forma) setValue("forma", plant.forma);
+      if (plant.cultivar) setValue("cultivar", plant.cultivar);
+      if (plant.hybrid) setValue("hybrid", plant.hybrid);
+      if (plant && plant.picture) {
+        let url = "http://localhost:3333/static/" + plant.picture;
+        setPreview(url);
+      }
+    }
+  }, [mode, plant, setValue]);
+
+  // If the user select a file, create a url to preview the file
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  // Update name and binomial value
+
+  // FIXME: too many re renders just for that
+  // FIXME: watch only 2 fiels or input event
   useEffect(() => {
     console.log("watch", watchAllFields);
     let bname = [
@@ -88,7 +203,11 @@ export const PlantForm = () => {
       bname.push("var. " + watchAllFields.variety);
 
     setBinomial(bname.join(" "));
-  }, [watch, watchAllFields]);
+    if (mode === "edit" && plant && plant.picture) {
+      let url = "http://localhost:3333/static/" + plant.picture;
+      setPreview(url);
+    }
+  }, [mode, plant, watch, watchAllFields]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} size="mini" error>
@@ -184,20 +303,32 @@ export const PlantForm = () => {
             </Segment>
             <Segment placeholder>
               <Header icon>
-                <Icon name="image" />
-                <Header.Content>
-                  Add a picture
-                  <Header.Subheader>
-                    Choose a picture from your computer.
-                  </Header.Subheader>
-                </Header.Content>
+                {preview ? (
+                  <img src={preview} alt={preview} />
+                ) : (
+                  <>
+                    <Icon name="image" />
+                    <Header.Content>
+                      Add a picture
+                      <Header.Subheader>
+                        Choose a picture from your computer.
+                      </Header.Subheader>
+                    </Header.Content>
+                  </>
+                )}
               </Header>
               <Button as="label" htmlFor="image" type="button" primary>
                 Choose a File
               </Button>
               <Form.Field>
-                <input id="image" type="file" {...register("image")} hidden />
-                {picture && <img src={picture} alt={picture} />}
+                <input
+                  id="image"
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    onSelectFile(e);
+                  }}
+                />
               </Form.Field>
             </Segment>
           </Grid.Column>

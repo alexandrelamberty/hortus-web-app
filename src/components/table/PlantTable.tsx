@@ -6,10 +6,10 @@ import { idText } from "typescript";
 
 interface PlantTableProps {
   plants: Plant[];
-  // onSetSelected
+  onChange: (plant: Plant) => void;
 }
 
-const exampleReducer = (state: any, action: any) => {
+const sortReducer = (state: any, action: any) => {
   switch (action.type) {
     case "CHANGE_SORT":
       if (state.column === action.column) {
@@ -31,50 +31,56 @@ const exampleReducer = (state: any, action: any) => {
   }
 };
 
-export default function PlantTable({ plants }: PlantTableProps) {
-  const [state, dispatch] = React.useReducer(exampleReducer, {
+export default function PlantTable({ plants, onChange }: PlantTableProps) {
+  // The selected table rows
+  const { selecteds, setSelecteds } = useContext(PlantContext);
+
+  // Sort reducer
+  const [state, dispatch] = React.useReducer(sortReducer, {
     column: null,
     data: plants,
     direction: null,
   });
   const { column, data, direction } = state;
-  // The selected table rows
-  const { selected, setSelected } = useContext(PlantContext);
 
   // Hack event bubbling
-  const [activeRowId, setActiveRowId] = useState(0);
-  const [mouseDownId, setMouseDownId] = useState(0);
+  const [activeRowId, setActiveRowId] = useState("");
+  const [mouseDownId, setMouseDownId] = useState("");
 
   // Return true if a plant
-  const isSelected = (id: number): boolean => {
-    return selected.includes(id);
+  const isSelected = (id: string): boolean => {
+    return selecteds.includes(id);
   };
 
   useEffect(() => {
-    console.log("selected", selected);
+    console.log("selected", selecteds);
     // Update the SelectionCheckBox
-  }, [selected]);
+  }, [selecteds]);
 
-  function onRowClicked(id: number) {
-    console.log("PlantTable::onRowClicked", id, mouseDownId);
-    if (id !== mouseDownId) {
-      //setActiveRowId(id);
+  //
+  function onRowClicked(e: any, plant: Plant) {
+    //e.preventDefault();
+    console.log("PlantTable::onRowClicked", plant, mouseDownId);
+    if (plant._id === mouseDownId) {
+      console.log("do nothing");
+      setActiveRowId(plant._id);
       // FIXME: what this is used for?...
       // setViewOpen(true);
+    } else {
+      onChange(plant);
+      setMouseDownId("");
     }
-    // Clean on mouse up
-    //setMouseDownId(0);
   }
 
-  // function onCheckboxMouseDown(event: any, data: any) {
-  //   console.log("onCheckboxMouseDown()", data.id);
-  //   setMouseDownId(data.id);
-  // }
+  const onCheckboxMouseDown = (event: any, data: any) => {
+    console.log("onCheckboxMouseDown()", data.id);
+    setMouseDownId(data.id);
+  };
 
-  // function onCheckboxMouseUp(event: any, data: any) {
-  //   console.log("onCheckboxMouseUp()", data.id);
-  //   setMouseDownId(0);
-  // }
+  const onCheckboxMouseUp = (event: any, data: any) => {
+    console.log("onCheckboxMouseUp()", data.id);
+    setMouseDownId("");
+  };
 
   const onCheckboxChange = (event: any, data: any): void => {
     console.log("PlantTable::onCheckboxChange", data.id);
@@ -82,19 +88,19 @@ export default function PlantTable({ plants }: PlantTableProps) {
     if (data.checked) {
       console.log("Add to selected");
       // TODO: Dispatch or propagate event
-      setSelected((selected: any) => [...selected, data.id]);
+      setSelecteds((selected: any) => [...selected, data.id]);
     } else {
       console.log("Remove selected");
       let elementToRemove = data.id;
       // TODO: Dispatch event
-      setSelected((selected: any) =>
+      setSelecteds((selected: any) =>
         selected.filter((d: any) => d !== elementToRemove)
       );
     }
   };
 
   return (
-    <Table size="small" definition sortable selectable celled compact inverted>
+    <Table size="small" definition sortable selectable celled compact>
       <Table.Header fullWidth>
         <Table.Row>
           <Table.HeaderCell />
@@ -117,7 +123,6 @@ export default function PlantTable({ plants }: PlantTableProps) {
           <Table.HeaderCell>Forma</Table.HeaderCell>
           <Table.HeaderCell>Cultivar</Table.HeaderCell>
           <Table.HeaderCell>Hybrid</Table.HeaderCell>
-          <Table.HeaderCell>Picture</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -126,14 +131,14 @@ export default function PlantTable({ plants }: PlantTableProps) {
           <Table.Row
             key={plant._id}
             active={activeRowId === plant._id}
-            onClick={() => onRowClicked(plant._id)}
+            onClick={(e: any) => onRowClicked(e, plant)}
           >
             <Table.Cell collapsing>
               <Checkbox
                 id={plant._id}
                 checked={isSelected(plant._id)}
                 onChange={(event, data) => onCheckboxChange(event, data)}
-                // onMouseDown={(event, data) => onCheckboxMouseDown(event, data)}
+                onMouseDown={(event, data) => onCheckboxMouseDown(event, data)}
               />
             </Table.Cell>
             <Table.Cell>{plant.name}</Table.Cell>
@@ -146,7 +151,6 @@ export default function PlantTable({ plants }: PlantTableProps) {
             <Table.Cell>{plant.forma}</Table.Cell>
             <Table.Cell>{plant.cultivar}</Table.Cell>
             <Table.Cell>{plant.hybrid}</Table.Cell>
-            <Table.Cell>{plant.picture}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

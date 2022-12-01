@@ -17,15 +17,13 @@ export default class PlantGridCard extends React.Component<CardProps> {
           ui={false}
         />
         <Card.Content>
-          <Card.Header>{this.props.plant.binomial}</Card.Header>
-          <Card.Meta>
-            <span className="date">{this.props.plant.family}</span>
-          </Card.Meta>
-          <Card.Description></Card.Description>
+          <Card.Description>
+            <span style={{ color: "black" }}>{this.props.plant.name}</span>
+          </Card.Description>
         </Card.Content>
         <Card.Content extra>
           <Icon name="leaf" />
-          {this.props.plant.name}
+          {this.props.plant.family}
         </Card.Content>
       </Card>
     );

@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Modal } from "semantic-ui-react";
 import { SettingsForm } from "../form/SettingsForm";
 
 export const Settings = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <Modal
       size="mini"

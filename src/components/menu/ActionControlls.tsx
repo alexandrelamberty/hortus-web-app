@@ -140,7 +140,7 @@ export default function ActionControlls(props: ControllsProps) {
         <Menu.Item>
           <Input icon="search" placeholder="Search..." />
         </Menu.Item>
-        <Menu.Item>
+        {/* <Menu.Item>
           <Dropdown
             button
             className="icon"
@@ -151,7 +151,7 @@ export default function ActionControlls(props: ControllsProps) {
             defaultValue={options[0].value}
             onChange={(event, data) => onDisplayChange(event, data)}
           />
-        </Menu.Item>
+        </Menu.Item> */}
         {/* <Menu.Item>
           <Pagination
             size="mini"

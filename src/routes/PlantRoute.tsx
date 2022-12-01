@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Modal } from "semantic-ui-react";
 import ActionControlls, { View } from "src/components/menu/ActionControlls";
 import { PlantForm } from "src/components/form/PlantForm";
@@ -6,32 +6,34 @@ import PlantGrid from "src/components/grid/PlantGrid";
 import PlantList from "src/components/list/PlantList";
 import PlantTable from "src/components/table/PlantTable";
 import { PlantContext } from "src/contexts/PlantContextProvider";
+import { Plant } from "src/interfaces/Plant";
+import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 
+/**
+ * @returns
+ */
 export function PlantRoute() {
-  // The plant context
+  // ApplicationContext and data provider PlantContext
+  const { viewPlantForm, setViewPlantForm, plantViewType, setPlantViewType } =
+    useContext(ApplicationContext);
   const {
     plants,
-    formOpen,
-    setFormOpen,
-    viewOpen,
-    setViewOpen,
     selected,
+    setSelected,
+    selecteds,
+    setSelecteds,
     deletePlants,
     fetchPlants,
   } = React.useContext(PlantContext);
 
-  // FIXME: move to context
-
-  const [view, setView] = useState<View>("table");
-
   const renderView = () => {
-    switch (view) {
+    switch (plantViewType) {
       case "grid":
         return <PlantGrid />;
       case "list":
         return <PlantList list={plants} />;
       case "table":
-        return <PlantTable plants={plants} />;
+        return <PlantTable plants={plants} onChange={onTableChange} />;
       default:
         return <></>;
     }
@@ -39,12 +41,12 @@ export function PlantRoute() {
 
   const handleAdd = () => {
     console.log("PlantRoute.handleAdd()");
-    setFormOpen(!formOpen);
+    setViewPlantForm(!viewPlantForm);
   };
 
   const handleDelete = () => {
     console.log("PlantRoute.delete", selected);
-    deletePlants(selected, handleDeleted);
+    deletePlants(selecteds, handleDeleted);
   };
 
   const handleDeleted = () => {
@@ -64,7 +66,13 @@ export function PlantRoute() {
   // View data as
   const onViewTypeChange = (view: View) => {
     console.log("PlantRoute.changeView", view);
-    setView(view);
+    setPlantViewType(view);
+  };
+
+  const onTableChange = (plant: Plant) => {
+    console.log("table change", plant);
+    if (plant) setSelected(plant);
+    setViewPlantForm(!viewPlantForm);
   };
 
   useEffect(() => {
@@ -75,8 +83,8 @@ export function PlantRoute() {
     <Container>
       <ActionControlls
         name="Plants"
-        view={view}
-        selected={selected.length !== 0}
+        view={plantViewType}
+        selected={selecteds.length !== 0}
         handleAdd={handleAdd}
         handleDelete={handleDelete}
         onDisplayChange={onDisplayChange}
@@ -87,26 +95,18 @@ export function PlantRoute() {
       {renderView()}
 
       <Modal
-        open={formOpen}
-        onClose={() => setFormOpen(false)}
-        onOpen={() => setFormOpen(true)}
+        open={viewPlantForm}
+        onClose={() => {
+          console.log("modal-close");
+          setViewPlantForm(false);
+          setSelected(undefined);
+        }}
+        onOpen={() => setViewPlantForm(true)}
       >
         <Modal.Header>New Plant</Modal.Header>
         <Modal.Content image>
           <Modal.Description>
-            <PlantForm />
-          </Modal.Description>
-        </Modal.Content>
-      </Modal>
-      <Modal
-        open={viewOpen}
-        onClose={() => setViewOpen(false)}
-        onOpen={() => setViewOpen(true)}
-      >
-        <Modal.Header>View Plant</Modal.Header>
-        <Modal.Content image>
-          <Modal.Description>
-            <PlantForm />
+            <PlantForm plant={selected} />
           </Modal.Description>
         </Modal.Content>
       </Modal>
