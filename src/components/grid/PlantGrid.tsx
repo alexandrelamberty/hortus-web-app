@@ -6,7 +6,7 @@ import PlantGridCard from "./PlantGridCard";
 
 const PlantGrid = () => {
   const { plants } = useContext(PlantContext);
-
+  //
   return (
     <Grid inverted>
       {plants.map((plant: Plant) => (

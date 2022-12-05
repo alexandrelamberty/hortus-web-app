@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
@@ -8,11 +8,9 @@ import {
   Form,
   FormGroup,
   Grid,
-  Header,
-  Icon,
   Input,
-  Segment,
 } from "semantic-ui-react";
+import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 import { PlantContext } from "src/contexts/PlantContextProvider";
 import { SeedContext } from "src/contexts/SeedContextProvider";
 import { Frost } from "src/enums/Frost";
@@ -21,8 +19,12 @@ import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
 import { useListEnum } from "src/hooks/useListEnum";
+import { Plant } from "src/interfaces/Plant";
+import { Seed } from "src/interfaces/Seed";
 import { SeedFormData } from "src/interfaces/SeedFormData";
 import * as Yup from "yup";
+import { FormModeType } from "./FormMode";
+import { FileSelect } from "./ImageUpload";
 
 const months = [
   { key: "1", value: "1", text: "January" },
@@ -39,26 +41,53 @@ const months = [
   { key: "12", value: "12", text: "December" },
 ];
 
+interface SeedFormProps {
+  // The plant to edit
+  seed?: Seed;
+}
+
 /**
  * SeedForm
+ * FIXME: do some cleaning
  * @returns
  */
-export function SeedForm(): ReactElement {
+export function SeedForm({ seed }: SeedFormProps) {
+  const mode: FormModeType = seed ? "edit" : "add";
+  // Application
+  const { setViewSeedForm } = React.useContext(ApplicationContext);
+
   // Plant context used for the Seed species, companions and competitors
   const { plants, fetchPlants } = React.useContext(PlantContext);
 
   // Seed context
-  const { fetchSeeds, createSeed, setFormOpen } = React.useContext(SeedContext);
-
-  // Internal state
-  const [picture, setPicture] = useState("");
+  const { createSeed, updateSeed, setSelected } = React.useContext(SeedContext);
 
   // Remapping collection for dropdown
   const plantsOptions = plants.map((sd) => ({
     key: sd._id,
-    text: sd.name,
     value: sd._id,
+    text: sd.binomial,
   }));
+
+  const plantIds = (plants: Plant[]) => {
+    const ids = plants.map((plant) => {
+      if (plant) return plant._id;
+      else return "";
+    });
+    return ids;
+  };
+
+  // Remapping for edit
+  const companionsIds = seed?.companions.map((plant) => {
+    if (plant) return plant._id;
+    else return "";
+  });
+
+  // Remapping for edit
+  const competitorsIds = seed?.competitors.map((plant) => {
+    if (plant) return plant._id;
+    else return "";
+  });
 
   const seasons = useListEnum(Season);
   const water = useListEnum(Water);
@@ -71,11 +100,35 @@ export function SeedForm(): ReactElement {
     species: Yup.string().required("Species is required"),
     name: Yup.string().required("Name is required"),
     description: Yup.string().required("Description is required"),
-    // type: Yup.string().required("Type is required"),
-    // planting: Yup.string().required("Type is required"),
+    type: Yup.string().required("Type is required"),
+    season: Yup.string().required("Type is required"),
+    sun: Yup.string().required("Type is required"),
+    frost: Yup.string().required("Type is required"),
+    water: Yup.string().required("Type is required"),
+    seeding_start: Yup.string().required("Seeding start is required"),
+    seeding_end: Yup.string().required("Seeding start is required"),
+    seeding_duration: Yup.string().required("Seeding start is required"),
+    transplanting_start: Yup.string().required(
+      "Transplanting start is required"
+    ),
+    transplanting_end: Yup.string().required("Transplanting end is required"),
+    transplanting_duration: Yup.string().required(
+      "Transplanting duration is required"
+    ),
+    planting_start: Yup.string().required("Planting start is required"),
+    planting_end: Yup.string().required("Planting end is required"),
+    planting_duration: Yup.string().required("Planting duration is required"),
+    harvesting_start: Yup.string().required("Harvesting start is required"),
+    harvesting_end: Yup.string().required("Harvesting end is required"),
+    harvesting_duration: Yup.string().required(
+      "Harvesting duration is required"
+    ),
+    spacing: Yup.string().required("Type is required"),
+    rows: Yup.string().required("Type is required"),
+    image: Yup.string().required("Image is required"),
   });
 
-  //
+  // Form hook
   const {
     control,
     register,
@@ -83,7 +136,7 @@ export function SeedForm(): ReactElement {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<SeedFormData>({
+  } = useForm<any>({
     mode: "onTouched",
     resolver: yupResolver(validationSchema),
   });
@@ -94,21 +147,60 @@ export function SeedForm(): ReactElement {
   }, [fetchPlants]);
 
   const onSubmit = (data: SeedFormData) => {
-    console.log("onSubmit", data);
-    createSeed(data, onCreated);
+    console.log("PlantForm.onSubmit", mode, data);
+    if (mode === "add") {
+      createSeed(data, onSuccess);
+    } else if (mode === "edit" && seed) {
+      data.id = seed._id;
+      updateSeed(data, onSuccess);
+    }
   };
 
   // Callback
-  const onCreated = () => {
+  const onSuccess = () => {
     // We need to post the form
-    setFormOpen(false);
+    setViewSeedForm(false);
+    setSelected(undefined);
     reset();
   };
 
+  // Called when user click on the cancel button of the form
   const cancel = () => {
-    setFormOpen(false);
+    setViewSeedForm(false);
     reset();
   };
+
+  // If the form is in `edit` mode and the plant to edit is set
+  // update the form values
+  useEffect(() => {
+    if (mode === "edit" && seed) {
+      console.log("SeedForm mode: edit", seed);
+      setValue("species", seed.plant.name);
+      setValue("name", seed.name);
+      setValue("description", seed.description);
+      setValue("type", seed.type);
+      setValue("season", seed.season);
+      setValue("sun", seed.sun);
+      setValue("frost", seed.frost);
+      setValue("water", seed.water);
+      // setValue("companions", seed.companions);
+      // setValue("competitors", seed.water);
+      setValue("seeding_start", seed.seeding.start);
+      setValue("seeding_end", seed.seeding.end);
+      setValue("seeding_duration", seed.seeding.duration);
+      setValue("transplanting_start", seed.transplanting.start);
+      setValue("transplanting_end", seed.transplanting.end);
+      setValue("transplanting_duration", seed.transplanting.duration);
+      setValue("planting_start", seed.planting.start);
+      setValue("planting_end", seed.planting.end);
+      setValue("planting_duration", seed.planting.duration);
+      setValue("harvesting_start", seed.harvesting.start);
+      setValue("harvesting_end", seed.harvesting.end);
+      setValue("harvesting_duration", seed.harvesting.duration);
+      setValue("spacing", seed.spacing);
+      setValue("rows", seed.rows);
+    }
+  }, [mode, seed, setValue]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} size="mini">
@@ -116,31 +208,26 @@ export function SeedForm(): ReactElement {
         {/*  */}
         <Grid.Column mobile={16} tablet={4} computer={5}>
           {/* Picture */}
-          <Segment
-            placeholder
-            style={{
-              height: "360px",
-              backgroundImage: `url(${"http://localhost:3333/static/cb38583d8e35a7caab3f29402141197a"})`,
-              backgroundSize: "cover",
-            }}
-          >
-            <Header icon>
-              <Icon name="image" />
-              <Header.Content>
-                Add a picture
-                <Header.Subheader>
-                  Choose a picture from your computer.
-                </Header.Subheader>
-              </Header.Content>
-            </Header>
-            <Button as="label" htmlFor="image" type="button" primary>
-              Choose a File
-            </Button>
-            <Form.Field>
-              <input id="image" type="file" {...register("image")} hidden />
-              {picture && <img src={picture} alt={picture} />}
-            </Form.Field>
-          </Segment>
+
+          {/* ImageUpload */}
+          <Controller
+            control={control}
+            name="image"
+            render={({
+              field: { onChange, onBlur, value, name, ref },
+              fieldState: { invalid, isTouched, isDirty, error },
+              formState,
+            }) => (
+              <FileSelect
+                value={seed?.image}
+                error={errors.image ? true : false}
+                onChange={(e) => {
+                  console.log("ImageUpload::onChange() ", e.target.files);
+                  setValue(name, e.target.files);
+                }}
+              />
+            )}
+          />
 
           <Form.Field>
             <Controller
@@ -159,6 +246,7 @@ export function SeedForm(): ReactElement {
                   selection
                   fluid
                   options={plantsOptions}
+                  defaultValue={seed?.plant._id}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
                     onChange(value);
@@ -181,8 +269,11 @@ export function SeedForm(): ReactElement {
                 formState,
               }) => (
                 <Form.Input
+                  name="name"
                   label="Name"
+                  fluid
                   placeholder="Name"
+                  value={value}
                   onBlur={onBlur} // notify when input is touched
                   onChange={onChange} // send value to hook form
                   error={errors.name ? true : false}
@@ -202,6 +293,7 @@ export function SeedForm(): ReactElement {
                 <Form.TextArea
                   label="About"
                   rows="5"
+                  value={value}
                   placeholder="More about the seed..."
                   onBlur={onBlur} // notify when input is touched
                   onChange={onChange} // send value to hook form
@@ -225,6 +317,7 @@ export function SeedForm(): ReactElement {
                   placeholder="Type"
                   selection
                   fluid
+                  value={value}
                   options={seed_type}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
@@ -248,6 +341,7 @@ export function SeedForm(): ReactElement {
                   placeholder="Season"
                   selection
                   fluid
+                  value={value}
                   options={seasons}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
@@ -272,6 +366,7 @@ export function SeedForm(): ReactElement {
                   placeholder="Sun"
                   selection
                   fluid
+                  value={value}
                   options={sun}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
@@ -294,6 +389,7 @@ export function SeedForm(): ReactElement {
                   placeholder="Frost"
                   selection
                   fluid
+                  value={value}
                   options={frost}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
@@ -316,6 +412,7 @@ export function SeedForm(): ReactElement {
                   placeholder="Watering"
                   selection
                   fluid
+                  value={value}
                   options={water}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
@@ -342,7 +439,9 @@ export function SeedForm(): ReactElement {
                   selection
                   search
                   fluid
+                  value={value}
                   options={plantsOptions}
+                  defaultValue={companionsIds}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
                     onChange(value);
@@ -367,8 +466,10 @@ export function SeedForm(): ReactElement {
                   multiple
                   selection
                   search
+                  value={value}
                   options={plantsOptions}
                   wrapSelection={true}
+                  defaultValue={competitorsIds}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
                     onChange(value);
@@ -386,30 +487,34 @@ export function SeedForm(): ReactElement {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="seeding.start"
+                name="seeding_start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
                   <Form.Dropdown
+                    name={name}
                     deburr
                     fluid
+                    value={value}
                     options={months}
                     placeholder="Start"
                     search
                     selection
+                    defaultValue={value}
                     onChange={async (e, { name, value }) => {
+                      console.log(name, value);
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.seeding ? true : false}
+                    error={errors.seeding_start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="seeding.end"
+                name="seeding_end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -418,6 +523,7 @@ export function SeedForm(): ReactElement {
                   <Form.Dropdown
                     deburr
                     fluid
+                    value={value}
                     options={months}
                     placeholder="Stop"
                     search
@@ -426,23 +532,28 @@ export function SeedForm(): ReactElement {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.seeding ? true : false}
+                    error={errors.seeding_end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="seeding.duration"
+                name="seeding_duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Input
-                    id="seeding.germination"
-                    placeholder="Duration"
-                    onChange={onChange}
-                  />
+                  <Form.Field error={errors.seeding_duration ? true : false}>
+                    <Input
+                      fluid
+                      value={value}
+                      onChange={onChange}
+                      label={{ basic: true, content: "days" }}
+                      labelPosition="right"
+                      placeholder="ex: 20"
+                    />
+                  </Form.Field>
                 )}
               />
             </FormGroup>
@@ -452,7 +563,7 @@ export function SeedForm(): ReactElement {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="transplanting.start"
+                name="transplanting_start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -465,17 +576,18 @@ export function SeedForm(): ReactElement {
                     placeholder="Start"
                     search
                     selection
+                    value={value}
                     onChange={async (e, { name, value }) => {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.transplanting ? true : false}
+                    error={errors.transplanting_start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="transplanting.end"
+                name="transplanting_end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -484,6 +596,7 @@ export function SeedForm(): ReactElement {
                   <Form.Dropdown
                     deburr
                     fluid
+                    value={value}
                     options={months}
                     placeholder="Stop"
                     search
@@ -492,23 +605,30 @@ export function SeedForm(): ReactElement {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.transplanting ? true : false}
+                    error={errors.transplanting_end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="transplanting.duration"
+                name="transplanting_duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Input
-                    id="transplanting.germination"
-                    placeholder="Duration"
-                    onChange={onChange}
-                  />
+                  <Form.Field
+                    error={errors.transplanting_duration ? true : false}
+                  >
+                    <Input
+                      fluid
+                      value={value}
+                      onChange={onChange}
+                      label={{ basic: true, content: "days" }}
+                      labelPosition="right"
+                      placeholder="ex: 20"
+                    />
+                  </Form.Field>
                 )}
               />
             </FormGroup>
@@ -518,7 +638,7 @@ export function SeedForm(): ReactElement {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="planting.start"
+                name="planting_start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -531,17 +651,18 @@ export function SeedForm(): ReactElement {
                     placeholder="Start"
                     search
                     selection
+                    value={value}
                     onChange={async (e, { name, value }) => {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.planting ? true : false}
+                    error={errors.planting_start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="planting.end"
+                name="planting_end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -554,28 +675,33 @@ export function SeedForm(): ReactElement {
                     placeholder="Stop"
                     search
                     selection
+                    value={value}
                     onChange={async (e, { name, value }) => {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.planting ? true : false}
+                    error={errors.planting_end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="transplanting.duration"
+                name="planting_duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Input
-                    id="planting.maturity"
-                    placeholder="Duration"
-                    onChange={onChange}
-                    error={errors.planting ? true : false}
-                  />
+                  <Form.Field error={errors.planting_duration ? true : false}>
+                    <Input
+                      fluid
+                      value={value}
+                      onChange={onChange}
+                      label={{ basic: true, content: "days" }}
+                      labelPosition="right"
+                      placeholder="ex: 20"
+                    />
+                  </Form.Field>
                 )}
               />
             </FormGroup>
@@ -585,7 +711,7 @@ export function SeedForm(): ReactElement {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="planting.start"
+                name="harvesting_start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -598,12 +724,18 @@ export function SeedForm(): ReactElement {
                     search
                     selection
                     fluid
+                    value={value}
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.harvesting_start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="planting.end"
+                name="harvesting_end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -616,22 +748,33 @@ export function SeedForm(): ReactElement {
                     search
                     selection
                     fluid
+                    value={value}
+                    onChange={async (e, { name, value }) => {
+                      setValue(name, value);
+                      onChange(value);
+                    }}
+                    error={errors.harvesting_end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="planting.duration"
+                name="harvesting_duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Input
-                    id="planting.duration"
-                    placeholder="Duration"
-                    onChange={onChange}
-                  />
+                  <Form.Field error={errors.harvesting_duration ? true : false}>
+                    <Input
+                      fluid
+                      value={value}
+                      onChange={onChange}
+                      label={{ basic: true, content: "days" }}
+                      labelPosition="right"
+                      placeholder="ex: 20"
+                    />
+                  </Form.Field>
                 )}
               />
             </FormGroup>
@@ -648,14 +791,17 @@ export function SeedForm(): ReactElement {
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Input
-                    id="spacing"
-                    label={{ basic: true, content: "cm" }}
-                    labelPosition="right"
-                    placeholder="spacing"
-                    fluid
-                    onChange={onChange}
-                  />
+                  <Form.Field error={errors.spacing ? true : false}>
+                    <Input
+                      id="spacing"
+                      value={value}
+                      label={{ basic: true, content: "cm" }}
+                      labelPosition="right"
+                      placeholder="spacing"
+                      fluid
+                      onChange={onChange}
+                    />
+                  </Form.Field>
                 )}
               />
             </Form.Field>
@@ -669,14 +815,16 @@ export function SeedForm(): ReactElement {
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Input
-                    id="rows"
-                    label={{ basic: true, content: "cm" }}
-                    labelPosition="right"
-                    placeholder="Rows"
-                    fluid
-                    onChange={onChange}
-                  />
+                  <Form.Field error={errors.rows ? true : false}>
+                    <Input
+                      id="rows"
+                      label={{ basic: true, content: "cm" }}
+                      labelPosition="right"
+                      placeholder="Rows"
+                      fluid
+                      onChange={onChange}
+                    />
+                  </Form.Field>
                 )}
               />
             </Form.Field>

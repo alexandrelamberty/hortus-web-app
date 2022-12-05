@@ -1,10 +1,10 @@
 /**
  * PhaseInfo represent informations about a culture's phase.
- * 
+ *
  */
 export interface PhaseInfo {
-  start: string
+  start: string;
   end: string;
-  status: string
-  duration: number
+  status: string;
+  duration: number;
 }

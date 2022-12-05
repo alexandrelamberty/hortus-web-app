@@ -1,3 +1,4 @@
 export interface CultureFormData {
-  seed: string
+  //
+  seed: string;
 }

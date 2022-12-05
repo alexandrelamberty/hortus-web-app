@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as React from "react";
-import { getConfig } from "src/config";
 import { Culture } from "src/interfaces/Culture";
 import { CultureFormData } from "src/interfaces/CultureFormData";
+import { Seed } from "src/interfaces/Seed";
 import { ApplicationContext } from "./ApplicationContextProvider";
 
 export interface CultureContextType {
@@ -13,6 +13,8 @@ export interface CultureContextType {
   cultures: Culture[];
   selected: number[];
   setSelected: any;
+  selectedSeed: Seed | undefined;
+  setSelectedSeed: any;
   fetchCultures: () => void;
   createCulture: (data: any, callback: VoidFunction) => void;
   updateCulture: (culture: CultureFormData, callback: VoidFunction) => void;
@@ -27,19 +29,22 @@ export function CultureContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { apiUri } = React.useContext(ApplicationContext);
+  const { apiUrl, setErrors } = React.useContext(ApplicationContext);
   let [count, setCount] = React.useState<number>(0);
   let [cultures, setCultures] = React.useState<Culture[]>([]);
   let [selected, setSelected] = React.useState<number[]>([]);
+  const [selectedSeed, setSelectedSeed] = React.useState<Seed | undefined>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
+
   React.useEffect(() => {
     console.log("CultureContextProvider::mount");
   }, []);
+
   const fetchCultures = React.useCallback(() => {
     setIsLoading(true);
     axios
-      .get(apiUri + "/cultures")
+      .get(apiUrl + "/cultures")
       .then(function (response) {
         console.log(response);
         setCultures(response.data.results);
@@ -48,6 +53,7 @@ export function CultureContextProvider({
       })
       .catch(function (error) {
         console.log(error);
+        setErrors(error);
       });
   }, [setCultures]);
 
@@ -56,7 +62,7 @@ export function CultureContextProvider({
       console.log("createCulture", newCulture);
       setIsLoading(true);
       axios
-        .post(apiUri + "/cultures", newCulture)
+        .post(apiUrl + "/cultures", newCulture)
         .then(function (response) {
           console.log("response", response);
           setCultures([...cultures].concat(response.data));
@@ -65,6 +71,7 @@ export function CultureContextProvider({
         })
         .catch(function (error) {
           console.log(error);
+          setErrors(error);
         });
     },
     [setCultures, cultures]
@@ -75,7 +82,7 @@ export function CultureContextProvider({
       console.log(culture);
       setIsLoading(true);
       axios
-        .put(apiUri + "/cultures ", culture, {
+        .put(apiUrl + "/cultures ", culture, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -87,6 +94,7 @@ export function CultureContextProvider({
         })
         .catch(function (error) {
           console.log(error);
+          setErrors(error);
         })
         .finally(() => {
           setIsLoading(false);
@@ -99,7 +107,7 @@ export function CultureContextProvider({
     (id: number) => {
       setIsLoading(true);
       axios
-        .delete(apiUri + "/cultures" + id)
+        .delete(apiUrl + "/cultures" + id)
         .then(function (response) {
           setCultures([...cultures].concat(response.data));
           setIsLoading(false);
@@ -107,6 +115,7 @@ export function CultureContextProvider({
         })
         .catch(function (error) {
           console.log(error);
+          setErrors(error);
         })
         .finally(() => {
           setIsLoading(false);
@@ -121,7 +130,7 @@ export function CultureContextProvider({
       console.log("selected", selected);
       setIsLoading(true);
       axios
-        .delete(apiUri + `/cultures/multiple/${ids.concat()}`)
+        .delete(apiUrl + `/cultures/multiple/${ids.concat()}`)
         .then(function (response) {
           console.log("response", response);
           let ids: [] = response.data;
@@ -136,6 +145,7 @@ export function CultureContextProvider({
         })
         .catch(function (error) {
           console.log(error);
+          setErrors(error);
         });
     },
     [selected]
@@ -150,6 +160,8 @@ export function CultureContextProvider({
         cultures,
         selected,
         setSelected,
+        selectedSeed,
+        setSelectedSeed,
         fetchCultures,
         createCulture,
         updateCulture,

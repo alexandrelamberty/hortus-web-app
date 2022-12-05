@@ -1,5 +1,5 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BellIcon, CogIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import React, { Fragment } from "react";
 import { Link, useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
@@ -94,11 +94,8 @@ export function Nav() {
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+
+                      <CogIcon className="h-6 w-6" aria-hidden="true" />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -111,7 +108,7 @@ export function Nav() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
+                      {/* <Menu.Item>
                         {({ active }) => (
                           <Link
                             to="/profile"
@@ -123,7 +120,7 @@ export function Nav() {
                             Your Profile
                           </Link>
                         )}
-                      </Menu.Item>
+                      </Menu.Item> */}
                       <Menu.Item>
                         {({ active }) => (
                           <Link

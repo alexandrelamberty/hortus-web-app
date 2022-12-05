@@ -14,7 +14,7 @@ const SeedGrid = () => {
   return (
     <Grid>
       {seeds.map((seed: Seed) => (
-        <Grid.Column key={seed._id} mobile={16} tablet={8} computer={3}>
+        <Grid.Column key={seed._id} mobile={16} tablet={8} computer={4}>
           <SeedGridCard seed={seed} />
         </Grid.Column>
       ))}

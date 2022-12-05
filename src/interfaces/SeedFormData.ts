@@ -9,6 +9,7 @@ import { PhaseInfo } from "./PhaseInfo";
  * SedFormData
  */
 export interface SeedFormData {
+  id?: string;
   // The species id
   species: string;
   name: string;

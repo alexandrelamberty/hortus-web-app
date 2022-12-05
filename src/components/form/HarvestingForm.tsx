@@ -67,7 +67,7 @@ export const HarvestingForm = () => {
               formState,
             }) => (
               <>
-                <label>Quantity</label>
+                <label>Weight</label>
                 <Input
                   name="soil"
                   label={{ basic: false, content: "kg" }}

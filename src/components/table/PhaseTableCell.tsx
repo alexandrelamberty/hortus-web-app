@@ -3,6 +3,7 @@ import { PhaseActions } from "src/enums/PhaseActions";
 import { getColor } from "src/enums/PhaseStatus";
 import { Phase } from "src/interfaces/Phase";
 import { PhaseControl } from "../button/PhaseControl";
+import PhaseCalendar from "../calendar/PhaseCalendar";
 import { HarvestingForm } from "../form/HarvestingForm";
 
 type PhaseCellProps = {
@@ -22,6 +23,10 @@ type PhaseCellProps = {
 const PhaseTableCell = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
   const statusColor = getColor(phase.status);
 
+  /**
+   * Render controlls for the phase status
+   * @returns
+   */
   const renderControlls = () => {
     switch (phase.status) {
       case "pending":
@@ -79,7 +84,8 @@ const PhaseTableCell = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
                 }}
               />
             )}
-            {/*  */}
+            {/* details switch phase type */}
+            {renderDetails()}
           </>
         );
       case "done":
@@ -99,14 +105,36 @@ const PhaseTableCell = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
         return <></>;
     }
   };
+  /**
+   * Render details for the specific phase
+   */
+  const renderDetails = () => {
+    switch (type) {
+      case "seeding":
+        return <p>Date / Quantity</p>;
+
+      case "transplanting":
+        return <p>transplanting</p>;
+
+      case "planting":
+        return <p>planting</p>;
+
+      case "harvesting":
+        return <p>harvested quantity / kg</p>;
+
+      default:
+        return <></>;
+    }
+  };
+
   return (
-    <Table.Cell>
+    <>
       <Label.Group>
         <Label color={statusColor}>{phase.status}</Label>
         {renderControlls()}
+        <PhaseCalendar phase={phase} />
       </Label.Group>
-      {/* <HarvestingForm /> */}
-    </Table.Cell>
+    </>
   );
 };
 

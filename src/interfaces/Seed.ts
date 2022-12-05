@@ -10,7 +10,7 @@ import { Plant } from "./Plant";
  * Seed represent the stored document
  */
 export interface Seed {
-  _id: number;
+  _id: string;
   plant: Plant;
   name: string;
   description: string;

@@ -41,3 +41,31 @@ html, body, #app, #app>div {
 .form-option {
   @apply inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800;
 }
+
+
+/* Semantic React UI */
+.ui.menu {
+  border-radius: 5px !important;
+  /* border: 0px !important; */
+  /* box-shadow: none !important; */
+  background-color: #252631 !important;
+}
+.ui.menu .item {
+  padding: 8px !important;
+}
+r {
+  margin-bottom: 0 !important;
+}r {
+  margin-bottom: 0 !important;
+}
+
+.phase-item-grid {
+  padding-left: 0 !important;
+  margin: 0 !important;
+  margin-bottom: -2em !important;
+}
+.phase-item-calendar {
+  padding: 0 !important;
+  margin-top: -0em !important;
+  margin-bottom: 0em !important;
+}

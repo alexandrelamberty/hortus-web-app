@@ -31,25 +31,21 @@ export const SettingsForm = () => {
   // TODO: once provider and key provided, make a test call to the appropriate
   // services
   return (
-    <>
-      <h2 className="pb-3 font-bold">Settings</h2>
-      <Form size="mini">
-        <Form.Field id="form-dropdown-weather-provider">
-          <Form.Dropdown
-            placeholder="Select a provider"
-            selection
-            fluid
-            label="Weather API provider"
-            options={weather_providers}
-          />
-        </Form.Field>
-        <Form.Field id="form-input-api">
-          <Form.Input
-            placeholder="ex: 72d34b7e-d82c-455b-99c5-9a38830be131"
-            label="API key"
-          />
-        </Form.Field>
-      </Form>
-    </>
+    <Form size="mini">
+      <Form.Field>
+        <Form.Dropdown
+          placeholder="Select a provider"
+          selection
+          label="Weather API provider"
+          options={weather_providers}
+        />
+      </Form.Field>
+      <Form.Field>
+        <Form.Input
+          placeholder="ex: 72d34b7e-d82c-455b-99c5-9a38830be131"
+          label="API key"
+        />
+      </Form.Field>
+    </Form>
   );
 };

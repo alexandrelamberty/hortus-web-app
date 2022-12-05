@@ -58,7 +58,7 @@ export default function PlantTable({ plants, onChange }: PlantTableProps) {
   }, [selecteds]);
 
   //
-  function onRowClicked(e: any, plant: Plant) {
+  function onRowClicked(plant: Plant) {
     //e.preventDefault();
     console.log("PlantTable::onRowClicked", plant, mouseDownId);
     if (plant._id === mouseDownId) {
@@ -131,7 +131,7 @@ export default function PlantTable({ plants, onChange }: PlantTableProps) {
           <Table.Row
             key={plant._id}
             active={activeRowId === plant._id}
-            onClick={(e: any) => onRowClicked(e, plant)}
+            onClick={() => onRowClicked(plant)}
           >
             <Table.Cell collapsing>
               <Checkbox

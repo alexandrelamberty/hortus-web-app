@@ -1,21 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Container, Icon, Input, Modal } from "semantic-ui-react";
-import ActionControlls, { View } from "src/components/menu/ActionControlls";
 import { CultureForm } from "src/components/form/CultureForm";
+import CultureList from "src/components/list/CultureList";
+import { ActionMenu } from "src/components/menu/ActionMenu";
+import { AddMenuItem } from "src/components/menu/AddMenuItem";
+import { DeleteMenuItem } from "src/components/menu/DeleteMenuItem";
+import { SearchMenuItem } from "src/components/menu/SearchMenuItem";
+import { SelectMenuItem } from "src/components/menu/SelectMenuItem";
+
+import { View, ViewMenuItem } from "src/components/menu/ViewMenuItem";
 import CultureTable from "src/components/table/CultureTable";
+import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 import { CultureContext } from "src/contexts/CultureContextProvider";
-import { PhaseForm } from "src/components/form/PhaseForm";
 
 export function CultureRoute() {
-  const { formOpen, setFormOpen, selected, deleteCultures } =
+  // Application context
+  const {
+    viewCultureForm,
+    setViewCultureForm,
+    cultureViewType,
+    setCultureViewType,
+    modals,
+  } = useContext(ApplicationContext);
+  // Plant context
+  const { selected, selectedSeed, createCulture, deleteCultures } =
     React.useContext(CultureContext);
-
-  // FIXME: move to context
-  const [view, setView] = useState<View>("table");
 
   const onAddClicked = () => {
     console.log("CultureRoute.onAddClicked");
-    setFormOpen(!formOpen);
+    setViewCultureForm(!viewCultureForm);
   };
 
   const onDeleteClicked = () => {
@@ -36,29 +49,77 @@ export function CultureRoute() {
   // View data as
   const onViewTypeChange = (view: View) => {
     console.log("CultureRoute.changeView", view);
-    setView(view);
+    setCultureViewType(cultureViewType);
+  };
+
+  const onSubmit = () => {
+    if (selectedSeed) {
+      let seed = {
+        seed: selectedSeed,
+      };
+      createCulture(seed, onCultureCreated);
+    }
+  };
+
+  const onCultureCreated = () => {
+    setViewCultureForm(false);
   };
 
   return (
     <Container>
-      <ActionControlls
-        name="Cultures"
-        view={view}
-        selected={selected.length !== 0}
-        handleAdd={onAddClicked}
-        handleDelete={onDeleteClicked}
-        onViewTypeChange={onViewTypeChange}
-        onDisplayChange={() => onDisplayChange}
-        onPageChange={() => onPageChange}
+      <ActionMenu
+        left={
+          <>
+            <AddMenuItem
+              label="Seeds"
+              onClick={() => {
+                console.log("add");
+                setViewCultureForm(!viewCultureForm);
+              }}
+            />
+            <SelectMenuItem
+              onChange={(content) => {
+                console.log("select ", content);
+              }}
+            />
+            <DeleteMenuItem
+              disabled={selected.length !== 0}
+              onClick={() => {
+                console.log("delete");
+                //
+                deleteCultures(selected);
+              }}
+            />
+          </>
+        }
+        right={
+          <>
+            <SearchMenuItem
+              onChange={(terms) => {
+                console.log("search", terms);
+              }}
+            />
+            <ViewMenuItem
+              type={cultureViewType}
+              onChange={(view) => {
+                console.log("view", view);
+                setCultureViewType(view);
+              }}
+            />
+          </>
+        }
       />
 
-      <CultureTable />
+      {/* FIXME: loading */}
+      {/* <CultureTable /> */}
+      <CultureList />
 
+      {/* CultureForm  */}
       <Modal
-        size="large"
-        onClose={() => setFormOpen(false)}
-        onOpen={() => setFormOpen(true)}
-        open={formOpen}
+        size="fullscreen"
+        onClose={() => setViewCultureForm(false)}
+        onOpen={() => setViewCultureForm(true)}
+        open={viewCultureForm}
       >
         <Modal.Header>New Culture</Modal.Header>
         <Modal.Content image>
@@ -66,10 +127,14 @@ export function CultureRoute() {
         </Modal.Content>
         <Modal.Actions>
           <Input placeholder="Search" size="mini" />
-          <Button color="red" size="mini">
+          <Button
+            color="red"
+            size="mini"
+            onClick={() => setViewCultureForm(false)}
+          >
             <Icon name="remove" /> Cancel
           </Button>
-          <Button color="green" size="mini">
+          <Button color="green" size="mini" onClick={onSubmit}>
             <Icon name="checkmark" /> Start
           </Button>
         </Modal.Actions>

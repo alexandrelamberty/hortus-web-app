@@ -1,25 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Checkbox, Label, Table } from "semantic-ui-react";
 import { SeedContext } from "src/contexts/SeedContextProvider";
+import { Seed } from "src/interfaces/Seed";
+interface SeedTableProps {
+  seeds: Seed[];
+  onChange: (seed: Seed) => void;
+}
+export default function SeedTable({ seeds, onChange }: SeedTableProps) {
+  // Context
+  const { selecteds, setSelecteds } = useContext(SeedContext);
 
-export default function SeedTable() {
-  const { seeds, fetchSeeds, selected, setSelected, setViewOpen } =
-    useContext(SeedContext);
-  const [activeRowId, setActiveRowId] = useState(0);
-  const [mouseDownId, setMouseDownId] = useState(0);
+  // Internal state
+  const [activeRowId, setActiveRowId] = useState("");
+  const [mouseDownId, setMouseDownId] = useState("");
 
-  useEffect(() => {
-    fetchSeeds();
-  }, [fetchSeeds]);
+  // useEffect(() => {
+  //   fetchSeeds();
+  // }, [fetchSeeds]);
 
-  function onRowClicked(id: number) {
-    console.log("onRowClicked()", id, mouseDownId);
-    if (id !== mouseDownId) {
-      setActiveRowId(id);
-      setViewOpen(true);
-    }
-    // TODO: Clean on mouse up
-    setMouseDownId(0);
+  function onRowClicked(seed: Seed) {
+    console.log("onRowClicked()", mouseDownId);
+    onChange(seed);
   }
 
   // Used to store and to bypass the click on the row and not select the
@@ -31,7 +32,7 @@ export default function SeedTable() {
 
   function onCheckboxMouseUp(event: any, data: any) {
     console.log("onCheckboxMouseUp()", data.id);
-    setMouseDownId(0);
+    setMouseDownId("0");
   }
 
   function onCheckboxChange(event: any, data: any) {
@@ -40,24 +41,21 @@ export default function SeedTable() {
     if (data.checked) {
       console.log("Add to selected");
       // TODO: Dispatch or propagate event
-      setSelected((selected: any) => [...selected, data.id]);
+      setSelecteds((selected: any) => [...selected, data.id]);
     } else {
       console.log("Remove selected");
       let elementToRemove = data.id;
       // TODO: Dispatch event
-      setSelected((selected: any) =>
+      setSelecteds((selected: any) =>
         selected.filter((d: any) => d !== elementToRemove)
       );
     }
   }
 
-  function isSelected(id: number): boolean | undefined {
-    const found = selected.find((element) => element > id);
-    if (found) {
-      return true;
-    }
-    return false;
-  }
+  // Return true if a plant
+  const isSelected = (id: string): boolean => {
+    return selecteds.includes(id);
+  };
 
   return (
     <Table size="small" definition sortable selectable celled compact>
@@ -82,11 +80,12 @@ export default function SeedTable() {
           <Table.Row
             key={seed._id}
             active={activeRowId === seed._id}
-            onClick={() => onRowClicked(seed._id)}
+            onClick={() => onRowClicked(seed)}
           >
             <Table.Cell collapsing>
               <Checkbox
                 id={seed._id}
+                checked={isSelected(seed._id)}
                 onChange={(event, data) => onCheckboxChange(event, data)}
                 onMouseDown={(event, data) => onCheckboxMouseDown(event, data)}
               />

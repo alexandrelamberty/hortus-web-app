@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { Checkbox, Modal, Table } from "semantic-ui-react";
+import { Checkbox, Image, Modal, Table } from "semantic-ui-react";
 import { CultureContext } from "src/contexts/CultureContextProvider";
 import { CultureLocation } from "src/enums/CultureLocation";
 import { PhaseActions } from "src/enums/PhaseActions";
 import { Culture } from "src/interfaces/Culture";
+import PhaseCalendar from "../calendar/PhaseCalendar";
+import { HarvestingForm } from "../form/HarvestingForm";
 import { PhaseForm } from "../form/PhaseForm";
 import PhaseTableCell from "./PhaseTableCell";
 
@@ -17,6 +19,7 @@ const locations = Object.entries(CultureLocation).map(([key, value]) => ({
 type CultureTableProps = {};
 
 export default function CultureTable() {
+  // Culture context
   const { cultures, fetchCultures, selected, setSelected } =
     useContext(CultureContext);
 
@@ -41,6 +44,7 @@ export default function CultureTable() {
         console.log("START", phase, culture_id);
         if (phase === "harvesting") {
           // call api
+          showStartPhaseModal(phase);
         }
         // show phase corresponding modal
         showStartPhaseModal(phase);
@@ -73,6 +77,9 @@ export default function CultureTable() {
         break;
       case "planting":
         setPlantingPhaseModal(true);
+        break;
+      case "harvesting":
+        setHarvestingPhaseModal(true);
         break;
     }
   };
@@ -119,6 +126,7 @@ export default function CultureTable() {
   const tableRow = (culture: Culture) => {
     return (
       <Table.Row key={culture._id} active={activeRowId === culture._id}>
+        {/* Selection */}
         <Table.Cell collapsing>
           <Checkbox
             id={culture._id}
@@ -126,37 +134,57 @@ export default function CultureTable() {
             onMouseDown={(event, data) => onCheckboxMouseDown(event, data)}
           />
         </Table.Cell>
+        {/* The seed associated to the culture */}
         <Table.Cell onClick={() => onRowClicked(culture._id)}>
           {culture.seed?.name}
+          <Image
+            src={"http://localhost:3333/static/" + culture.seed.image}
+            size="small"
+          />
         </Table.Cell>
-        <PhaseTableCell
-          type="seeding"
-          phase={culture.seeding}
-          onPhaseChange={(action) =>
-            onPhaseAction("seeding", culture._id, action)
-          }
-        />
-        <PhaseTableCell
-          type="transplanting"
-          phase={culture.transplanting}
-          onPhaseChange={(action) =>
-            onPhaseAction("transplanting", culture._id, action)
-          }
-        />
-        <PhaseTableCell
-          type="planting"
-          phase={culture.planting}
-          onPhaseChange={(action) =>
-            onPhaseAction("planting", culture._id, action)
-          }
-        />
-        <PhaseTableCell
-          type="harvesting"
-          phase={culture.harvesting}
-          onPhaseChange={(action) =>
-            onPhaseAction("harvesting", culture._id, action)
-          }
-        />
+
+        {/* The culture phases */}
+        <Table.Cell>
+          <Table>
+            <Table.Row>
+              <PhaseTableCell
+                type="seeding"
+                phase={culture.seeding}
+                onPhaseChange={(action) =>
+                  onPhaseAction("seeding", culture._id, action)
+                }
+              />
+              x
+            </Table.Row>
+            <Table.Row>
+              <PhaseTableCell
+                type="transplanting"
+                phase={culture.transplanting}
+                onPhaseChange={(action) =>
+                  onPhaseAction("transplanting", culture._id, action)
+                }
+              />
+            </Table.Row>
+            <Table.Row>
+              <PhaseTableCell
+                type="planting"
+                phase={culture.planting}
+                onPhaseChange={(action) =>
+                  onPhaseAction("planting", culture._id, action)
+                }
+              />
+            </Table.Row>
+            <Table.Row>
+              <PhaseTableCell
+                type="harvesting"
+                phase={culture.harvesting}
+                onPhaseChange={(action) =>
+                  onPhaseAction("harvesting", culture._id, action)
+                }
+              />
+            </Table.Row>
+          </Table>
+        </Table.Cell>
       </Table.Row>
     );
   };
@@ -172,30 +200,19 @@ export default function CultureTable() {
         compact
         structured
       >
-        <Table.Header fullWidth>
-          <Table.Row>
-            <Table.HeaderCell rowSpan="2" />
-            <Table.HeaderCell
-              rowSpan="2"
-              // onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
-            >
-              Name
-            </Table.HeaderCell>
-            <Table.HeaderCell colSpan={4}>Phases</Table.HeaderCell>
-          </Table.Row>
-          <Table.Row>
-            <Table.HeaderCell>Seeding</Table.HeaderCell>
-            <Table.HeaderCell>Transplanting</Table.HeaderCell>
-            <Table.HeaderCell>Planting</Table.HeaderCell>
-            <Table.HeaderCell>Harvesting</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
         <Table.Body>
           {cultures.map((culture: Culture) => tableRow(culture))}
         </Table.Body>
       </Table>
-      {/* Seeding Phase Details */}
+
+      {/**
+       * Seeding Phase Details modals with forms to update the phasesù
+       *
+       * - Seeding
+       * - Transplanting
+       * - Planting
+       * - Harvesting
+       */}
       <Modal
         size="mini"
         open={seedingPhaseModal}
@@ -234,6 +251,20 @@ export default function CultureTable() {
         <Modal.Content image>
           <Modal.Description>
             <PhaseForm />
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
+      {/* Harvesting */}
+      <Modal
+        size="mini"
+        open={harvestingPhaseModal}
+        onClose={() => setHarvestingPhaseModal(false)}
+        onOpen={() => setHarvestingPhaseModal(true)}
+      >
+        <Modal.Header>Start Harvesting Phase</Modal.Header>
+        <Modal.Content image>
+          <Modal.Description>
+            <HarvestingForm />
           </Modal.Description>
         </Modal.Content>
       </Modal>
