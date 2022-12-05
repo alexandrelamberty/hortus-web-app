@@ -1,23 +1,20 @@
-import React, { useContext } from "react";
 import { Card, Icon, Image } from "semantic-ui-react";
-import { CultureContext } from "src/contexts/CultureContextProvider";
 import { Seed } from "src/interfaces/Seed";
 
 type CardProps = {
   seed: Seed;
+  onChange: (seed: Seed) => void;
 };
 
-const SeedGridCard = ({ seed }: CardProps) => {
-  const { setSelectedSeed } = useContext(CultureContext);
-
+const SeedGridCard = ({ seed, onChange }: CardProps) => {
   return (
     <Card
       key={seed._id}
       onClick={() => {
-        console.log("clicked");
-        setSelectedSeed(seed);
+        onChange(seed);
       }}
     >
+      {/* FIXME: */}
       <Image
         src={"http://localhost:3333/static/" + seed.image}
         wrapped

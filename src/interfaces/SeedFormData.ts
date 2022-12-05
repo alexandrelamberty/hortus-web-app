@@ -6,7 +6,7 @@ import { Water } from "src/enums/Water";
 import { PhaseInfo } from "./PhaseInfo";
 
 /**
- * SedFormData
+ * Shape of the SeedForm properties
  */
 export interface SeedFormData {
   id?: string;
@@ -15,12 +15,13 @@ export interface SeedFormData {
   name: string;
   description: string;
   type: Type;
-  // harvest: number[];
   season: Season;
   sun: Sun;
   frost: Frost;
   water: Water;
+  // plants ids
   companions: string[];
+  // plants ids
   competitors: string[];
   seeding: PhaseInfo;
   transplanting: PhaseInfo;
@@ -28,5 +29,6 @@ export interface SeedFormData {
   harvesting: PhaseInfo;
   spacing: number;
   rows: number;
-  image: FileList;
+  harvest: number[];
+  image: File;
 }

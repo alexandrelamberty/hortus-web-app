@@ -36,8 +36,7 @@ export function SeedRoute() {
   const renderView = () => {
     switch (seedViewType) {
       case "grid":
-        return <SeedGrid />;
-      case "list":
+        return <SeedGrid onChange={onDataViewChange} />;
         return <SeedList />;
       case "table":
         return <SeedTable seeds={seeds} onChange={onDataViewChange} />;
@@ -51,7 +50,7 @@ export function SeedRoute() {
   };
 
   const onDataViewChange = (seed: Seed) => {
-    console.log("table change", seed);
+    console.log("data change", seed);
     if (seed) setSelected(seed);
     setViewSeedForm(!viewSeedForm);
   };
@@ -61,7 +60,7 @@ export function SeedRoute() {
   }, [fetchSeeds]);
 
   return (
-    <Container>
+    <>
       <ActionMenu
         left={
           <>
@@ -111,7 +110,6 @@ export function SeedRoute() {
         }
       />
       {seeds.length > 0 ? renderView() : <PlaceHolder />}
-
       <Modal
         open={viewSeedForm}
         onOpen={() => setViewSeedForm(true)}
@@ -125,7 +123,7 @@ export function SeedRoute() {
           </Modal.Description>
         </Modal.Content>
       </Modal>
-    </Container>
+    </>
   );
 }
 

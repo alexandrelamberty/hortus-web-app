@@ -35,8 +35,6 @@ export function SeedContextProvider({
   let [selected, setSelected] = React.useState<Seed | undefined>();
   let [selecteds, setSelecteds] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [formOpen, setFormOpen] = React.useState<boolean>(false);
-  const [viewOpen, setViewOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     console.log("SeedContextProvider::mount");
@@ -64,7 +62,6 @@ export function SeedContextProvider({
           // dispatch
           setSeeds([...seeds, response.data]);
           setIsLoading(false);
-          setFormOpen(false);
         })
         .catch(function (error) {
           console.log(error);
@@ -93,8 +90,8 @@ export function SeedContextProvider({
     (seed: SeedFormData, callback: VoidFunction) => {
       console.log("createSeed", seed);
       setIsLoading(true);
-      // enctype application/json
-      let seedDTO: SeedDTO = {
+      // application/json
+      let dto: SeedDTO = {
         plant: seed.species,
         name: seed.name,
         description: seed.description,
@@ -114,21 +111,21 @@ export function SeedContextProvider({
         rows: seed.rows,
       };
 
-      // enctype multipart/form-data
-      let seedImageFormData = new FormData();
-      seedImageFormData.append("image", seed.image[0]);
-      console.log("post_image", seedImageFormData.get("image"));
+      console.log("BEFORE [POST] dto: ", dto);
+      // POST seed
       axios
-        .post(apiUrl + "/seeds", seedDTO, {
+        .post(apiUrl + "/seeds", dto, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then(function (response) {
-          //setSeeds([...seeds].concat(response.data));
           const id: number = response.data._id;
-          setIsLoading(false);
-          uploadPicure(id, seedImageFormData);
+          // multipart/form-data
+          let img = new FormData();
+          img.append("image", seed.image);
+          // POST image
+          uploadPicure(id, img);
         })
         .catch(function (error) {
           console.log(error.message);
@@ -142,16 +139,40 @@ export function SeedContextProvider({
     (seed: SeedFormData, callback: VoidFunction) => {
       console.log(seed);
       setIsLoading(true);
+      // application/json
+      let dto: SeedDTO = {
+        plant: seed.species,
+        name: seed.name,
+        description: seed.description,
+        type: seed.type,
+        // seed: data.harvest,
+        season: seed.season,
+        sun: seed.sun,
+        frost: seed.frost,
+        water: seed.water,
+        companions: seed.companions,
+        competitors: seed.competitors,
+        seeding: seed.seeding,
+        transplanting: seed.transplanting,
+        planting: seed.planting,
+        harvesting: seed.harvesting,
+        spacing: seed.spacing,
+        rows: seed.rows,
+      };
+      console.log("BEFORE [PUT] dto: ", dto);
       axios
-        .post(apiUrl + "/seeds ", seed, {
+        .put(apiUrl + "/seeds/" + seed.id, dto, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then(function (response) {
-          setSeeds([...seeds].concat(response.data));
-          setIsLoading(false);
-          callback();
+          const id: number = response.data._id;
+          // multipart/form-data
+          let img = new FormData();
+          img.append("image", seed.image);
+          // POST image
+          uploadPicure(id, img);
         })
         .catch(function (error) {
           console.log(error);

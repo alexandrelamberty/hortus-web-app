@@ -1,14 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, ButtonGroup, Form, Grid, Segment } from "semantic-ui-react";
+import { Button, ButtonGroup, Form, Grid } from "semantic-ui-react";
 import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 import { PlantContext } from "src/contexts/PlantContextProvider";
 import { Plant } from "src/interfaces/Plant";
 import * as Yup from "yup";
 import { FormModeType } from "./FormMode";
 import { FileSelect } from "./ImageUpload";
-
+import { PlantFormData } from "src/interfaces/PlantFormData";
 interface PlantFormProps {
   // The plant to edit
   plant?: Plant;
@@ -25,7 +25,7 @@ export const PlantForm = ({ plant }: PlantFormProps) => {
     family: Yup.string().required("Family is required"),
     genus: Yup.string().required("Genus is required"),
     species: Yup.string().required("Species is required"),
-    image: Yup.mixed().required("Image is required"),
+    // image: Yup.mixed().required("Image is required"),
   });
 
   // Form hook
@@ -36,9 +36,19 @@ export const PlantForm = ({ plant }: PlantFormProps) => {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors, isDirty, isSubmitting, touchedFields, submitCount },
-  } = useForm<any>({
-    defaultValues: plant,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm<PlantFormData>({
+    defaultValues: {
+      family: plant?.family,
+      genus: plant?.genus,
+      species: plant?.species,
+      subspecies: plant?.subspecies,
+      variety: plant?.variety,
+      forma: plant?.forma,
+      cultivar: plant?.cultivar,
+      hybrid: plant?.hybrid,
+      image: undefined,
+    },
     mode: "onSubmit",
     resolver: yupResolver(validationSchema),
   });
@@ -62,15 +72,19 @@ export const PlantForm = ({ plant }: PlantFormProps) => {
    */
   const onValid = (form: any) => {
     console.log("PlantForm.onSubmit", mode, form);
-    // Create
+    // Create multipart/form-data
     const fd = new FormData();
+    if (form.image !== undefined) {
+      console.log("file change we pass the image");
+      fd.append("image", form.image[0] as File);
+    }
+    // Move to server side
     fd.append("name", "name");
     fd.append("binomial", binomial);
     // Mandatory fiels
     fd.append("family", form.family);
     fd.append("genus", form.genus);
     fd.append("species", form.species);
-    fd.append("image", form.image[0] as File);
     // Non mandatory fields
     if (form.subspecies) fd.append("subspecies", form.subspecies);
     if (form.subspecies) fd.append("variety", form.variety);

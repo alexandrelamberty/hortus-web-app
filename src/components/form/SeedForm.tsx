@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { ReactElement, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useController, useForm } from "react-hook-form";
 import {
   Button,
   ButtonGroup,
@@ -27,22 +27,22 @@ import { FormModeType } from "./FormMode";
 import { FileSelect } from "./ImageUpload";
 
 const months = [
-  { key: "1", value: "1", text: "January" },
-  { key: "2", value: "2", text: "February" },
-  { key: "3", value: "3", text: "March" },
-  { key: "4", value: "4", text: "April" },
-  { key: "5", value: "5", text: "May" },
-  { key: "6", value: "6", text: "June" },
-  { key: "7", value: "7", text: "July" },
-  { key: "8", value: "8", text: "August" },
-  { key: "9", value: "9", text: "September" },
-  { key: "10", value: "10", text: "October" },
-  { key: "11", value: "11", text: "November" },
-  { key: "12", value: "12", text: "December" },
+  { key: "1", value: 1, text: "January" },
+  { key: "2", value: 2, text: "February" },
+  { key: "3", value: 3, text: "March" },
+  { key: "4", value: 4, text: "April" },
+  { key: "5", value: 5, text: "May" },
+  { key: "6", value: 6, text: "June" },
+  { key: "7", value: 7, text: "July" },
+  { key: "8", value: 8, text: "August" },
+  { key: "9", value: 9, text: "September" },
+  { key: "10", value: 10, text: "October" },
+  { key: "11", value: 11, text: "November" },
+  { key: "12", value: 12, text: "December" },
 ];
 
 interface SeedFormProps {
-  // The plant to edit
+  // The seed object to be used for the initial value of the form in edit mode
   seed?: Seed;
 }
 
@@ -52,7 +52,6 @@ interface SeedFormProps {
  * @returns
  */
 export function SeedForm({ seed }: SeedFormProps) {
-  const mode: FormModeType = seed ? "edit" : "add";
   // Application
   const { setViewSeedForm } = React.useContext(ApplicationContext);
 
@@ -66,7 +65,7 @@ export function SeedForm({ seed }: SeedFormProps) {
   const plantsOptions = plants.map((sd) => ({
     key: sd._id,
     value: sd._id,
-    text: sd.binomial,
+    text: sd.name,
   }));
 
   const plantIds = (plants: Plant[]) => {
@@ -78,16 +77,23 @@ export function SeedForm({ seed }: SeedFormProps) {
   };
 
   // Remapping for edit
-  const companionsIds = seed?.companions.map((plant) => {
-    if (plant) return plant._id;
-    else return "";
-  });
+  const companionsIds = () => {
+    if (seed?.companions)
+      return seed?.companions.map((plant) => {
+        if (plant) return plant._id;
+      });
+    else return [];
+  };
 
   // Remapping for edit
-  const competitorsIds = seed?.competitors.map((plant) => {
-    if (plant) return plant._id;
-    else return "";
-  });
+  const competitorsIds = () => {
+    if (seed?.competitors) {
+      console.log("seed.competitors", seed.competitors);
+      return seed?.competitors.map((plant) => {
+        if (plant) return plant._id;
+      });
+    } else return [];
+  };
 
   const seasons = useListEnum(Season);
   const water = useListEnum(Water);
@@ -105,54 +111,106 @@ export function SeedForm({ seed }: SeedFormProps) {
     sun: Yup.string().required("Type is required"),
     frost: Yup.string().required("Type is required"),
     water: Yup.string().required("Type is required"),
-    seeding_start: Yup.string().required("Seeding start is required"),
-    seeding_end: Yup.string().required("Seeding start is required"),
-    seeding_duration: Yup.string().required("Seeding start is required"),
-    transplanting_start: Yup.string().required(
-      "Transplanting start is required"
-    ),
-    transplanting_end: Yup.string().required("Transplanting end is required"),
-    transplanting_duration: Yup.string().required(
-      "Transplanting duration is required"
-    ),
-    planting_start: Yup.string().required("Planting start is required"),
-    planting_end: Yup.string().required("Planting end is required"),
-    planting_duration: Yup.string().required("Planting duration is required"),
-    harvesting_start: Yup.string().required("Harvesting start is required"),
-    harvesting_end: Yup.string().required("Harvesting end is required"),
-    harvesting_duration: Yup.string().required(
-      "Harvesting duration is required"
-    ),
-    spacing: Yup.string().required("Type is required"),
-    rows: Yup.string().required("Type is required"),
-    image: Yup.string().required("Image is required"),
+    seeding: Yup.object().shape({
+      start: Yup.number().required("Seeding start is required"),
+      end: Yup.number().required("Seeding start is required"),
+      duration: Yup.number().required("Seeding duration is required"),
+    }),
+    planting: Yup.object().shape({
+      start: Yup.number().required("Planting start is required"),
+      end: Yup.number().required("Planting start is required"),
+      duration: Yup.number().required("Planting duration is required"),
+    }),
+    transplanting: Yup.object().shape({
+      start: Yup.number().required("Transplanting start is required"),
+      end: Yup.number().required("Transplanting start is required"),
+      duration: Yup.number().required("Transplanting duration is required"),
+    }),
+    harvesting: Yup.object().shape({
+      start: Yup.number().required("Harvesting start is required"),
+      end: Yup.number().required("Harvesting start is required"),
+      duration: Yup.number().required("Harvesting duration is required"),
+    }),
+    spacing: Yup.number().required("Type is required"),
+    rows: Yup.number().required("Type is required"),
+    image: Yup.mixed().required("Image is required"),
   });
 
   // Form hook
   const {
     control,
     register,
+    watch,
     handleSubmit,
     reset,
     setValue,
     formState: { errors },
-  } = useForm<any>({
-    mode: "onTouched",
+  } = useForm<SeedFormData>({
+    defaultValues: {
+      species: seed?.plant._id,
+      name: seed?.name,
+      description: seed?.description,
+      type: seed?.type,
+      season: seed?.season,
+      sun: seed?.sun,
+      frost: seed?.frost,
+      water: seed?.water,
+      companions: companionsIds(),
+      competitors: competitorsIds(),
+      seeding: {
+        start: seed?.seeding.start,
+        end: seed?.seeding.end,
+        duration: seed?.seeding.duration,
+      },
+      planting: {
+        start: seed?.planting.start,
+        end: seed?.planting.end,
+        duration: seed?.planting.duration,
+      },
+      transplanting: {
+        start: seed?.transplanting.start,
+        end: seed?.transplanting.end,
+        duration: seed?.transplanting.duration,
+      },
+      harvesting: {
+        start: seed?.harvesting.start,
+        end: seed?.harvesting.end,
+        duration: seed?.harvesting.duration,
+      },
+      rows: seed?.rows,
+      spacing: seed?.spacing,
+      harvest: seed?.harvest,
+      image: undefined,
+      // file: null // set by FileSelect, validation on the file not image
+    },
+    mode: "onSubmit",
     resolver: yupResolver(validationSchema),
   });
+
+  const mode: FormModeType = seed ? "edit" : "add";
+  const watchAll = watch();
 
   useEffect(() => {
     console.log("SeedForm");
     fetchPlants();
   }, [fetchPlants]);
 
+  useEffect(() => {
+    console.log("Watch", watchAll);
+  }, [watch, watchAll]);
+
   const onSubmit = (data: SeedFormData) => {
     console.log("PlantForm.onSubmit", mode, data);
-    if (mode === "add") {
-      createSeed(data, onSuccess);
-    } else if (mode === "edit" && seed) {
-      data.id = seed._id;
-      updateSeed(data, onSuccess);
+    switch (mode) {
+      case "add":
+        createSeed(data, onSuccess);
+        break;
+      case "edit":
+        if (seed) data.id = seed._id;
+        updateSeed(data, onSuccess);
+        break;
+      default:
+        throw Error("FormMode not found");
     }
   };
 
@@ -169,38 +227,6 @@ export function SeedForm({ seed }: SeedFormProps) {
     setViewSeedForm(false);
     reset();
   };
-
-  // If the form is in `edit` mode and the plant to edit is set
-  // update the form values
-  useEffect(() => {
-    if (mode === "edit" && seed) {
-      console.log("SeedForm mode: edit", seed);
-      setValue("species", seed.plant.name);
-      setValue("name", seed.name);
-      setValue("description", seed.description);
-      setValue("type", seed.type);
-      setValue("season", seed.season);
-      setValue("sun", seed.sun);
-      setValue("frost", seed.frost);
-      setValue("water", seed.water);
-      // setValue("companions", seed.companions);
-      // setValue("competitors", seed.water);
-      setValue("seeding_start", seed.seeding.start);
-      setValue("seeding_end", seed.seeding.end);
-      setValue("seeding_duration", seed.seeding.duration);
-      setValue("transplanting_start", seed.transplanting.start);
-      setValue("transplanting_end", seed.transplanting.end);
-      setValue("transplanting_duration", seed.transplanting.duration);
-      setValue("planting_start", seed.planting.start);
-      setValue("planting_end", seed.planting.end);
-      setValue("planting_duration", seed.planting.duration);
-      setValue("harvesting_start", seed.harvesting.start);
-      setValue("harvesting_end", seed.harvesting.end);
-      setValue("harvesting_duration", seed.harvesting.duration);
-      setValue("spacing", seed.spacing);
-      setValue("rows", seed.rows);
-    }
-  }, [mode, seed, setValue]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} size="mini">
@@ -220,11 +246,12 @@ export function SeedForm({ seed }: SeedFormProps) {
             }) => (
               <FileSelect
                 value={seed?.image}
-                error={errors.image ? true : false}
                 onChange={(e) => {
                   console.log("ImageUpload::onChange() ", e.target.files);
-                  setValue(name, e.target.files);
+                  setValue(name, e.target.files[0]);
+                  onChange(e.target.files[0]);
                 }}
+                error={errors.image ? true : false}
               />
             )}
           />
@@ -246,8 +273,9 @@ export function SeedForm({ seed }: SeedFormProps) {
                   selection
                   fluid
                   options={plantsOptions}
-                  defaultValue={seed?.plant._id}
+                  value={value}
                   onChange={async (e, { name, value }) => {
+                    console.log("species change", value);
                     setValue(name, value);
                     onChange(value);
                   }}
@@ -441,8 +469,8 @@ export function SeedForm({ seed }: SeedFormProps) {
                   fluid
                   value={value}
                   options={plantsOptions}
-                  defaultValue={companionsIds}
                   onChange={async (e, { name, value }) => {
+                    console.log(name, value);
                     setValue(name, value);
                     onChange(value);
                   }}
@@ -469,7 +497,6 @@ export function SeedForm({ seed }: SeedFormProps) {
                   value={value}
                   options={plantsOptions}
                   wrapSelection={true}
-                  defaultValue={competitorsIds}
                   onChange={async (e, { name, value }) => {
                     setValue(name, value);
                     onChange(value);
@@ -487,7 +514,7 @@ export function SeedForm({ seed }: SeedFormProps) {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="seeding_start"
+                name="seeding.start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -502,19 +529,19 @@ export function SeedForm({ seed }: SeedFormProps) {
                     placeholder="Start"
                     search
                     selection
-                    defaultValue={value}
+                    ref={ref}
                     onChange={async (e, { name, value }) => {
                       console.log(name, value);
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.seeding_start ? true : false}
+                    error={(errors["seeding"] as any)?.start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="seeding_end"
+                name="seeding.end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -529,22 +556,25 @@ export function SeedForm({ seed }: SeedFormProps) {
                     search
                     selection
                     onChange={async (e, { name, value }) => {
+                      console.log(name, value);
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.seeding_end ? true : false}
+                    error={(errors["seeding"] as any)?.end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="seeding_duration"
+                name="seeding.duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Field error={errors.seeding_duration ? true : false}>
+                  <Form.Field
+                    error={(errors["seeding"] as any)?.duration ? true : false}
+                  >
                     <Input
                       fluid
                       value={value}
@@ -563,7 +593,7 @@ export function SeedForm({ seed }: SeedFormProps) {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="transplanting_start"
+                name="transplanting.start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -581,13 +611,15 @@ export function SeedForm({ seed }: SeedFormProps) {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.transplanting_start ? true : false}
+                    error={
+                      (errors["transplanting"] as any)?.start ? true : false
+                    }
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="transplanting_end"
+                name="transplanting.end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -605,20 +637,22 @@ export function SeedForm({ seed }: SeedFormProps) {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.transplanting_end ? true : false}
+                    error={(errors["transplanting"] as any)?.end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="transplanting_duration"
+                name="transplanting.duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
                   <Form.Field
-                    error={errors.transplanting_duration ? true : false}
+                    error={
+                      (errors["transplanting"] as any)?.duration ? true : false
+                    }
                   >
                     <Input
                       fluid
@@ -638,7 +672,7 @@ export function SeedForm({ seed }: SeedFormProps) {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="planting_start"
+                name="planting.start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -656,13 +690,13 @@ export function SeedForm({ seed }: SeedFormProps) {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.planting_start ? true : false}
+                    error={(errors["planting"] as any)?.start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="planting_end"
+                name="planting.end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -680,19 +714,21 @@ export function SeedForm({ seed }: SeedFormProps) {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.planting_end ? true : false}
+                    error={(errors["planting"] as any)?.end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="planting_duration"
+                name="planting.duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Field error={errors.planting_duration ? true : false}>
+                  <Form.Field
+                    error={(errors["seeding"] as any)?.duration ? true : false}
+                  >
                     <Input
                       fluid
                       value={value}
@@ -711,7 +747,7 @@ export function SeedForm({ seed }: SeedFormProps) {
             <FormGroup widths="equal">
               <Controller
                 control={control}
-                name="harvesting_start"
+                name="harvesting.start"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -729,13 +765,13 @@ export function SeedForm({ seed }: SeedFormProps) {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.harvesting_start ? true : false}
+                    error={(errors["harvesting"] as any)?.start ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="harvesting_end"
+                name="harvesting.end"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
@@ -753,19 +789,23 @@ export function SeedForm({ seed }: SeedFormProps) {
                       setValue(name, value);
                       onChange(value);
                     }}
-                    error={errors.harvesting_end ? true : false}
+                    error={(errors["harvesting"] as any)?.end ? true : false}
                   />
                 )}
               />
               <Controller
                 control={control}
-                name="harvesting_duration"
+                name="harvesting.duration"
                 render={({
                   field: { onChange, onBlur, value, name, ref },
                   fieldState: { invalid, isTouched, isDirty, error },
                   formState,
                 }) => (
-                  <Form.Field error={errors.harvesting_duration ? true : false}>
+                  <Form.Field
+                    error={
+                      (errors["harvesting"] as any)?.duration ? true : false
+                    }
+                  >
                     <Input
                       fluid
                       value={value}
@@ -822,6 +862,7 @@ export function SeedForm({ seed }: SeedFormProps) {
                       labelPosition="right"
                       placeholder="Rows"
                       fluid
+                      value={value}
                       onChange={onChange}
                     />
                   </Form.Field>

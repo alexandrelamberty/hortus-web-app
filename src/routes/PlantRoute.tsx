@@ -71,6 +71,7 @@ export function PlantRoute() {
               label="Plant"
               onClick={() => {
                 console.log("add");
+                // dispatch({type:"ADD_SEED"})
                 setViewPlantForm(!viewPlantForm);
               }}
             />
@@ -79,6 +80,7 @@ export function PlantRoute() {
                 console.log("select ", content);
                 if (content === "none") setSelecteds([]);
                 else if (content === "all") {
+                  // dispatch({type:"SELECT_ALL_SEED"})
                   setSelecteds(ids);
                 }
               }}
@@ -128,7 +130,7 @@ export function PlantRoute() {
       {renderView()}
 
       <Confirm
-        open={true}
+        open={false}
         onCancel={() => {
           console.log("cancel");
         }}

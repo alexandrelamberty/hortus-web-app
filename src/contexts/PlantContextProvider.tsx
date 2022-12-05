@@ -1,7 +1,26 @@
 import axios from "axios";
 import * as React from "react";
 import { Plant } from "src/interfaces/Plant";
+import { Seed } from "src/interfaces/Seed";
 import { ApplicationContext } from "./ApplicationContextProvider";
+
+export enum ActionType {
+  LOAD = "load",
+  SELECT = "select",
+  UNSELECT = "unselect",
+  SELECT_ALL = "select_all",
+  SELECT_NONE = "select_none",
+  FILTER = "filter",
+  SEARCH = "search",
+  ADD = "add",
+  DELETE = "delete",
+  UPDATE = "update",
+}
+
+interface Action {
+  type: ActionType;
+  payload: any;
+}
 
 export interface PlantContextType {
   isLoading: boolean;
@@ -16,7 +35,7 @@ export interface PlantContextType {
   fetchPlants: () => void;
   createPlant: (plant: FormData, callback: VoidFunction) => void;
   updatePlant: (id: string, plant: FormData, callback: VoidFunction) => void;
-  deletePlant: (id: number, callback?: VoidFunction) => void;
+  deletePlant: (id: string, callback?: VoidFunction) => void;
   deletePlants: (ids: string[], callback?: VoidFunction) => void;
 }
 
@@ -101,7 +120,17 @@ export function PlantContextProvider({
           },
         })
         .then(function (response) {
-          setPlants([...plants].concat(response.data));
+          console.log("updated plant", response.data);
+          const newplants = plants.map((obj) => {
+            // 👇️ if id equals 2, update country property
+            if (obj._id === id) {
+              return response.data;
+            }
+
+            // 👇️ otherwise return object as is
+            return obj;
+          });
+          setPlants(newplants);
           setIsLoading(false);
           callback();
         })
@@ -114,13 +143,13 @@ export function PlantContextProvider({
   );
 
   const deletePlant = React.useCallback(
-    (id: number, callback?: VoidFunction) => {
+    (id: string, callback?: VoidFunction) => {
       setIsLoading(true);
       axios
         .post(apiUrl, id)
         .then(function (response) {
           console.log(response);
-          setPlants([...plants].concat(response.data));
+          setPlants(plants.filter((plant) => plant._id !== id));
           setIsLoading(false);
         })
         .catch(function (error) {

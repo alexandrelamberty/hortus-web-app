@@ -47,10 +47,10 @@ export default function PlantTable({ plants, onChange }: PlantTableProps) {
   const [activeRowId, setActiveRowId] = useState("");
   const [mouseDownId, setMouseDownId] = useState("");
 
-  // Return true if a plant
-  const isSelected = (id: string): boolean => {
-    return selecteds.includes(id);
-  };
+  const isSeedSelected = useMemo(
+    () => (id: any) => selecteds.includes(id),
+    [selecteds]
+  );
 
   useEffect(() => {
     console.log("selected", selecteds);
@@ -136,7 +136,7 @@ export default function PlantTable({ plants, onChange }: PlantTableProps) {
             <Table.Cell collapsing>
               <Checkbox
                 id={plant._id}
-                checked={isSelected(plant._id)}
+                checked={isSeedSelected(plant._id)}
                 onChange={(event, data) => onCheckboxChange(event, data)}
                 onMouseDown={(event, data) => onCheckboxMouseDown(event, data)}
               />

@@ -7,6 +7,7 @@ import SeedGridCard from "./SeedGridCard";
 const SeedFormGrid = () => {
   const { seeds, fetchSeeds } = useContext(SeedContext);
 
+  const onChange = (seed: Seed) => {};
   useEffect(() => {
     fetchSeeds();
   }, [fetchSeeds]);
@@ -15,7 +16,7 @@ const SeedFormGrid = () => {
     <Grid>
       {seeds.map((seed: Seed) => (
         <Grid.Column key={seed._id} mobile={16} tablet={8} computer={2}>
-          <SeedGridCard seed={seed} />
+          <SeedGridCard seed={seed} onChange={onChange} />
         </Grid.Column>
       ))}
     </Grid>

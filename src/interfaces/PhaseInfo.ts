@@ -3,8 +3,8 @@
  *
  */
 export interface PhaseInfo {
-  start: string;
-  end: string;
-  status: string;
+  start: number;
+  end: number;
   duration: number;
+  status: string;
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Checkbox, Label, Table } from "semantic-ui-react";
 import { SeedContext } from "src/contexts/SeedContextProvider";
 import { Seed } from "src/interfaces/Seed";
@@ -52,10 +52,10 @@ export default function SeedTable({ seeds, onChange }: SeedTableProps) {
     }
   }
 
-  // Return true if a plant
-  const isSelected = (id: string): boolean => {
-    return selecteds.includes(id);
-  };
+  const isSeedSelected = useMemo(
+    () => (id: any) => selecteds.includes(id),
+    [selecteds]
+  );
 
   return (
     <Table size="small" definition sortable selectable celled compact>
@@ -85,7 +85,7 @@ export default function SeedTable({ seeds, onChange }: SeedTableProps) {
             <Table.Cell collapsing>
               <Checkbox
                 id={seed._id}
-                checked={isSelected(seed._id)}
+                checked={isSeedSelected(seed._id)}
                 onChange={(event, data) => onCheckboxChange(event, data)}
                 onMouseDown={(event, data) => onCheckboxMouseDown(event, data)}
               />

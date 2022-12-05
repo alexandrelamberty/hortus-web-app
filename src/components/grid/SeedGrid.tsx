@@ -4,7 +4,11 @@ import { Seed } from "src/interfaces/Seed";
 import { SeedContext } from "src/contexts/SeedContextProvider";
 import SeedGridCard from "./SeedGridCard";
 
-const SeedGrid = () => {
+type GridProps = {
+  onChange: (seed: Seed) => void;
+};
+
+const SeedGrid = ({ onChange }: GridProps) => {
   const { seeds, fetchSeeds } = useContext(SeedContext);
 
   useEffect(() => {
@@ -15,7 +19,7 @@ const SeedGrid = () => {
     <Grid>
       {seeds.map((seed: Seed) => (
         <Grid.Column key={seed._id} mobile={16} tablet={8} computer={4}>
-          <SeedGridCard seed={seed} />
+          <SeedGridCard seed={seed} onChange={onChange} />
         </Grid.Column>
       ))}
     </Grid>
