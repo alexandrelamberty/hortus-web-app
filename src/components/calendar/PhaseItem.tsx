@@ -1,19 +1,20 @@
-import React from "react";
-import { Grid, Label, LabelGroup } from "semantic-ui-react";
+import { Grid, Label } from "semantic-ui-react";
 import { PhaseStatus } from "src/enums/PhaseStatus";
-import { Phase } from "src/interfaces/Phase";
+import { CulturePhase } from "src/interfaces/Culture";
+import { PhaseInfo, Seed } from "src/interfaces/Seed";
 import PhaseCalendar from "./PhaseCalendar";
 import PhaseControlls from "./PhaseControlls";
 
 interface PhaseItemProps {
-  phase: Phase;
+  seed: PhaseInfo;
+  phase: CulturePhase;
   type: string;
 }
-export function PhaseItem({ phase, type }: PhaseItemProps): JSX.Element {
+
+export function PhaseItem({ seed, phase, type }: PhaseItemProps): JSX.Element {
   const onPhaseChange = (status: string) => {
     console.log("phase change status", status);
   };
-
   const getColor = () => {
     switch (phase.status) {
       case PhaseStatus.Pending:
@@ -70,9 +71,11 @@ export function PhaseItem({ phase, type }: PhaseItemProps): JSX.Element {
   };
 
   return (
-    <Grid className="phase-item-grid" columns={4}>
+    <Grid className="phase-item">
       <Grid.Column width={2}>
-        <Label color={getColor()}>{phase.status}</Label>
+        <Label color={getColor()} fluid>
+          {phase.status}
+        </Label>
       </Grid.Column>
       <Grid.Column width={2}>
         <PhaseControlls
@@ -83,7 +86,7 @@ export function PhaseItem({ phase, type }: PhaseItemProps): JSX.Element {
       </Grid.Column>
       <Grid.Column width={3}>{renderDetails()}</Grid.Column>
       <Grid.Column width={9}>
-        <PhaseCalendar phase={phase} />
+        <PhaseCalendar seed={seed} phase={phase} type={type} />
       </Grid.Column>
     </Grid>
   );

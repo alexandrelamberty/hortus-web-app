@@ -3,7 +3,7 @@ import { Season } from "src/enums/Season";
 import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
-import { PhaseInfo } from "./PhaseInfo";
+import { PhaseInfo } from "./Seed";
 
 /**
  * Shape of the SeedForm properties

@@ -1,12 +1,12 @@
-import { ButtonGroup } from "semantic-ui-react";
 import { PhaseActions } from "src/enums/PhaseActions";
-import { Phase } from "src/interfaces/Phase";
+import { CulturePhase } from "src/interfaces/Culture";
+import { PhaseInfo } from "src/interfaces/Seed";
 import { PhaseControl } from "../button/PhaseControl";
 
 type PhaseCellProps = {
   // remove must be in the Phase object
   type: string;
-  phase: Phase;
+  phase: CulturePhase;
   onPhaseChange: (status: PhaseActions) => void;
 };
 

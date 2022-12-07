@@ -1,15 +1,14 @@
-import { Input, Label, Table } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 import { PhaseActions } from "src/enums/PhaseActions";
 import { getColor } from "src/enums/PhaseStatus";
-import { Phase } from "src/interfaces/Phase";
+import { CulturePhase } from "src/interfaces/Culture";
 import { PhaseControl } from "../button/PhaseControl";
 import PhaseCalendar from "../calendar/PhaseCalendar";
-import { HarvestingForm } from "../form/HarvestingForm";
 
 type PhaseCellProps = {
   // remove must be in the Phase object
   type: string;
-  phase: Phase;
+  phase: CulturePhase;
   onPhaseChange: (status: PhaseActions) => void;
 };
 
@@ -132,7 +131,7 @@ const PhaseTableCell = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
       <Label.Group>
         <Label color={statusColor}>{phase.status}</Label>
         {renderControlls()}
-        <PhaseCalendar phase={phase} />
+        {/* <PhaseCalendar phase={phase} /> */}
       </Label.Group>
     </>
   );

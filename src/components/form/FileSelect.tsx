@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 
-import {
-  Button,
-  Form,
-  Header,
-  Icon,
-  Image,
-  Message,
-  Segment,
-} from "semantic-ui-react";
+import { Button, Form, Header, Icon, Image, Message } from "semantic-ui-react";
 
 interface FileSelectProps {
   value: string | undefined;

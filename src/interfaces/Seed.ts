@@ -3,11 +3,10 @@ import { Season } from "src/enums/Season";
 import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
-import { PhaseInfo } from "./PhaseInfo";
 import { Plant } from "./Plant";
 
 /**
- * Seed represent the stored document
+ * Seed botanical and culture informations.
  */
 export interface Seed {
   _id: string;
@@ -31,4 +30,13 @@ export interface Seed {
   image: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+/**
+ * Preconized period and estimated duration for a culture phase.
+ */
+export interface PhaseInfo {
+  start: number;
+  end: number;
+  duration: number;
 }

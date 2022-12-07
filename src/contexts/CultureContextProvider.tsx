@@ -11,10 +11,13 @@ export interface CultureContextType {
   setFormOpen: any;
   count: number;
   cultures: Culture[];
+  //
   selected: number[];
   setSelected: any;
+  //
   selectedSeed: Seed | undefined;
   setSelectedSeed: any;
+
   fetchCultures: () => void;
   createCulture: (data: any, callback: VoidFunction) => void;
   updateCulture: (culture: CultureFormData, callback: VoidFunction) => void;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -7,6 +7,7 @@ import {
   MenuItemProps,
 } from "semantic-ui-react";
 import { SettingsForm } from "src/components/form/SettingsForm";
+import { Seed } from "src/interfaces/Seed";
 
 export function SettingsRoute() {
   return (
@@ -22,6 +23,10 @@ export function SettingsRoute() {
   );
 }
 
+/**
+ *
+ * @returns
+ */
 const SettingsMenu = () => {
   const [state, setState] = useState({ activeItem: "applicatio" });
 

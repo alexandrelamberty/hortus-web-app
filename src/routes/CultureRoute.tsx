@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
-import { Button, Container, Icon, Input, Modal } from "semantic-ui-react";
+import React, { useContext } from "react";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
+import { Button, Container, Icon, Input, Menu, Modal } from "semantic-ui-react";
 import { CultureForm } from "src/components/form/CultureForm";
 import CultureList from "src/components/list/CultureList";
 import { ActionMenu } from "src/components/menu/ActionMenu";
@@ -7,9 +8,7 @@ import { AddMenuItem } from "src/components/menu/AddMenuItem";
 import { DeleteMenuItem } from "src/components/menu/DeleteMenuItem";
 import { SearchMenuItem } from "src/components/menu/SearchMenuItem";
 import { SelectMenuItem } from "src/components/menu/SelectMenuItem";
-
 import { View, ViewMenuItem } from "src/components/menu/ViewMenuItem";
-import CultureTable from "src/components/table/CultureTable";
 import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 import { CultureContext } from "src/contexts/CultureContextProvider";
 
@@ -53,6 +52,7 @@ export function CultureRoute() {
   };
 
   const onSubmit = () => {
+    console.log("submit");
     if (selectedSeed) {
       let seed = {
         seed: selectedSeed,
@@ -66,7 +66,7 @@ export function CultureRoute() {
   };
 
   return (
-    <Container>
+    <>
       <ActionMenu
         left={
           <>
@@ -94,6 +94,9 @@ export function CultureRoute() {
         }
         right={
           <>
+            <Menu.Item>
+              <SemanticDatepicker size="small" />
+            </Menu.Item>
             <SearchMenuItem
               onChange={(terms) => {
                 console.log("search", terms);
@@ -112,7 +115,35 @@ export function CultureRoute() {
 
       {/* FIXME: loading */}
       {/* <CultureTable /> */}
-      <CultureList />
+      <div style={{ height: "70vh", overflowY: "scroll" }}>
+        <CultureList />
+      </div>
+      <table className="hover:table-fixed">
+        <thead>
+          <tr>
+            <th>Song</th>
+            <th>Artist</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+            <td>Malcolm Lockyer</td>
+            <td>1961</td>
+          </tr>
+          <tr>
+            <td>Witchy Woman</td>
+            <td>The Eagles</td>
+            <td>1972</td>
+          </tr>
+          <tr>
+            <td>Shining Star</td>
+            <td>Earth, Wind, and Fire</td>
+            <td>1975</td>
+          </tr>
+        </tbody>
+      </table>
 
       {/* CultureForm  */}
       <Modal
@@ -139,6 +170,6 @@ export function CultureRoute() {
           </Button>
         </Modal.Actions>
       </Modal>
-    </Container>
+    </>
   );
 }

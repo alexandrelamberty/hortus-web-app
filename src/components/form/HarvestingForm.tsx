@@ -6,10 +6,14 @@ import { CultureLocation } from "src/enums/CultureLocation";
 import { CultureSoil } from "src/enums/CultureSoil";
 import { useListEnum } from "src/hooks/useListEnum";
 import * as Yup from "yup";
-
+/**
+ * HarvestinForm
+ * @returns
+ */
 export const HarvestingForm = () => {
   const locations = useListEnum(CultureLocation);
   const soils = useListEnum(CultureSoil);
+
   // Schema validation
   const validationSchema = Yup.object().shape({
     location: Yup.string().required("Location is required"),

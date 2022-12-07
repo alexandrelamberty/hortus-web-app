@@ -24,7 +24,7 @@ import { Seed } from "src/interfaces/Seed";
 import { SeedFormData } from "src/interfaces/SeedFormData";
 import * as Yup from "yup";
 import { FormModeType } from "./FormMode";
-import { FileSelect } from "./ImageUpload";
+import { FileSelect } from "./FileSelect";
 
 const months = [
   { key: "1", value: 1, text: "January" },

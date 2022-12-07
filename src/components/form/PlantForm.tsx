@@ -7,7 +7,7 @@ import { PlantContext } from "src/contexts/PlantContextProvider";
 import { Plant } from "src/interfaces/Plant";
 import * as Yup from "yup";
 import { FormModeType } from "./FormMode";
-import { FileSelect } from "./ImageUpload";
+import { FileSelect } from "./FileSelect";
 import { PlantFormData } from "src/interfaces/PlantFormData";
 interface PlantFormProps {
   // The plant to edit

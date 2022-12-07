@@ -3,8 +3,7 @@ import { Season } from "src/enums/Season";
 import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
-import { PhaseInfo } from "./PhaseInfo";
-import { Plant } from "./Plant";
+import { PhaseInfo } from "./Seed";
 
 /**
  * Seed
@@ -14,7 +13,7 @@ export interface SeedDTO {
   name: string;
   description: string;
   type: Type;
-  // harvest: number[];
+  // FIXME: harvest: number[];
   season: Season;
   sun: Sun;
   frost: Frost;
