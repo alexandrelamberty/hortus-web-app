@@ -43,21 +43,25 @@ export const CultureListItem = ({ culture }: CultureItemProps) => {
         </Grid.Column>
         <Grid.Column width={14}>
           <PhaseItem
+            culture={culture}
             seed={culture.seed.seeding}
             phase={culture.seeding}
             type="seeding"
           />
           <PhaseItem
+            culture={culture}
             seed={culture.seed.transplanting}
             phase={culture.seeding}
             type="planting"
           />
           <PhaseItem
+            culture={culture}
             seed={culture.seed.planting}
             phase={culture.planting}
             type="transplanting"
           />
           <PhaseItem
+            culture={culture}
             seed={culture.seed.harvesting}
             phase={culture.harvesting}
             type="harvesting"

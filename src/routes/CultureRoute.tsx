@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { Button, Container, Icon, Input, Menu, Modal } from "semantic-ui-react";
 import { CultureForm } from "src/components/form/CultureForm";
+import { PhaseForm } from "src/components/form/PhaseForm";
 import CultureList from "src/components/list/CultureList";
 import { ActionMenu } from "src/components/menu/ActionMenu";
 import { AddMenuItem } from "src/components/menu/AddMenuItem";
@@ -19,6 +20,10 @@ export function CultureRoute() {
     setViewCultureForm,
     cultureViewType,
     setCultureViewType,
+    showPhaseForm,
+    setShowPhaseForm,
+    setShowHarvestingForm,
+    showHarvestingForm,
     modals,
   } = useContext(ApplicationContext);
   // Plant context
@@ -35,7 +40,7 @@ export function CultureRoute() {
     deleteCultures(selected);
   };
 
-  // Pagination display
+  // Pagination displayZ
   const onDisplayChange = (number: number) => {
     console.log("CultureRoute.changePage", number);
   };
@@ -118,32 +123,6 @@ export function CultureRoute() {
       <div style={{ height: "70vh", overflowY: "scroll" }}>
         <CultureList />
       </div>
-      <table className="hover:table-fixed">
-        <thead>
-          <tr>
-            <th>Song</th>
-            <th>Artist</th>
-            <th>Year</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-            <td>Malcolm Lockyer</td>
-            <td>1961</td>
-          </tr>
-          <tr>
-            <td>Witchy Woman</td>
-            <td>The Eagles</td>
-            <td>1972</td>
-          </tr>
-          <tr>
-            <td>Shining Star</td>
-            <td>Earth, Wind, and Fire</td>
-            <td>1975</td>
-          </tr>
-        </tbody>
-      </table>
 
       {/* CultureForm  */}
       <Modal
@@ -169,6 +148,32 @@ export function CultureRoute() {
             <Icon name="checkmark" /> Start
           </Button>
         </Modal.Actions>
+      </Modal>
+
+      {/* Seeding, Transplanting and Planting Phases Form modal */}
+
+      <Modal
+        size="small"
+        onClose={() => setShowPhaseForm(false)}
+        onOpen={() => setShowPhaseForm(true)}
+        open={showPhaseForm}
+      >
+        <Modal.Header>Start phase</Modal.Header>
+        <Modal.Content image>
+          <PhaseForm />
+        </Modal.Content>
+      </Modal>
+
+      {/* Harvesting Phase Form Modal */}
+
+      <Modal
+        size="small"
+        onClose={() => setShowHarvestingForm(false)}
+        onOpen={() => setShowHarvestingForm(true)}
+        open={showHarvestingForm}
+      >
+        <Modal.Header>Start harvesting</Modal.Header>
+        <Modal.Content image></Modal.Content>
       </Modal>
     </>
   );

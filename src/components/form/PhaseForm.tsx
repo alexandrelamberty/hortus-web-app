@@ -37,12 +37,21 @@ export const PhaseForm = () => {
 
   const onSubmit = (data: any) => {
     console.log("onSubmit", data);
+    // update culture creating an object form the right phase!
+    let ob = {
+      seeding: {
+        soil: "",
+        location: "",
+        quantity: "",
+      },
+    };
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} size="mini">
       <Form.Group>
-        <Form.Field width={7}>
+        {/*  */}
+        <Form.Field width={6}>
           <Controller
             control={control}
             name="location"
@@ -56,7 +65,6 @@ export const PhaseForm = () => {
                 label="Location"
                 placeholder="Select"
                 selection
-                fluid
                 options={locations}
                 onChange={async (e, { name, value }) => {
                   setValue(name, value);
@@ -67,7 +75,8 @@ export const PhaseForm = () => {
             )}
           />
         </Form.Field>
-        <Form.Field width={5}>
+        {/*  */}
+        <Form.Field width={6}>
           <Controller
             control={control}
             name="soil"
@@ -81,7 +90,6 @@ export const PhaseForm = () => {
                 label="Soil"
                 placeholder="Select"
                 selection
-                fluid
                 options={soils}
                 onChange={async (e, { name, value }) => {
                   setValue(name, value);
@@ -92,7 +100,9 @@ export const PhaseForm = () => {
             )}
           />
         </Form.Field>
-        <Form.Field width={6}>
+
+        {/*  */}
+        <Form.Field width={4}>
           <Controller
             control={control}
             name="soil"
@@ -105,7 +115,6 @@ export const PhaseForm = () => {
                 name="soil"
                 label="Quantity"
                 placeholder="ex: 200"
-                fluid
                 onChange={onChange}
                 error={errors.type ? true : false}
               />
@@ -113,6 +122,7 @@ export const PhaseForm = () => {
           />
         </Form.Field>
       </Form.Group>
+      {/* FormActions */}
       <ButtonGroup floated="right" size="mini">
         <Button
           onClick={() => {

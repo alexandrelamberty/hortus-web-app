@@ -1,4 +1,5 @@
 import { PhaseActions } from "src/enums/PhaseActions";
+import { PhaseStatus } from "src/enums/PhaseStatus";
 import { CulturePhase } from "src/interfaces/Culture";
 import { PhaseInfo } from "src/interfaces/Seed";
 import { PhaseControl } from "../button/PhaseControl";
@@ -7,7 +8,7 @@ type PhaseCellProps = {
   // remove must be in the Phase object
   type: string;
   phase: CulturePhase;
-  onPhaseChange: (status: PhaseActions) => void;
+  onPhaseAction: (action: PhaseActions) => void;
 };
 
 /**
@@ -17,14 +18,14 @@ type PhaseCellProps = {
  * @param param0
  * @returns JSX.Element
  */
-const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
+const PhaseControlls = ({ type, phase, onPhaseAction }: PhaseCellProps) => {
   /**
    * Render controlls for the phase status
    * @returns
    */
   const renderControlls = () => {
     switch (phase.status) {
-      case "pending":
+      case PhaseStatus.Pending:
         return (
           <>
             <PhaseControl
@@ -32,7 +33,7 @@ const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
               icon="play"
               tooltip="Start phase"
               onClick={() => {
-                onPhaseChange(PhaseActions.START);
+                onPhaseAction(PhaseActions.START);
               }}
             />{" "}
             <PhaseControl
@@ -40,12 +41,12 @@ const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
               icon="step forward"
               tooltip="Skip phase"
               onClick={() => {
-                onPhaseChange(PhaseActions.SKIP);
+                onPhaseAction(PhaseActions.SKIP);
               }}
             />
           </>
         );
-      case "skipped":
+      case PhaseStatus.Skipped:
         return (
           <>
             <PhaseControl
@@ -53,12 +54,12 @@ const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
               icon="undo"
               tooltip="Reset phase"
               onClick={() => {
-                onPhaseChange(PhaseActions.RESET);
+                onPhaseAction(PhaseActions.RESET);
               }}
             />
           </>
         );
-      case "started":
+      case PhaseStatus.Started:
         return (
           <>
             <PhaseControl
@@ -66,7 +67,7 @@ const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
               icon="check"
               tooltip="End phase"
               onClick={() => {
-                onPhaseChange(PhaseActions.END);
+                onPhaseAction(PhaseActions.END);
               }}
             />{" "}
             {type === "harvesting" && (
@@ -75,13 +76,13 @@ const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
                 icon="shopping basket"
                 tooltip="Harvest update"
                 onClick={() => {
-                  onPhaseChange(PhaseActions.UPDATE);
+                  onPhaseAction(PhaseActions.UPDATE);
                 }}
               />
             )}
           </>
         );
-      case "done":
+      case PhaseStatus.Done:
         return (
           <>
             <PhaseControl
@@ -89,7 +90,7 @@ const PhaseControlls = ({ type, phase, onPhaseChange }: PhaseCellProps) => {
               icon="check"
               tooltip="End phase"
               onClick={() => {
-                onPhaseChange(PhaseActions.END);
+                onPhaseAction(PhaseActions.END);
               }}
             />
           </>

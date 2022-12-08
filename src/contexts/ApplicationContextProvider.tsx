@@ -16,23 +16,28 @@ export interface ApplicationContextType {
   status: string;
   apiUrl: string;
   staticUrl: string;
-  //
+  // Modals
   viewPlantForm: boolean;
-  viewSeedForm: boolean;
-  viewCultureForm: boolean;
-  //
   setViewPlantForm: any;
+  viewSeedForm: boolean;
   setViewSeedForm: any;
+  viewCultureForm: boolean;
   setViewCultureForm: any;
-  //
+  // View types
   plantViewType: View;
-  seedViewType: View;
-  cultureViewType: View;
-  //
   setSeedViewType: any;
+  seedViewType: View;
   setPlantViewType: any;
+  cultureViewType: View;
   setCultureViewType: any;
+  // Culture phases modals
+  showPhaseForm: boolean;
+  setShowPhaseForm: any;
+  showHarvestingForm: boolean;
+  setShowHarvestingForm: any;
+  // FIXME: Implement all modals in an object
   modals: Modals;
+  // Global application erros
   errors: Error | undefined;
   setErrors: any;
 }
@@ -49,9 +54,9 @@ export function ApplicationContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  // Application API and static assets server urls
   const apiUrl = useConfig(API_URL);
   const staticUrl = useConfig(STATIC_URL);
-
   // Application
   const [status, setStatus] = React.useState("Loading...");
   const [errors, setErrors] = React.useState(undefined);
@@ -60,11 +65,14 @@ export function ApplicationContextProvider({
   const [viewPlantForm, setViewPlantForm] = React.useState<boolean>(false);
   const [viewSeedForm, setViewSeedForm] = React.useState<boolean>(false);
   const [viewCultureForm, setViewCultureForm] = React.useState<boolean>(false);
+  const [showPhaseForm, setShowPhaseForm] = React.useState<boolean>(false);
+  const [showHarvestingForm, setShowHarvestingForm] =
+    React.useState<boolean>(false);
   // ViewType
   const [seedViewType, setSeedViewType] = React.useState<View>("grid");
   const [plantViewType, setPlantViewType] = React.useState<View>("table");
   const [cultureViewType, setCultureViewType] = React.useState<View>("grid");
-
+  // TODO: to implement XD
   const [modals, setModals] = React.useState(null!);
 
   React.useEffect(() => {
@@ -92,6 +100,10 @@ export function ApplicationContextProvider({
         setSeedViewType,
         setPlantViewType,
         setCultureViewType,
+        showPhaseForm,
+        setShowPhaseForm,
+        showHarvestingForm,
+        setShowHarvestingForm,
         apiUrl,
         staticUrl,
         modals,
