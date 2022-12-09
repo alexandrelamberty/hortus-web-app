@@ -1,3 +1,7 @@
+/**
+ * Culture soils
+ * @see Culture
+ */
 export enum CultureSoil {
   Sandy = "sandy",
   Clay = "clay",

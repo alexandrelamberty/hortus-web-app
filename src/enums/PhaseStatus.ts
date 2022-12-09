@@ -1,7 +1,7 @@
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
- * Represent the state of a Phase
+ * Culture phase status
  * @see interfaces/Phase
  */
 export enum PhaseStatus {

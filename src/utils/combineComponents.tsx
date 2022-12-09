@@ -1,6 +1,10 @@
-// combineComponents.tsx
-import React, { ComponentProps, FC } from 'react';
-
+import React, { ComponentProps, FC } from "react";
+/**
+ * Combine components
+ * @param components
+ * @returns
+ * @see https://medium.com/front-end-weekly/how-to-combine-context-providers-for-cleaner-react-code-9ed24f20225e
+ */
 export const combineComponents = (...components: FC<any>[]): FC => {
   return components.reduce(
     (AccumulatedComponents, CurrentComponent) => {
@@ -12,6 +16,6 @@ export const combineComponents = (...components: FC<any>[]): FC => {
         );
       };
     },
-    ({ children }) => <>{children}</>,
+    ({ children }) => <>{children}</>
   );
 };

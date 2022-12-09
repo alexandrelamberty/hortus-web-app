@@ -1,3 +1,7 @@
+/**
+ * Culture locations
+ * @see Culture
+ */
 export enum CultureLocation {
   Outside = "outside",
   Inside = "inside",

@@ -5,7 +5,7 @@ import { PhaseActions } from "src/enums/PhaseActions";
 import { PhaseStatus } from "src/enums/PhaseStatus";
 import { PhaseType } from "src/enums/PhaseType";
 import { Culture, CulturePhase } from "src/interfaces/Culture";
-import { PhaseInfo, Seed } from "src/interfaces/Seed";
+import { PhaseInfo } from "src/interfaces/Seed";
 import PhaseCalendar from "./PhaseCalendar";
 import PhaseControlls from "./PhaseControlls";
 

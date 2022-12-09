@@ -1,5 +1,5 @@
 /**
- * Represent the type of culture phase
+ * Culture phase types
  * @see Culture
  */
 export enum PhaseType {

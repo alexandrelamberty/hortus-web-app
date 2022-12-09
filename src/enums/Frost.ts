@@ -1,3 +1,7 @@
+/**
+ * Seed frost tolerences
+ * @see Seed
+ */
 export enum Frost {
   Tolerant = "tolerent",
   NonTolerant = "non_tolerent",

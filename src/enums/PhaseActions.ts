@@ -1,5 +1,5 @@
 /**
- * Represent the state of a Phase
+ * Culture phase actions
  * @see interfaces/Phase
  */
 export enum PhaseActions {

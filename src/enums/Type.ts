@@ -1,3 +1,6 @@
+/**
+ * Plant type constants
+ */
 export enum Type {
   Bulb = "bulb",
   Flower = "flower",
