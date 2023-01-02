@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Button, Confirm, MenuItem, Modal } from "semantic-ui-react";
+import { Confirm, Modal } from "semantic-ui-react";
 import { PlantForm } from "src/components/form/PlantForm";
 import PlantGrid from "src/components/grid/PlantGrid";
 import PlantList from "src/components/list/PlantList";
@@ -151,16 +151,8 @@ export function PlantRoute() {
         onOpen={() => setViewPlantForm(true)}
         style={{ backgroundColor: "#252631" }}
       >
-        <Modal.Header
-          style={{
-            backgroundColor: "#252631",
-            color: "#0899",
-            borderBottomColor: "#CCC",
-          }}
-        >
-          New Plant
-        </Modal.Header>
-        <Modal.Content image style={{ backgroundColor: "#252631" }}>
+        <Modal.Header>New Plant</Modal.Header>
+        <Modal.Content image>
           <Modal.Description>
             <PlantForm plant={selected} />
           </Modal.Description>

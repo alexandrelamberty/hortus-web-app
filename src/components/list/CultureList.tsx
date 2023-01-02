@@ -1,9 +1,12 @@
-import React, { useContext, useEffect } from "react";
-import { Button, Grid, Image, List } from "semantic-ui-react";
-import { Culture } from "src/interfaces/Culture";
+import { useContext, useEffect } from "react";
+import { Grid, List } from "semantic-ui-react";
 import { CultureContext } from "src/contexts/CultureContextProvider";
+import { Culture } from "src/interfaces/Culture";
 import { PhaseItem } from "../calendar/PhaseItem";
 
+/**
+ * Display a list of culture
+ */
 export default function CultureList() {
   const { cultures, fetchCultures } = useContext(CultureContext);
 
@@ -26,9 +29,7 @@ type CultureItemProps = {
 };
 
 /**
- *
- * @param item
- * @returns
+ *  Display a culture
  */
 export const CultureListItem = ({ culture }: CultureItemProps) => {
   return (
@@ -44,7 +45,7 @@ export const CultureListItem = ({ culture }: CultureItemProps) => {
         <Grid.Column width={14}>
           <PhaseItem
             culture={culture}
-            seed={culture.seed.seeding}
+            seed={culture.seed.sowing}
             phase={culture.seeding}
             type="seeding"
           />

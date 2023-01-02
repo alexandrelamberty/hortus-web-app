@@ -1,26 +1,24 @@
 import { PhaseActions } from "src/enums/PhaseActions";
 import { PhaseStatus } from "src/enums/PhaseStatus";
-import { CulturePhase } from "src/interfaces/Culture";
-import { PhaseInfo } from "src/interfaces/Seed";
+import { CultureHarvestingPhase, CulturePhase } from "src/interfaces/Culture";
+import { SeedPhaseInfo } from "src/interfaces/Seed";
 import { PhaseControl } from "../button/PhaseControl";
 
 type PhaseCellProps = {
-  // remove must be in the Phase object
+  // FIXME: bad design !
   type: string;
-  phase: CulturePhase;
+  phase: CulturePhase | CultureHarvestingPhase;
   onPhaseAction: (action: PhaseActions) => void;
 };
 
 /**
- * Display a Phase informations and add controls to change is status.
- *
+ * Display the culture phase controls to execute action on that phase.
  * @see Phase
- * @param param0
- * @returns JSX.Element
+ * @see PhaseActions
  */
 const PhaseControlls = ({ type, phase, onPhaseAction }: PhaseCellProps) => {
   /**
-   * Render controlls for the phase status
+   * Render controls according to the phase status
    * @returns
    */
   const renderControlls = () => {

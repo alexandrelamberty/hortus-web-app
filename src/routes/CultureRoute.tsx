@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
-import { Button, Container, Icon, Input, Menu, Modal } from "semantic-ui-react";
+import { Button, Icon, Input, Menu, Modal } from "semantic-ui-react";
 import { CultureForm } from "src/components/form/CultureForm";
+import { HarvestingForm } from "src/components/form/HarvestingForm";
 import { PhaseForm } from "src/components/form/PhaseForm";
 import CultureList from "src/components/list/CultureList";
 import { ActionMenu } from "src/components/menu/ActionMenu";
@@ -9,7 +10,7 @@ import { AddMenuItem } from "src/components/menu/AddMenuItem";
 import { DeleteMenuItem } from "src/components/menu/DeleteMenuItem";
 import { SearchMenuItem } from "src/components/menu/SearchMenuItem";
 import { SelectMenuItem } from "src/components/menu/SelectMenuItem";
-import { View, ViewMenuItem } from "src/components/menu/ViewMenuItem";
+import { ViewMenuItem } from "src/components/menu/ViewMenuItem";
 import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
 import { CultureContext } from "src/contexts/CultureContextProvider";
 
@@ -24,37 +25,10 @@ export function CultureRoute() {
     setShowPhaseForm,
     setShowHarvestingForm,
     showHarvestingForm,
-    modals,
   } = useContext(ApplicationContext);
   // Plant context
   const { selected, selectedSeed, createCulture, deleteCultures } =
     React.useContext(CultureContext);
-
-  const onAddClicked = () => {
-    console.log("CultureRoute.onAddClicked");
-    setViewCultureForm(!viewCultureForm);
-  };
-
-  const onDeleteClicked = () => {
-    console.log("CultureRoute.onDeleteClicked", selected);
-    deleteCultures(selected);
-  };
-
-  // Pagination displayZ
-  const onDisplayChange = (number: number) => {
-    console.log("CultureRoute.changePage", number);
-  };
-
-  // Pagination page
-  const onPageChange = (page: number) => {
-    console.log("CultureRoute.changePage", page);
-  };
-
-  // View data as
-  const onViewTypeChange = (view: View) => {
-    console.log("CultureRoute.changeView", view);
-    setCultureViewType(cultureViewType);
-  };
 
   const onSubmit = () => {
     console.log("submit");
@@ -150,7 +124,7 @@ export function CultureRoute() {
         </Modal.Actions>
       </Modal>
 
-      {/* Seeding, Transplanting and Planting Phases Form modal */}
+      {/* Seeding, Transplanting and Planting Phases Forms modals */}
 
       <Modal
         size="small"
@@ -167,12 +141,27 @@ export function CultureRoute() {
       {/* Harvesting Phase Form Modal */}
 
       <Modal
-        size="small"
+        size="large"
+        style={{ height: "90vh" }}
         onClose={() => setShowHarvestingForm(false)}
         onOpen={() => setShowHarvestingForm(true)}
         open={showHarvestingForm}
       >
         <Modal.Header>Start harvesting</Modal.Header>
+        <Modal.Content image>
+          <HarvestingForm />
+        </Modal.Content>
+      </Modal>
+
+      {/* Harvesting Phase Form Modal */}
+
+      <Modal
+        size="large"
+        onClose={() => setShowHarvestingForm(false)}
+        onOpen={() => setShowHarvestingForm(true)}
+        open={false}
+      >
+        <Modal.Header>Update harvesting</Modal.Header>
         <Modal.Content image></Modal.Content>
       </Modal>
     </>

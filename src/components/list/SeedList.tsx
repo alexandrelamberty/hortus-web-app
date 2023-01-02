@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Image, Item, Label, List } from "semantic-ui-react";
-import { Seed } from "src/interfaces/Seed";
 import { SeedContext } from "src/contexts/SeedContextProvider";
+import { Seed } from "src/interfaces/Seed";
 
 export default function SeedList() {
   const { seeds, fetchSeeds } = useContext(SeedContext);
@@ -19,12 +19,15 @@ export default function SeedList() {
   );
 }
 
-export function SeedListItem({ seed }: any) {
+type SeedListItemProps = {
+  seed: Seed;
+};
+
+export function SeedListItem({ seed }: SeedListItemProps) {
   console.log(seed);
   return (
     <List.Item>
-      {/*<Item.Image src="./images/image.png" /> */}
-      <Image src={seed.picture} size="tiny" />
+      <Image src={seed.image} size="tiny" />
       <Item.Content>
         <Item.Header as="a">{seed.name}</Item.Header>
         <Item.Meta>

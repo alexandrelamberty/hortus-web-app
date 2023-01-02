@@ -3,7 +3,7 @@ import { Season } from "src/enums/Season";
 import { Sun } from "src/enums/Sun";
 import { Type } from "src/enums/Type";
 import { Water } from "src/enums/Water";
-import { PhaseInfo } from "./Seed";
+import { SeedPhaseInfo } from "./Seed";
 
 /**
  * Shape of the SeedForm properties
@@ -23,10 +23,10 @@ export interface SeedFormData {
   companions: string[];
   // plants ids
   competitors: string[];
-  seeding: PhaseInfo;
-  transplanting: PhaseInfo;
-  planting: PhaseInfo;
-  harvesting: PhaseInfo;
+  seeding: SeedPhaseInfo;
+  transplanting: SeedPhaseInfo;
+  planting: SeedPhaseInfo;
+  harvesting: SeedPhaseInfo;
   spacing: number;
   rows: number;
   harvest: number[];

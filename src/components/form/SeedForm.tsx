@@ -158,9 +158,9 @@ export function SeedForm({ seed }: SeedFormProps) {
       companions: companionsIds(),
       competitors: competitorsIds(),
       seeding: {
-        start: seed?.seeding.start,
-        end: seed?.seeding.end,
-        duration: seed?.seeding.duration,
+        start: seed?.sowing.start,
+        end: seed?.sowing.end,
+        duration: seed?.sowing.duration,
       },
       planting: {
         start: seed?.planting.start,

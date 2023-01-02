@@ -145,7 +145,7 @@ export const PlantForm = ({ plant }: PlantFormProps) => {
   }, [watchAllFields]);
 
   return (
-    <Form onSubmit={handleSubmit(onValid, onError)} size="mini" error inverted>
+    <Form onSubmit={handleSubmit(onValid, onError)} size="mini" error>
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column mobile={16} tablet={8} computer={8}>

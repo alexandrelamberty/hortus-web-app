@@ -1,3 +1,5 @@
+import { CultureLocation } from "src/enums/CultureLocation";
+import { CultureSoil } from "src/enums/CultureSoil";
 import { PhaseStatus } from "src/enums/PhaseStatus";
 import { Seed } from "./Seed";
 
@@ -6,8 +8,9 @@ import { Seed } from "./Seed";
  * @see Seed
  */
 export interface Culture {
-  // database id
+  // The unique mongo id
   _id: number;
+
   seed: Seed;
   seeding: CulturePhase;
   transplanting: CulturePhase;
@@ -19,47 +22,75 @@ export interface Culture {
 }
 
 /**
- * Culture represent a phase of Culture.
+ * Cultivation phase common information
  */
 export interface CulturePhase {
+  // The phase type
   type: string;
+
   // The status of the phase, ie: pending, started...
   status: PhaseStatus;
-  // FIXME: enum
-  location?: string;
-  // the quantity
-  quantity?: number;
 
-  soil?: string;
-  // count day from start
-  duration?: number;
-  // Set if a Phase is started
+  // Date the phase was started
   startedAt?: Date;
-  // Set if a Phase is stopped
+
+  // Date the phase was ended
   endedAt?: Date;
-  // Set if a Phase is stopped
+
+  // Date the phase was skipped
   skippedAt?: Date;
+
+  // Dureation in days of the phase
+  duration?: number;
+}
+
+export interface CulturePhaseLocation {
+  // Soil used
+  soil?: CultureSoil;
+
+  // The growing location
+  location?: CultureLocation;
 }
 
 /**
- * A Phase represent a phase of Culture.
+ * Sowing phase
+ * FIXME: Rename to SowingPhase
  */
-export interface CultureHarvestingPhase {
-  type: string;
-  // The status of the phase, ie: pending, started...
-  status: PhaseStatus;
-  // the quantity
+export interface SeedingPhase extends CulturePhase, CulturePhaseLocation {
+  // The amount of seeds used
+  quantity?: number;
+}
+
+/**
+ * Transplanting phase
+ */
+export interface TransplantingPhase extends CulturePhase, CulturePhaseLocation {
+  // The amount of plants used
+  quantity?: number;
+}
+
+/**
+ * Planting phase
+ */
+export interface PlantingPhase extends CulturePhase, CulturePhaseLocation {
+  // The amount of plants used
+  quantity?: number;
+}
+
+/**
+ * Harvesting phase
+ * FIXME: Rename to HarvestingPhase
+ */
+export interface CultureHarvestingPhase extends CulturePhase {
+  // The quantities and weights harvested
   harvest?: Harvest[];
-  // Set if a Phase is started
-  startedAt?: Date;
-  // Set if a Phase is stopped
-  endedAt?: Date;
-  // Set if a Phase is stopped
-  skippedAt?: Date;
 }
 
 interface Harvest {
+  // Harvest day date
   date: Date;
+  // Harvest quantity in unit / pieces
   quantity: number;
+  // Harvest weight in kg
   weight: number;
 }

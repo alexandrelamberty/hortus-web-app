@@ -1,11 +1,36 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, ButtonGroup, Form, Input } from "semantic-ui-react";
+import { Button, ButtonGroup, Form, Input, Message } from "semantic-ui-react";
 import { CultureLocation } from "src/enums/CultureLocation";
 import { CultureSoil } from "src/enums/CultureSoil";
 import { useListEnum } from "src/hooks/useListEnum";
+import { Harvest } from "src/interfaces/Harvest";
 import * as Yup from "yup";
+import { HarvestTable } from "../list/HarvestList";
+
+const harvests: Harvest[] = [
+  {
+    date: new Date(),
+    quantity: 10,
+    weight: 4.8,
+  },
+  {
+    date: new Date(),
+    quantity: 8,
+    weight: 3.2,
+  },
+  {
+    date: new Date(),
+    quantity: 5,
+    weight: 1.6,
+  },
+  {
+    date: new Date(),
+    quantity: 7,
+    weight: 2.5,
+  },
+];
+
 /**
  * HarvestinForm
  * @returns
@@ -39,53 +64,57 @@ export const HarvestingForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} size="mini">
-      <Form.Group widths="equal">
-        <Form.Field>
-          <Controller
-            control={control}
-            name="soil"
-            render={({
-              field: { onChange, onBlur, value, name, ref },
-              fieldState: { invalid, isTouched, isDirty, error },
-              formState,
-            }) => (
-              <Form.Input
-                name="soil"
-                label="Quantity"
-                placeholder="ex: 200"
-                fluid
-                onChange={onChange}
-                error={errors.type ? true : false}
-              />
-            )}
-          />
-        </Form.Field>
-        <Form.Field>
-          <Controller
-            control={control}
-            name="soil"
-            render={({
-              field: { onChange, onBlur, value, name, ref },
-              fieldState: { invalid, isTouched, isDirty, error },
-              formState,
-            }) => (
-              <>
-                <label>Weight</label>
-                <Input
+    <div>
+      <Form onSubmit={handleSubmit(onSubmit)} size="mini">
+        <HarvestTable list={harvests} />
+        <Form.Group widths="equal">
+          <Form.Field>
+            <Controller
+              control={control}
+              name="soil"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <Form.Input
                   name="soil"
-                  label={{ basic: false, content: "kg" }}
-                  labelPosition="right"
+                  label="Quantity"
                   placeholder="ex: 200"
                   fluid
                   onChange={onChange}
                   error={errors.type ? true : false}
                 />
-              </>
-            )}
-          />
-        </Form.Field>
-      </Form.Group>
+              )}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Controller
+              control={control}
+              name="soil"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => (
+                <>
+                  <label>Weight</label>
+                  <Input
+                    name="soil"
+                    label={{ basic: false, content: "kg" }}
+                    labelPosition="right"
+                    placeholder="ex: 200"
+                    fluid
+                    onChange={onChange}
+                    error={errors.type ? true : false}
+                  />
+                </>
+              )}
+            />
+          </Form.Field>
+          <Message>After this you can add more harvest to the phase.</Message>
+        </Form.Group>
+      </Form>
       <ButtonGroup floated="right" size="mini">
         <Button
           onClick={() => {
@@ -98,6 +127,6 @@ export const HarvestingForm = () => {
           Save
         </Button>
       </ButtonGroup>
-    </Form>
+    </div>
   );
 };

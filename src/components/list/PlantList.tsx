@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Checkbox, Image, Item, Label, List } from "semantic-ui-react";
+import { Image, List } from "semantic-ui-react";
 import { Plant } from "src/interfaces/Plant";
 
 type PlantListProps = {
-  list: Array<Plant>;
+  list: Plant[];
 };
+
 export default function PlantList({ list }: PlantListProps) {
   //const { plants, fetchPlants } = useContext(PlantContext);
-  const [plants, setPlants] = useState<Array<Plant>>([]);
+  const [plants, setPlants] = useState<Plant[]>([]);
 
   useEffect(() => {
     setPlants(list);
@@ -22,10 +23,14 @@ export default function PlantList({ list }: PlantListProps) {
   );
 }
 
-export function PlantListItem({ plant }: any) {
+type PlantListItemProps = {
+  plant: Plant;
+};
+
+export function PlantListItem({ plant }: PlantListItemProps) {
   return (
     <List.Item>
-      <Image avatar src={"http://localhost:3333/static/" + plant.picture} />
+      <Image avatar src={"http://localhost:3333/static/" + plant.image} />
       <List.Content>
         <List.Header as="a">{plant.binomial}</List.Header>
         <List.Description>{plant.name}</List.Description>

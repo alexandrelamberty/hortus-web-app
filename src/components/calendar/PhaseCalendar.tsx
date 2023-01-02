@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Grid, SemanticCOLORS } from "semantic-ui-react";
-import { CulturePhase } from "src/interfaces/Culture";
-import { PhaseInfo, Seed } from "src/interfaces/Seed";
+import { CultureHarvestingPhase, CulturePhase } from "src/interfaces/Culture";
+import { SeedPhaseInfo, Seed } from "src/interfaces/Seed";
 
 interface PhaseCalendarProps {
-  seed: PhaseInfo;
-  phase: CulturePhase;
+  seed: SeedPhaseInfo;
+  phase: CulturePhase | CultureHarvestingPhase;
   type: string;
 }
 
@@ -56,11 +56,12 @@ const PhaseCalendar = ({ type, seed, phase }: PhaseCalendarProps) => {
   );
 };
 
-interface Props {
+interface PhaseCalendarItemProps {
   color: SemanticCOLORS;
   css: string;
 }
-const PhaseCalendarItem = ({ color, css }: Props) => {
+
+const PhaseCalendarItem = ({ color, css }: PhaseCalendarItemProps) => {
   return <Grid.Column className={css} />;
 };
 
