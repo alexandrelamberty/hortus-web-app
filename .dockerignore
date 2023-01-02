@@ -1,0 +1,10 @@
+**/build
+**/.git
+**/.github
+**/node_modules
+**/.docker
+.gitignore
+.dockerignore
+docker-compose.yml
+Dockerfile
+README.md
