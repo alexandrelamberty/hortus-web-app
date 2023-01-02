@@ -10,9 +10,16 @@ COPY . ./
 RUN npm run build
 
 # production environment
-# FIXME: switch to node ? Keep only one proxy in front of the stack!
 FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Add bash
+RUN apk add --no-cache bash
+# Copy .env file and shell script to container
+WORKDIR /usr/share/nginx/html
+COPY ./environment.sh .
+COPY .env .
+RUN chmod +x environment.sh
+#
+EXPOSE 3000
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/environment.sh && nginx -g \"daemon off;\""]
