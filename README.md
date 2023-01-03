@@ -1,3 +1,6 @@
+[![Build & Tests](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/node.yml/badge.svg)](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/node.yml)
+[![Docker](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/docker.yml/badge.svg)](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/docker.yml)
+
 # Hortus Web Application
 
 Gardening planner web application part of the [Hortus](https://github.com/alexandrelamberty/hortus) project.

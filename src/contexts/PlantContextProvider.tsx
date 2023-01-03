@@ -69,16 +69,21 @@ export function PlantContextProvider({
   }, []);
 
   const fetchPlants = React.useCallback(() => {
-    console.log(apiUrl + "/plants");
+    console.log("---> Fetch plants");
     setIsLoading(true);
     axios
       .get(apiUrl + "/plants")
       .then(function (response) {
-        setPlants(response.data.results);
-        setCount(response.data.count);
+        console.log(response);
+        console.log(response.headers);
+        console.log(response.headers["pagination-count"]);
+        console.log(response.headers["Pagination-Count"]);
+        setPlants(response.data);
+        //setCount(response.data.length);
         setIsLoading(false);
       })
       .catch(function (error) {
+        console.log("error", error);
         setErrors(error);
       });
   }, [apiUrl, setPlants]);

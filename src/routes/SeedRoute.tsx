@@ -37,11 +37,10 @@ export function SeedRoute() {
     switch (seedViewType) {
       case "grid":
         return <SeedGrid onChange={onDataViewChange} />;
-        return <SeedList />;
       case "table":
         return <SeedTable seeds={seeds} onChange={onDataViewChange} />;
       default:
-        return <></>;
+        return <SeedList />;
     }
   };
 
@@ -56,7 +55,7 @@ export function SeedRoute() {
   };
 
   useEffect(() => {
-    fetchSeeds();
+    // fetchSeeds();
   }, [fetchSeeds]);
 
   return (

@@ -11,10 +11,8 @@ export interface CultureContextType {
   setFormOpen: any;
   count: number;
   cultures: Culture[];
-  //
   selected: number[];
   setSelected: any;
-  //
   selectedSeed: Seed | undefined;
   setSelectedSeed: any;
 
@@ -50,7 +48,7 @@ export function CultureContextProvider({
       .get(apiUrl + "/cultures")
       .then(function (response) {
         console.log(response);
-        setCultures(response.data.results);
+        setCultures(response.data);
         setCount(response.data.count);
         setIsLoading(false);
       })
