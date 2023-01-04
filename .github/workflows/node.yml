@@ -44,5 +44,5 @@ jobs:
         env:
           CI: false
 
-      - name: Run tests
-        run: npm test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
