@@ -1,6 +1,8 @@
 [![Build & Tests](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/node.yml/badge.svg)](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/node.yml)
 [![Docker](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/docker.yml/badge.svg)](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/docker.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8c20ea4c237d44a9ad8621be6cd43cd4)](https://www.codacy.com/gh/alexandrelamberty/hortus-web-app/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexandrelamberty/hortus-web-app&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/alexandrelamberty/hortus-web-app/branch/master/graph/badge.svg?token=268D2KMTW6)](https://codecov.io/gh/alexandrelamberty/hortus-web-app)
+
 # Hortus Web Application
 
 Gardening planner web application part of the [Hortus](https://github.com/alexandrelamberty/hortus) project.
