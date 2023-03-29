@@ -50,7 +50,7 @@ export function CultureRoute() {
         left={
           <>
             <AddMenuItem
-              label="Seeds"
+              label="Culture"
               onClick={() => {
                 console.log("add");
                 setViewCultureForm(!viewCultureForm);
