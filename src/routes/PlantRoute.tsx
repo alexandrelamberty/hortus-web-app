@@ -15,9 +15,6 @@ import { PlantContext } from "src/contexts/PlantContextProvider";
 import { useSelectedIds } from "src/hooks/useSelectedIds";
 import { Plant } from "src/interfaces/Plant";
 
-/**
- * @returns
- */
 export function PlantRoute() {
   // ApplicationContext and data provider PlantContext
   const { viewPlantForm, setViewPlantForm, plantViewType, setPlantViewType } =
