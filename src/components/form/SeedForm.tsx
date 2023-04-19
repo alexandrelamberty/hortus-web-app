@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { ReactElement, useEffect } from "react";
-import { Controller, useController, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Button,
   ButtonGroup,
@@ -23,8 +23,8 @@ import { Plant } from "src/interfaces/Plant";
 import { Seed } from "src/interfaces/Seed";
 import { SeedFormData } from "src/interfaces/SeedFormData";
 import * as Yup from "yup";
-import { FormModeType } from "./FormMode";
 import { FileSelect } from "./FileSelect";
+import { FormModeType } from "./FormMode";
 
 const months = [
   { key: "1", value: 1, text: "January" },
