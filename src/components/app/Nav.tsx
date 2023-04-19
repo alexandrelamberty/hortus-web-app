@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, CogIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { Link, useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
 // @ts-ignore

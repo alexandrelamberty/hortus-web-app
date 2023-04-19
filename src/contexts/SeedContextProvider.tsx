@@ -30,27 +30,11 @@ export function SeedContextProvider({
   children: React.ReactNode;
 }) {
   const { apiUrl, setErrors } = React.useContext(ApplicationContext);
-  let [seeds, setSeeds] = React.useState<Seed[]>([]);
-  let [count, setCount] = React.useState<number>(0);
-  let [selected, setSelected] = React.useState<Seed | undefined>();
-  let [selecteds, setSelecteds] = React.useState<string[]>([]);
+  const [seeds, setSeeds] = React.useState<Seed[]>([]);
+  const [count, setCount] = React.useState<number>(0);
+  const [selected, setSelected] = React.useState<Seed | undefined>();
+  const [selecteds, setSelecteds] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
-
-  React.useEffect(() => {
-    console.log("SeedContextProvider::mount");
-  }, []);
-
-  type SeedAction = { type: "LOAD"; payload: Seed[] };
-
-  // TODO: NEW BRANCH
-  // const [{ seed }, dispatch] = React.useReducer(
-  //   (state: SeedContextType, action: SeedAction) => {
-  //     switch (action.type) {
-  //       case "":
-  //         return "";
-  //     }
-  //   }
-  // );
 
   const uploadPicure = React.useCallback(
     (id: number, fd: FormData) => {

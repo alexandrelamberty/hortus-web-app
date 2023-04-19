@@ -4,19 +4,20 @@ import { Seed } from "src/interfaces/Seed";
 import { SeedContext } from "src/contexts/SeedContextProvider";
 import SeedGridCard from "./SeedGridCard";
 import { CultureContext } from "src/contexts/CultureContextProvider";
+
 type SeedFormGridProps = {
   onChange?: (seed: Seed) => void;
 };
 
 const SeedFormGrid = ({ onChange }: SeedFormGridProps) => {
   const { seeds, fetchSeeds } = useContext(SeedContext);
-
   const { setSelectedSeed } = useContext(CultureContext);
 
   const handleChange = (seed: Seed) => {
-    console.log("handlechange", seed);
+    console.log("handleChange", seed);
     setSelectedSeed(seed);
   };
+
   useEffect(() => {
     fetchSeeds();
   }, [fetchSeeds]);

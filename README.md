@@ -11,7 +11,7 @@ Gardening planner web application part of the [Hortus](https://github.com/alexan
 ## Architecture
 
 This web application is based on React and run as a Docker service.
-It commmunicate via HTTP with the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service.
+It communicate via HTTP with the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service.
 
 ## Technologies, languages, frameworks
 
@@ -33,7 +33,7 @@ This application is part of a Docker stack. see: [Hortus](https://github.com/ale
 
 ## Development
 
-To run the application the [HortusAPI](https://github.com/alexandrelamberty/hortus-api) service also need to be running in order to retreve the data.
+To run the application the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service also need to be running in order to retreve the data.
 
 ### Run with NPM
 

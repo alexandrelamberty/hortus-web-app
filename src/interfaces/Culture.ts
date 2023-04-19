@@ -10,7 +10,6 @@ import { Seed } from "./Seed";
 export interface Culture {
   // The unique mongo id
   _id: number;
-
   seed: Seed;
   seeding: CulturePhase;
   transplanting: CulturePhase;

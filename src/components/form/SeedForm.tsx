@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { ReactElement, useEffect } from "react";
-import { Controller, useController, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Button,
   ButtonGroup,
@@ -23,9 +23,10 @@ import { Plant } from "src/interfaces/Plant";
 import { Seed } from "src/interfaces/Seed";
 import { SeedFormData } from "src/interfaces/SeedFormData";
 import * as Yup from "yup";
-import { FormModeType } from "./FormMode";
 import { FileSelect } from "./FileSelect";
+import { FormModeType } from "./FormMode";
 
+// FIXME: move this
 const months = [
   { key: "1", value: 1, text: "January" },
   { key: "2", value: 2, text: "February" },
@@ -41,10 +42,10 @@ const months = [
   { key: "12", value: 12, text: "December" },
 ];
 
-interface SeedFormProps {
+type SeedFormProps = {
   // The seed object to be used for the initial value of the form in edit mode
   seed?: Seed;
-}
+};
 
 /**
  * SeedForm

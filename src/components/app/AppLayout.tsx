@@ -1,11 +1,11 @@
+import axios, { AxiosError } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Button, ButtonGroup, Header, Image, Modal } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
 import { Nav } from "src/components/app/Nav";
 import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { SettingsForm } from "../form/SettingsForm";
 import { Settings } from "../modal/Settings";
-import axios, { AxiosError } from "axios";
+
 export const AppLayout = () => {
   const { errors } = useContext(ApplicationContext);
   return (

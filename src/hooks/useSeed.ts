@@ -11,7 +11,7 @@ export function useSeed() {
 
   const handleSeedRemove = useCallback(
     () => () => {
-      fetchSeeds;
+      fetchSeeds();
     },
     [fetchSeeds]
   );
