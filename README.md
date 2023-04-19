@@ -40,7 +40,8 @@ To run the application the [Hortus API](https://github.com/alexandrelamberty/hor
 If the API service is up and running, create an .env file and fill it accordingly with the API service configuration.
 
 ```properties
-REACT_APP_API_URL=http://localhost:3333
+VITE_API_URL=http://localhost:3333
+VITE_API_STATIC_URL=http://localhost:3333/static/
 ```
 
 Run the application
