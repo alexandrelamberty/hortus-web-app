@@ -2,10 +2,12 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Checkbox, Label, Table } from "semantic-ui-react";
 import { SeedContext } from "src/contexts/SeedContextProvider";
 import { Seed } from "src/interfaces/Seed";
+
 interface SeedTableProps {
   seeds: Seed[];
   onChange: (seed: Seed) => void;
 }
+
 export default function SeedTable({ seeds, onChange }: SeedTableProps) {
   // Context
   const { selecteds, setSelecteds } = useContext(SeedContext);

@@ -1,5 +1,8 @@
 [![Build & Tests](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/node.yml/badge.svg)](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/node.yml)
 [![Docker](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/docker.yml/badge.svg)](https://github.com/alexandrelamberty/hortus-web-app/actions/workflows/docker.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8c20ea4c237d44a9ad8621be6cd43cd4)](https://www.codacy.com/gh/alexandrelamberty/hortus-web-app/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexandrelamberty/hortus-web-app&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/alexandrelamberty/hortus-web-app/branch/master/graph/badge.svg?token=268D2KMTW6)](https://codecov.io/gh/alexandrelamberty/hortus-web-app)
+[![DockerHub](https://img.shields.io/badge/DockerHub-images-important.svg?logo=Docker)](https://hub.docker.com/r/alexandrelamberty/hortus-web-app)
 
 # Hortus Web Application
 
@@ -8,7 +11,7 @@ Gardening planner web application part of the [Hortus](https://github.com/alexan
 ## Architecture
 
 This web application is based on React and run as a Docker service.
-It commmunicate via HTTP with the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service.
+It communicate via HTTP with the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service.
 
 ## Technologies, languages, frameworks
 
@@ -30,7 +33,7 @@ This application is part of a Docker stack. see: [Hortus](https://github.com/ale
 
 ## Development
 
-To run the application the [HortusAPI](https://github.com/alexandrelamberty/hortus-api) service also need to be running in order to retreve the data.
+To run the application the [Hortus API](https://github.com/alexandrelamberty/hortus-api) service also need to be running in order to retreve the data.
 
 ### Run with NPM
 

@@ -26,6 +26,7 @@ import * as Yup from "yup";
 import { FileSelect } from "./FileSelect";
 import { FormModeType } from "./FormMode";
 
+// FIXME: move this
 const months = [
   { key: "1", value: 1, text: "January" },
   { key: "2", value: 2, text: "February" },
@@ -41,10 +42,10 @@ const months = [
   { key: "12", value: 12, text: "December" },
 ];
 
-interface SeedFormProps {
+type SeedFormProps = {
   // The seed object to be used for the initial value of the form in edit mode
   seed?: Seed;
-}
+};
 
 /**
  * SeedForm

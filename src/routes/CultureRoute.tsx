@@ -26,6 +26,7 @@ export function CultureRoute() {
     setShowHarvestingForm,
     showHarvestingForm,
   } = useContext(ApplicationContext);
+
   // Plant context
   const { selected, selectedSeed, createCulture, deleteCultures } =
     React.useContext(CultureContext);

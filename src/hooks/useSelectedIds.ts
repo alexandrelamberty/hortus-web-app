@@ -7,7 +7,7 @@ interface Identifiable {
 
 /**
  * Take an array of Identifiable and return an array with only
- * the _id propeperty.
+ * the _id property.
  * @param array A collection of Identifiable
  * @returns The ids
  */
