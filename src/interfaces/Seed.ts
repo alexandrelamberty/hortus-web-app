@@ -5,7 +5,7 @@ import { Type } from "../enums/Type";
 import { Water } from "../enums/Water";
 import { Plant } from "./Plant";
 
-interface PairRange extends Array<number | number> {
+interface HarvestRange extends Array<number | number> {
   0: number;
   1: number;
 }
@@ -19,7 +19,7 @@ export interface Seed {
   name: string; // The name of this seed
   description: string; // A short description of the seed
   type: Type; //
-  harvest: PairRange; // Range estimation time from sowing to harvest in days
+  harvest: HarvestRange; // Range estimation time from sowing to harvest in days
   season: Season;
   sun: Sun;
   frost: Frost;
@@ -38,7 +38,7 @@ export interface Seed {
 }
 
 /**
- * Preconized period and estimated duration for a culture phase.
+ * Preconize period and estimated duration for a culture phase.
  * FIXME: Have a list of phase info by location, indoor, outdoor, frame,
  * greenhouse...
  */

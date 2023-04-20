@@ -1,13 +1,13 @@
 import { PhaseActions } from "../../enums/PhaseActions";
 import { PhaseStatus } from "../../enums/PhaseStatus";
-import { CultureHarvestingPhase, CulturePhase } from "../../interfaces/Culture";
+import { HarvestingPhase, CulturePhase } from "../../interfaces/Culture";
 import { SeedPhaseInfo } from "../../interfaces/Seed";
 import { PhaseControl } from "../button/PhaseControl";
 
 type PhaseCellProps = {
   // FIXME: bad design !
   type: string;
-  phase: CulturePhase | CultureHarvestingPhase;
+  phase: CulturePhase | HarvestingPhase;
   onPhaseAction: (action: PhaseActions) => void;
 };
 

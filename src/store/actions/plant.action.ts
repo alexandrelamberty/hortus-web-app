@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { PlantDTO } from "../../interfaces/PlantDTO";
+import { getPlants } from "../../services/HortusAPI";
 
 type ListPlantsParams = {
   limit?: number;
@@ -9,7 +10,7 @@ type ListPlantsParams = {
 export const listPlants = createAsyncThunk(
   "plants/list",
   async (args: ListPlantsParams, thunk) => {
-    //
+    return await getPlants();
   }
 );
 
@@ -20,10 +21,8 @@ export const createPlant = createAsyncThunk(
   }
 );
 
-export const readPlant = createAsyncThunk("plants/read", (id: string) => {
-  async (id: string) => {
-    //
-  };
+export const readPlant = createAsyncThunk("plants/read", async (id: string) => {
+  //
 });
 
 export const updatePlant = createAsyncThunk(
@@ -33,8 +32,9 @@ export const updatePlant = createAsyncThunk(
   }
 );
 
-export const deletePlant = createAsyncThunk("plants/delete", (id: string) => {
-  async (id: string) => {
+export const deletePlant = createAsyncThunk(
+  "plants/deletes",
+  async (ids: string[]) => {
     //
-  };
-});
+  }
+);

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Culture } from "../../interfaces/Culture";
 import { CultureDTO } from "../../interfaces/CultureDTO";
+import { getCultures } from "../../services/HortusAPI";
 
 type ListCulturesParams = {
   limit?: number;
@@ -10,7 +10,7 @@ type ListCulturesParams = {
 export const listCultures = createAsyncThunk(
   "cultures/list",
   async (args: ListCulturesParams, thunk) => {
-    //
+    return await getCultures();
   }
 );
 
@@ -21,11 +21,12 @@ export const createCulture = createAsyncThunk(
   }
 );
 
-export const readCulture = createAsyncThunk("cultures/read", (id: string) => {
+export const readCulture = createAsyncThunk(
+  "cultures/read",
   async (id: string) => {
     //
-  };
-});
+  }
+);
 
 export const updateCulture = createAsyncThunk(
   "cultures/update",
@@ -36,9 +37,14 @@ export const updateCulture = createAsyncThunk(
 
 export const deleteCulture = createAsyncThunk(
   "cultures/delete",
-  (id: string) => {
-    async (id: string) => {
-      //
-    };
+  async (id: string) => {
+    //
+  }
+);
+
+export const deleteCultures = createAsyncThunk(
+  "cultures/deletes",
+  async (ids: string[]) => {
+    //
   }
 );

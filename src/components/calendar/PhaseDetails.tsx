@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Label } from "semantic-ui-react";
 import { getColor } from "../../enums/PhaseStatus";
-import { CultureHarvestingPhase, CulturePhase } from "../../interfaces/Culture";
+import { HarvestingPhase, CulturePhase } from "../../interfaces/Culture";
 
 interface PhaseDetailsProps {
-  phase: CultureHarvestingPhase | CulturePhase;
+  phase: HarvestingPhase | CulturePhase;
   type: string;
 }
 

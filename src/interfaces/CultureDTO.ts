@@ -1,4 +1,3 @@
 export interface CultureDTO {
-  //
-  seed: string;
+  seed: string; // The Seed used for the culture.
 }

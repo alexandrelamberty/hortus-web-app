@@ -6,7 +6,7 @@ import { getColor } from "../../enums/PhaseStatus";
 import { PhaseType } from "../../enums/PhaseType";
 import {
   Culture,
-  CultureHarvestingPhase,
+  HarvestingPhase,
   CulturePhase,
 } from "../../interfaces/Culture";
 import { SeedPhaseInfo } from "../../interfaces/Seed";
@@ -16,7 +16,7 @@ import PhaseDetails from "./PhaseDetails";
 interface PhaseItemProps {
   seed: SeedPhaseInfo;
   culture: Culture;
-  phase: CulturePhase | CultureHarvestingPhase;
+  phase: CulturePhase | HarvestingPhase;
   type: string;
 }
 

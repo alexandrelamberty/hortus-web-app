@@ -168,7 +168,7 @@ export function PlantContextProvider({
   );
 
   const deletePlants = React.useCallback(
-    (ids, callback?: VoidFunction) => {
+    (ids: string[], callback?: VoidFunction) => {
       setIsLoading(true);
       console.log(ids);
       axios

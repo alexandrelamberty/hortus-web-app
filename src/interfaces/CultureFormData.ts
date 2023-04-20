@@ -1,4 +1,3 @@
 export interface CultureFormData {
-  //
-  seed: string;
+  seed: string; // The Seed used for the Culture
 }

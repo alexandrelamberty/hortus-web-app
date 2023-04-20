@@ -12,4 +12,8 @@ export interface Settings {
   culture: {
     defaultView: string;
   };
+  weather: {
+    api: string;
+    key: string;
+  };
 }
