@@ -13,7 +13,8 @@ export const listPlants = createAsyncThunk(
   "plants/list",
   async (args: ListPlantsParams, thunk) => {
     // return await axios.get(import.meta.env.VITE_API_URL + "/plants");
-    return HTTP.get<null, Plant>("plants");
+    const response = await HTTP.get<null, any>("plants");
+    return response.data;
   }
 );
 

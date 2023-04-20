@@ -1,12 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import plantReducer from "./reducers/plant.reducer";
 import loggerMiddleware from "redux-logger";
-import progressReducer from "./reducers/progress.reducer";
+import authReducer from "./reducers/auth.reducer";
+import cultureReducer from "./reducers/culture.reducer";
+import plantReducer from "./reducers/plant.reducer";
+import seedReducer from "./reducers/seed.reducer";
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     plants: plantReducer,
-    progress: progressReducer,
+    seeds: seedReducer,
+    culture: cultureReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -21,6 +25,5 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {products: ProductState, progress: ProgressState}
 export type AppDispatch = typeof store.dispatch;
-
 // FIXME: move ?
 export type StoreState = "idle" | "pending" | "succeeded" | "failed";

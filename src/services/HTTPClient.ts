@@ -48,9 +48,9 @@ class HTTPClient {
   // Create Axios instance
   initHttp() {
     const http = axios.create({
-      baseURL: "https://api.example.com",
+      baseURL: "http://localhost:3333",
       headers,
-      withCredentials: true,
+    // withCredentials: true,
     });
 
     http.interceptors.request.use(injectToken, (error) =>
