@@ -1,16 +1,15 @@
 import { useContext } from "react";
 import { Grid, Label } from "semantic-ui-react";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { PhaseActions } from "src/enums/PhaseActions";
-import { getColor } from "src/enums/PhaseStatus";
-import { PhaseType } from "src/enums/PhaseType";
+import { ApplicationContext } from "../../contexts/ApplicationContextProvider";
+import { PhaseActions } from "../../enums/PhaseActions";
+import { getColor } from "../../enums/PhaseStatus";
+import { PhaseType } from "../../enums/PhaseType";
 import {
   Culture,
   CultureHarvestingPhase,
   CulturePhase,
-} from "src/interfaces/Culture";
-import { SeedPhaseInfo } from "src/interfaces/Seed";
-import PhaseCalendar from "./PhaseCalendar";
+} from "../../interfaces/Culture";
+import { SeedPhaseInfo } from "../../interfaces/Seed";
 import PhaseControlls from "./PhaseControlls";
 import PhaseDetails from "./PhaseDetails";
 

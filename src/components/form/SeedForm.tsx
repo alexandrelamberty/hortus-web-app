@@ -10,18 +10,18 @@ import {
   Grid,
   Input,
 } from "semantic-ui-react";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { PlantContext } from "src/contexts/PlantContextProvider";
-import { SeedContext } from "src/contexts/SeedContextProvider";
-import { Frost } from "src/enums/Frost";
-import { Season } from "src/enums/Season";
-import { Sun } from "src/enums/Sun";
-import { Type } from "src/enums/Type";
-import { Water } from "src/enums/Water";
-import { useListEnum } from "src/hooks/useListEnum";
-import { Plant } from "src/interfaces/Plant";
-import { Seed } from "src/interfaces/Seed";
-import { SeedFormData } from "src/interfaces/SeedFormData";
+import { ApplicationContext } from "../../contexts/ApplicationContextProvider";
+import { PlantContext } from "../../contexts/PlantContextProvider";
+import { SeedContext } from "../../contexts/SeedContextProvider";
+import { Frost } from "../../enums/Frost";
+import { Season } from "../../enums/Season";
+import { Sun } from "../../enums/Sun";
+import { Type } from "../../enums/Type";
+import { Water } from "../../enums/Water";
+import { useListEnum } from "../../hooks/useListEnum";
+import { Plant } from "../../interfaces/Plant";
+import { Seed } from "../../interfaces/Seed";
+import { SeedFormData } from "../../interfaces/SeedFormData";
 import * as Yup from "yup";
 import { FileSelect } from "./FileSelect";
 import { FormModeType } from "./FormMode";

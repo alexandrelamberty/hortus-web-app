@@ -1,7 +1,7 @@
 import { Label } from "semantic-ui-react";
-import { PhaseActions } from "src/enums/PhaseActions";
-import { getColor } from "src/enums/PhaseStatus";
-import { CulturePhase } from "src/interfaces/Culture";
+import { PhaseActions } from "../enums/PhaseActions";
+import { getColor } from "../enums/PhaseStatus";
+import { CulturePhase } from "../interfaces/Culture";
 import { PhaseControl } from "../button/PhaseControl";
 import PhaseCalendar from "../calendar/PhaseCalendar";
 

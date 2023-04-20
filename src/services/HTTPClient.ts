@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
 
 enum StatusCode {
   Unauthorized = 401,
@@ -52,13 +57,14 @@ class HTTPClient {
       Promise.reject(error)
     );
 
-    http.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        const { response } = error;
-        return this.handleError(response);
-      }
-    );
+    // http.interceptors.response.use(
+    //   (response) => response,
+    //   (error) => {
+    //     const { response } = error;
+    //     console.log(error);
+    // return this.handleError(response);
+    //   }
+    // );
 
     this.instance = http;
     return http;
@@ -71,12 +77,12 @@ class HTTPClient {
     return this.http.request(config);
   }
 
-  // get<TRequest = any, R = AxiosResponse<TRequest>>(
-  //   url: string,
-  //   config?: AxiosRequestConfig
-  // ): Promise<R> {
-  //   return this.http.get<TRequest, R>(url, config);
-  // }
+  get<TRequest = any, R = AxiosResponse<TRequest>>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<R> {
+    return this.http.get<TRequest, R>(url, config);
+  }
 
   post<T = any, R = AxiosResponse<T>>(
     url: string,
@@ -99,33 +105,6 @@ class HTTPClient {
     config?: AxiosRequestConfig
   ): Promise<R> {
     return this.http.delete<T, R>(url, config);
-  }
-
-  // Handle global app errors
-  // We can handle generic app errors depending on the status code
-  private handleError(error: any) {
-    const { status } = error;
-
-    switch (status) {
-      case StatusCode.InternalServerError: {
-        // Handle InternalServerError
-        break;
-      }
-      case StatusCode.Forbidden: {
-        // Handle Forbidden
-        break;
-      }
-      case StatusCode.Unauthorized: {
-        // Handle Unauthorized
-        break;
-      }
-      case StatusCode.TooManyRequests: {
-        // Handle TooManyRequests
-        break;
-      }
-    }
-
-    return Promise.reject(error);
   }
 }
 

@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as React from "react";
-import { Seed } from "src/interfaces/Seed";
-import { SeedDTO } from "src/interfaces/SeedDTO";
-import { SeedFormData } from "src/interfaces/SeedFormData";
+import { Seed } from "../interfaces/Seed";
+import { SeedDTO } from "../interfaces/SeedDTO";
+import { SeedFormData } from "../interfaces/SeedFormData";
 import { ApplicationContext } from "./ApplicationContextProvider";
 
 export interface SeedContextType {
@@ -29,12 +29,13 @@ export function SeedContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { apiUrl, setErrors } = React.useContext(ApplicationContext);
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [seeds, setSeeds] = React.useState<Seed[]>([]);
   const [count, setCount] = React.useState<number>(0);
   const [selected, setSelected] = React.useState<Seed | undefined>();
   const [selecteds, setSelecteds] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [errors, setErrors] = React.useState<string | null>(null);
 
   const uploadPicure = React.useCallback(
     (id: number, fd: FormData) => {
@@ -209,13 +210,6 @@ export function SeedContextProvider({
     },
     [apiUrl, seeds, selected]
   );
-
-  // const sort = React.useCallback(() => {
-  //   disptach({
-  //     type: "FILTER",
-  //     paylad: "sort",
-  //   });
-  // }, []);
 
   return (
     <SeedContext.Provider

@@ -1,4 +1,4 @@
-import { API } from "src/core/APIClient";
+import { API } from "./APIClient";
 
 // TESTS
 

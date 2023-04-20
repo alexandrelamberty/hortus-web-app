@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, TableBody } from "semantic-ui-react";
-import { Harvest } from "src/interfaces/Harvest";
+import { Harvest } from "../interfaces/Harvest";
 
 interface HarvestTableProps {
   list: Harvest[];

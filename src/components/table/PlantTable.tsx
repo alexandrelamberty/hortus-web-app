@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
-import { Plant } from "src/interfaces/Plant";
-import { PlantContext } from "src/contexts/PlantContextProvider";
-import { idText } from "typescript";
+import { PlantContext } from "../../contexts/PlantContextProvider";
+import { Plant } from "../../interfaces/Plant";
 
 interface PlantTableProps {
   plants: Plant[];

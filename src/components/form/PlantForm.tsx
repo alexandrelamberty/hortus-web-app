@@ -2,13 +2,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, ButtonGroup, Form, Grid } from "semantic-ui-react";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { PlantContext } from "src/contexts/PlantContextProvider";
-import { Plant } from "src/interfaces/Plant";
 import * as Yup from "yup";
-import { FormModeType } from "./FormMode";
+import { ApplicationContext } from "../../contexts/ApplicationContextProvider";
+import { PlantContext } from "../../contexts/PlantContextProvider";
+import { Plant } from "../../interfaces/Plant";
+import { PlantFormData } from "../../interfaces/PlantFormData";
 import { FileSelect } from "./FileSelect";
-import { PlantFormData } from "src/interfaces/PlantFormData";
+import { FormModeType } from "./FormMode";
 interface PlantFormProps {
   // The plant to edit
   plant?: Plant;
@@ -17,6 +17,8 @@ interface PlantFormProps {
 export const PlantForm = ({ plant }: PlantFormProps) => {
   // Contexts
   const { setViewPlantForm } = React.useContext(ApplicationContext);
+
+  // FIXME:
   const { createPlant, updatePlant, setSelected } =
     React.useContext(PlantContext);
 

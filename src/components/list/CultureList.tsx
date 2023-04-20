@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Grid, List } from "semantic-ui-react";
-import { CultureContext } from "src/contexts/CultureContextProvider";
-import { Culture } from "src/interfaces/Culture";
+import { CultureContext } from "../../contexts/CultureContextProvider";
+import { Culture } from "../../interfaces/Culture";
 import { PhaseItem } from "../calendar/PhaseItem";
 
 /**

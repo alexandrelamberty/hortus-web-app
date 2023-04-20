@@ -1,6 +1,6 @@
 import React from "react";
 import { Message } from "semantic-ui-react";
-import { SeedContext } from "src/contexts/SeedContextProvider";
+import { SeedContext } from "../../contexts/SeedContextProvider";
 import ListLight from "../list/ListLight";
 
 interface CultureWidgetProps {

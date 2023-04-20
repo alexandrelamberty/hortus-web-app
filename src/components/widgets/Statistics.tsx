@@ -5,7 +5,7 @@ import {
   StatisticLabel,
   StatisticValue,
 } from "semantic-ui-react";
-import { CultureContext } from "src/contexts/CultureContextProvider";
+import { CultureContext } from "../contexts/CultureContextProvider";
 
 export default function Statistics() {
   const { cultures, fetchCultures } = useContext(CultureContext);

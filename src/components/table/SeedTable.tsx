@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Checkbox, Label, Table } from "semantic-ui-react";
-import { SeedContext } from "src/contexts/SeedContextProvider";
-import { Seed } from "src/interfaces/Seed";
+import { SeedContext } from "../../contexts/SeedContextProvider";
+import { Seed } from "../../interfaces/Seed";
 
 interface SeedTableProps {
   seeds: Seed[];

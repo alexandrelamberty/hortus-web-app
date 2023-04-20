@@ -1,8 +1,8 @@
-import { Frost } from "src/enums/Frost";
-import { Season } from "src/enums/Season";
-import { Sun } from "src/enums/Sun";
-import { Type } from "src/enums/Type";
-import { Water } from "src/enums/Water";
+import { Frost } from "../enums/Frost";
+import { Season } from "../enums/Season";
+import { Sun } from "../enums/Sun";
+import { Type } from "../enums/Type";
+import { Water } from "../enums/Water";
 import { Plant } from "./Plant";
 
 interface PairRange extends Array<number | number> {

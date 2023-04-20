@@ -1,5 +1,5 @@
 import { Card, Icon, Image } from "semantic-ui-react";
-import { Seed } from "src/interfaces/Seed";
+import { Seed } from "../interfaces/Seed";
 
 type CardProps = {
   seed: Seed;

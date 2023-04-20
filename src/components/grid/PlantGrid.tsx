@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Grid } from "semantic-ui-react";
-import { Plant } from "src/interfaces/Plant";
-import { PlantContext } from "src/contexts/PlantContextProvider";
+import { Plant } from "../../interfaces/Plant";
+import { PlantContext } from "../../contexts/PlantContextProvider";
 import PlantGridCard from "./PlantGridCard";
 
 const PlantGrid = () => {

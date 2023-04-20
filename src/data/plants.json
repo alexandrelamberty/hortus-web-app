@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "name": "Wireless Headphones",
+    "description": "High-quality wireless headphones with noise-cancellation technology",
+    "code": "WH001",
+    "price": 42,
+    "discount": 0,
+    "inStock": true
+  },
+  {
+    "id": "2",
+    "name": "Smartwatch",
+    "description": "A stylish and feature-rich smartwatch with heart rate monitoring and fitness tracking",
+    "code": "SW002",
+    "price": 125,
+    "discount": 10,
+    "inStock": true
+  },
+  {
+    "id": "3",
+    "name": "Laptop",
+    "description": "Powerful and lightweight laptop with a long battery life and fast processing speed",
+    "code": "LP003",
+    "price": 899,
+    "discount": 50,
+    "inStock": false
+  },
+  {
+    "id": "4",
+    "name": "Wireless Speaker",
+    "description": "Portable and durable wireless speaker with high-quality sound",
+    "code": "WS004",
+    "price": 79,
+    "discount": 0,
+    "inStock": true
+  },
+  {
+    "id": "5",
+    "name": "Smart Thermostat",
+    "description": "A programmable and energy-efficient smart thermostat for home or office use",
+    "code": "ST005",
+    "price": 149,
+    "discount": 15,
+    "inStock": true
+  }
+]

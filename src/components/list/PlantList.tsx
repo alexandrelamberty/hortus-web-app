@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Image, List } from "semantic-ui-react";
-import { Plant } from "src/interfaces/Plant";
+import { Plant } from "../interfaces/Plant";
 
 type PlantListProps = {
   list: Plant[];

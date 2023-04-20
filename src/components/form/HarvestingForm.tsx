@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { Button, ButtonGroup, Form, Input, Message } from "semantic-ui-react";
-import { CultureLocation } from "src/enums/CultureLocation";
-import { CultureSoil } from "src/enums/CultureSoil";
-import { useListEnum } from "src/hooks/useListEnum";
-import { Harvest } from "src/interfaces/Harvest";
+import { CultureLocation } from "../../enums/CultureLocation";
+import { CultureSoil } from "../../enums/CultureSoil";
+import { useListEnum } from "../../hooks/useListEnum";
+import { Harvest } from "../../interfaces/Harvest";
 import * as Yup from "yup";
 import { HarvestTable } from "../list/HarvestList";
 

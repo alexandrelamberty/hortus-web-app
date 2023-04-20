@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { SeedContext } from "src/contexts/SeedContextProvider";
+import { SeedContext } from "../../contexts/SeedContextProvider";
 import SeedFormGrid from "../grid/SeedFormGrid";
 
 type FormProps = {

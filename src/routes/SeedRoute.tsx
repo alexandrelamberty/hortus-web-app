@@ -1,19 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { Header, Icon, Modal, Segment } from "semantic-ui-react";
-import { SeedForm } from "src/components/form/SeedForm";
-import SeedGrid from "src/components/grid/SeedGrid";
-import SeedList from "src/components/list/SeedList";
-import { ActionMenu } from "src/components/menu/ActionMenu";
-import { AddMenuItem } from "src/components/menu/AddMenuItem";
-import { DeleteMenuItem } from "src/components/menu/DeleteMenuItem";
-import { SearchMenuItem } from "src/components/menu/SearchMenuItem";
-import { SelectMenuItem } from "src/components/menu/SelectMenuItem";
-import { ViewMenuItem } from "src/components/menu/ViewMenuItem";
-import SeedTable from "src/components/table/SeedTable";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { SeedContext } from "src/contexts/SeedContextProvider";
-import { useSelectedIds } from "src/hooks/useSelectedIds";
-import { Seed } from "src/interfaces/Seed";
+import { SeedForm } from "../components/form/SeedForm";
+import SeedGrid from "../components/grid/SeedGrid";
+import SeedList from "../components/list/SeedList";
+import { ActionMenu } from "../components/menu/ActionMenu";
+import { AddMenuItem } from "../components/menu/AddMenuItem";
+import { DeleteMenuItem } from "../components/menu/DeleteMenuItem";
+import { SearchMenuItem } from "../components/menu/SearchMenuItem";
+import { SelectMenuItem } from "../components/menu/SelectMenuItem";
+import { ViewMenuItem } from "../components/menu/ViewMenuItem";
+import SeedTable from "../components/table/SeedTable";
+import { ApplicationContext } from "../contexts/ApplicationContextProvider";
+import { SeedContext } from "../contexts/SeedContextProvider";
+import { useSelectedIds } from "../hooks/useSelectedIds";
+import { Seed } from "../interfaces/Seed";
 
 export function SeedRoute() {
   // ApplicationContext and data provider PlantContext

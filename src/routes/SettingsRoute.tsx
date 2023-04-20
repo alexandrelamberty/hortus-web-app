@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItemProps,
 } from "semantic-ui-react";
-import { SettingsForm } from "src/components/form/SettingsForm";
+import { SettingsForm } from "../components/form/SettingsForm";
 
 export function SettingsRoute() {
   return (

@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as React from "react";
-import { Plant } from "src/interfaces/Plant";
-import { Seed } from "src/interfaces/Seed";
+import { Plant } from "../interfaces/Plant";
+import { Seed } from "../interfaces/Seed";
 import { ApplicationContext } from "./ApplicationContextProvider";
 
 export enum ActionType {
@@ -52,7 +52,8 @@ export function PlantContextProvider({
   children: React.ReactNode;
 }) {
   // The api url to call
-  const { apiUrl, setErrors } = React.useContext(ApplicationContext);
+  // const { apiUrl, setErrors } = React.useContext(ApplicationContext);
+  const apiUrl = import.meta.env.VITE_API_URL;
   // The number of plant in the collection
   const [count, setCount] = React.useState<number>(0);
   // The plant collection
@@ -63,6 +64,7 @@ export function PlantContextProvider({
   const [selected, setSelected] = React.useState<Plant | undefined>();
   // The Axios request state
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [errors, setErrors] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     console.log("PlantContextProvider::mount");
@@ -193,7 +195,6 @@ export function PlantContextProvider({
   return (
     <PlantContext.Provider
       value={{
-        //dispatch,
         count,
         isLoading,
         plants,

@@ -16,10 +16,10 @@ interface Environment {
  */
 export const useConfig = (name: string): string => {
   const ewindow: ExtendedWindow = window;
-  let env = process.env.NODE_ENV;
+  let env = import.meta.env.NODE_ENV;
   // If we are running with node we return .env file variable
   if (env === "development") {
-    let variable = process.env[name];
+    let variable = import.meta.env[name];
     if (variable) return variable;
     else return "undefined";
   } else if (env === "production") {

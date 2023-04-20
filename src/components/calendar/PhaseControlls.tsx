@@ -1,7 +1,7 @@
-import { PhaseActions } from "src/enums/PhaseActions";
-import { PhaseStatus } from "src/enums/PhaseStatus";
-import { CultureHarvestingPhase, CulturePhase } from "src/interfaces/Culture";
-import { SeedPhaseInfo } from "src/interfaces/Seed";
+import { PhaseActions } from "../../enums/PhaseActions";
+import { PhaseStatus } from "../../enums/PhaseStatus";
+import { CultureHarvestingPhase, CulturePhase } from "../../interfaces/Culture";
+import { SeedPhaseInfo } from "../../interfaces/Seed";
 import { PhaseControl } from "../button/PhaseControl";
 
 type PhaseCellProps = {

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
-import { Seed } from "src/interfaces/Seed";
-import { SeedContext } from "src/contexts/SeedContextProvider";
+import { Seed } from "../../interfaces/Seed";
+import { SeedContext } from "../../contexts/SeedContextProvider";
 import SeedGridCard from "./SeedGridCard";
-import { CultureContext } from "src/contexts/CultureContextProvider";
+import { CultureContext } from "../../contexts/CultureContextProvider";
 
 type SeedFormGridProps = {
   onChange?: (seed: Seed) => void;

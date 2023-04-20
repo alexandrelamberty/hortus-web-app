@@ -2,9 +2,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, ButtonGroup, Form, Input } from "semantic-ui-react";
-import { CultureLocation } from "src/enums/CultureLocation";
-import { CultureSoil } from "src/enums/CultureSoil";
-import { useListEnum } from "src/hooks/useListEnum";
+import { CultureLocation } from "../../enums/CultureLocation";
+import { CultureSoil } from "../../enums/CultureSoil";
+import { useListEnum } from "../../hooks/useListEnum";
 import * as Yup from "yup";
 /**
  * PhaseForm provide a form to upate the seeding, transplanting or planting

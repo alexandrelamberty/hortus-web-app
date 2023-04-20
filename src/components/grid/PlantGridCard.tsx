@@ -7,8 +7,8 @@ import {
   Icon,
   Image,
 } from "semantic-ui-react";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { Plant } from "src/interfaces/Plant";
+import { ApplicationContext } from "../../contexts/ApplicationContextProvider";
+import { Plant } from "../../interfaces/Plant";
 
 type PlantGridItemProps = {
   plant: Plant;

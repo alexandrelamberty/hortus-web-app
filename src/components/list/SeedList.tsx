@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Image, Item, Label, List } from "semantic-ui-react";
-import { SeedContext } from "src/contexts/SeedContextProvider";
-import { Seed } from "src/interfaces/Seed";
+import { SeedContext } from "../../contexts/SeedContextProvider";
+import { Seed } from "../../interfaces/Seed";
 
 export default function SeedList() {
   const { seeds, fetchSeeds } = useContext(SeedContext);

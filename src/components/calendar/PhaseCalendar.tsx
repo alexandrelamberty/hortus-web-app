@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Grid, SemanticCOLORS } from "semantic-ui-react";
-import { CultureHarvestingPhase, CulturePhase } from "src/interfaces/Culture";
-import { SeedPhaseInfo, Seed } from "src/interfaces/Seed";
+import { CultureHarvestingPhase, CulturePhase } from "../interfaces/Culture";
+import { SeedPhaseInfo, Seed } from "../interfaces/Seed";
 
 interface PhaseCalendarProps {
   seed: SeedPhaseInfo;

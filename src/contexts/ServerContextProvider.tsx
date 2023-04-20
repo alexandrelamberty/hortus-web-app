@@ -1,7 +1,7 @@
-import { CultureContextProvider } from "src/contexts/CultureContextProvider";
-import { PlantContextProvider } from "src/contexts/PlantContextProvider";
-import { SeedContextProvider } from "src/contexts/SeedContextProvider";
-import { combineComponents } from "src/utils/combineComponents";
+import { CultureContextProvider } from "../contexts/CultureContextProvider";
+import { PlantContextProvider } from "../contexts/PlantContextProvider";
+import { SeedContextProvider } from "../contexts/SeedContextProvider";
+import { combineComponents } from "../utils/combineComponents";
 
 const providers = [
   PlantContextProvider,

@@ -1,28 +1,34 @@
 import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Confirm, Modal } from "semantic-ui-react";
-import { PlantForm } from "src/components/form/PlantForm";
-import PlantGrid from "src/components/grid/PlantGrid";
-import PlantList from "src/components/list/PlantList";
-import { ActionMenu } from "src/components/menu/ActionMenu";
-import { AddMenuItem } from "src/components/menu/AddMenuItem";
-import { DeleteMenuItem } from "src/components/menu/DeleteMenuItem";
-import { SearchMenuItem } from "src/components/menu/SearchMenuItem";
-import { SelectMenuItem } from "src/components/menu/SelectMenuItem";
-import { ViewMenuItem } from "src/components/menu/ViewMenuItem";
-import PlantTable from "src/components/table/PlantTable";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
-import { PlantContext } from "src/contexts/PlantContextProvider";
-import { useSelectedIds } from "src/hooks/useSelectedIds";
-import { Plant } from "src/interfaces/Plant";
+import { PlantForm } from "../components/form/PlantForm";
+import PlantGrid from "../components/grid/PlantGrid";
+import PlantList from "../components/list/PlantList";
+import { ActionMenu } from "../components/menu/ActionMenu";
+import { AddMenuItem } from "../components/menu/AddMenuItem";
+import { DeleteMenuItem } from "../components/menu/DeleteMenuItem";
+import { SearchMenuItem } from "../components/menu/SearchMenuItem";
+import { SelectMenuItem } from "../components/menu/SelectMenuItem";
+import { ViewMenuItem } from "../components/menu/ViewMenuItem";
+import PlantTable from "../components/table/PlantTable";
+import { ApplicationContext } from "../contexts/ApplicationContextProvider";
+import { PlantContext } from "../contexts/PlantContextProvider";
+import { useSelectedIds } from "../hooks/useSelectedIds";
+import { Plant } from "../interfaces/Plant";
+import { listPlants } from "../store/actions/plant.action";
+import { AppDispatch, RootState } from "../store/store";
 
 export function PlantRoute() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { plants, status, errors } = useSelector(
+    (state: RootState) => state.plants
+  );
   // ApplicationContext and data provider PlantContext
   const { viewPlantForm, setViewPlantForm, plantViewType, setPlantViewType } =
     useContext(ApplicationContext);
 
   // Plant context
   const {
-    plants,
     selected,
     setSelected,
     selecteds,
@@ -57,6 +63,7 @@ export function PlantRoute() {
 
   useEffect(() => {
     fetchPlants();
+    dispatch(listPlants({}));
   }, [fetchPlants]);
 
   return (

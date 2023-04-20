@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as React from "react";
-import { Culture } from "src/interfaces/Culture";
-import { CultureFormData } from "src/interfaces/CultureFormData";
-import { Seed } from "src/interfaces/Seed";
+import { Culture } from "../interfaces/Culture";
+import { CultureFormData } from "../interfaces/CultureFormData";
+import { Seed } from "../interfaces/Seed";
 import { ApplicationContext } from "./ApplicationContextProvider";
 
 export interface CultureContextType {
@@ -30,13 +30,15 @@ export function CultureContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { apiUrl, setErrors } = React.useContext(ApplicationContext);
+  // const { apiUrl, setErrors } = React.useContext(ApplicationContext);
+  const apiUrl = import.meta.env.VITE_API_URL;
   let [count, setCount] = React.useState<number>(0);
   let [cultures, setCultures] = React.useState<Culture[]>([]);
   let [selected, setSelected] = React.useState<number[]>([]);
   const [selectedSeed, setSelectedSeed] = React.useState<Seed | undefined>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
+  const [errors, setErrors] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     console.log("CultureContextProvider::mount");

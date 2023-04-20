@@ -1,5 +1,5 @@
 import { useCallback, useContext } from "react";
-import { SeedContext } from "src/contexts/SeedContextProvider";
+import { SeedContext } from "../contexts/SeedContextProvider";
 
 /**
  * FIXME: Move methods that synchronize state between the app and the server here.

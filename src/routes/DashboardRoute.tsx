@@ -1,12 +1,12 @@
 import { Container, Grid } from "semantic-ui-react";
-import { GerminationWidget } from "src/components/widgets/GerminationWidget";
-import { HarvestingWidget } from "src/components/widgets/HarvestingWidget";
-import { PlantingWidget } from "src/components/widgets/PlantingWidget";
-import { SeedingWidget } from "src/components/widgets/SeedingWidget";
-import { SensorHumidityWidget } from "src/components/widgets/SensorHumidityWidget";
-import { SensorTemperatureWidget } from "src/components/widgets/SensorTemperatureWidget";
-import { TransplantingWidget } from "src/components/widgets/TransplantingWidget";
-import { WeatherWidget } from "src/components/widgets/WeatherWidget";
+import { GerminationWidget } from "../components/widgets/GerminationWidget";
+import { HarvestingWidget } from "../components/widgets/HarvestingWidget";
+import { PlantingWidget } from "../components/widgets/PlantingWidget";
+import { SeedingWidget } from "../components/widgets/SeedingWidget";
+import { SensorHumidityWidget } from "../components/widgets/SensorHumidityWidget";
+import { SensorTemperatureWidget } from "../components/widgets/SensorTemperatureWidget";
+import { TransplantingWidget } from "../components/widgets/TransplantingWidget";
+import { WeatherWidget } from "../components/widgets/WeatherWidget";
 
 const list = [
   {

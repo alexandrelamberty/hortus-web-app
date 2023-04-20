@@ -2,8 +2,8 @@ import axios, { AxiosError } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Modal } from "semantic-ui-react";
-import { Nav } from "src/components/app/Nav";
-import { ApplicationContext } from "src/contexts/ApplicationContextProvider";
+import { Nav } from "../../components/app/Nav";
+import { ApplicationContext } from "../../contexts/ApplicationContextProvider";
 import { Settings } from "../modal/Settings";
 
 export const AppLayout = () => {

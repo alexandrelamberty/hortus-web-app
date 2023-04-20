@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { Checkbox, Image, Modal, Table } from "semantic-ui-react";
-import { CultureContext } from "src/contexts/CultureContextProvider";
-import { CultureLocation } from "src/enums/CultureLocation";
-import { PhaseActions } from "src/enums/PhaseActions";
-import { Culture } from "src/interfaces/Culture";
+import { CultureContext } from "../contexts/CultureContextProvider";
+import { CultureLocation } from "../enums/CultureLocation";
+import { PhaseActions } from "../enums/PhaseActions";
+import { Culture } from "../interfaces/Culture";
 import PhaseCalendar from "../calendar/PhaseCalendar";
 import { HarvestingForm } from "../form/HarvestingForm";
 import { PhaseForm } from "../form/PhaseForm";

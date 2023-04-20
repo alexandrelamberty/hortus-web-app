@@ -1,6 +1,6 @@
-import { CultureLocation } from "src/enums/CultureLocation";
-import { CultureSoil } from "src/enums/CultureSoil";
-import { PhaseStatus } from "src/enums/PhaseStatus";
+import { CultureLocation } from "../enums/CultureLocation";
+import { CultureSoil } from "../enums/CultureSoil";
+import { PhaseStatus } from "../enums/PhaseStatus";
 import { Seed } from "./Seed";
 
 /**

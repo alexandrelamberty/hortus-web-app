@@ -1,6 +1,6 @@
 import * as React from "react";
-import { View } from "src/components/menu/ViewMenuItem";
-import { useConfig } from "src/hooks/useConfig";
+import { View } from "../components/menu/ViewMenuItem";
+import { useConfig } from "../hooks/useConfig";
 
 interface Modals {
   cultureForm: boolean;
