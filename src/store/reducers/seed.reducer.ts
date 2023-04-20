@@ -49,7 +49,7 @@ const seedReducer = createReducer(initialState, (builder) => {
     })
     .addCase(listSeeds.fulfilled, (state, { payload }) => {
       console.log("REDUCER", payload);
-      state.seeds = state.seeds.concat(payload);
+      state.seeds = payload!;
       state.count = state.seeds.length;
       state.status = "idle";
     })

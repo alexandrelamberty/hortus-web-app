@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Modal, Segment } from "semantic-ui-react";
 import { SeedForm } from "../components/form/SeedForm";
 import SeedGrid from "../components/grid/SeedGrid";
@@ -14,14 +15,19 @@ import { ApplicationContext } from "../contexts/ApplicationContextProvider";
 import { SeedContext } from "../contexts/SeedContextProvider";
 import { useSelectedIds } from "../hooks/useSelectedIds";
 import { Seed } from "../interfaces/Seed";
+import { listSeeds } from "../store/actions/seed.action";
+import { AppDispatch, RootState } from "../store/store";
 
 export function SeedRoute() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { seeds, status, errors } = useSelector(
+    (state: RootState) => state.seeds
+  );
   // ApplicationContext and data provider PlantContext
   const { viewSeedForm, setViewSeedForm, seedViewType, setSeedViewType } =
     useContext(ApplicationContext);
 
   const {
-    seeds,
     fetchSeeds,
     selecteds,
     setSelecteds,
@@ -55,8 +61,8 @@ export function SeedRoute() {
   };
 
   useEffect(() => {
-    // fetchSeeds();
-  }, [fetchSeeds]);
+    dispatch(listSeeds({}));
+  }, []);
 
   return (
     <>

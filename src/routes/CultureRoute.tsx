@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import SemanticDatepicker from "react-semantic-ui-datepickers";
+import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Input, Menu, Modal } from "semantic-ui-react";
 import { CultureForm } from "../components/form/CultureForm";
 import { HarvestingForm } from "../components/form/HarvestingForm";
@@ -13,8 +13,15 @@ import { SelectMenuItem } from "../components/menu/SelectMenuItem";
 import { ViewMenuItem } from "../components/menu/ViewMenuItem";
 import { ApplicationContext } from "../contexts/ApplicationContextProvider";
 import { CultureContext } from "../contexts/CultureContextProvider";
+import { listCultures } from "../store/actions/culture.action";
+import { AppDispatch, RootState } from "../store/store";
 
 export function CultureRoute() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { cultures, status, errors } = useSelector(
+    (state: RootState) => state.cultures
+  );
+
   // Application context
   const {
     viewCultureForm,
@@ -45,6 +52,10 @@ export function CultureRoute() {
     setViewCultureForm(false);
   };
 
+  useEffect(() => {
+    dispatch(listCultures({}));
+  }, []);
+
   return (
     <>
       <ActionMenu
@@ -74,9 +85,7 @@ export function CultureRoute() {
         }
         right={
           <>
-            <Menu.Item>
-              <SemanticDatepicker size="small" />
-            </Menu.Item>
+            <Menu.Item>{/* <SemanticDatepicker size="small" /> */}</Menu.Item>
             <SearchMenuItem
               onChange={(terms) => {
                 console.log("search", terms);
@@ -96,7 +105,7 @@ export function CultureRoute() {
       {/* FIXME: loading */}
       {/* <CultureTable /> */}
       <div style={{ height: "70vh", overflowY: "scroll" }}>
-        <CultureList />
+        {cultures.length !== 0 && <CultureList />}
       </div>
 
       {/* CultureForm  */}

@@ -1,25 +1,26 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { login, register } from "../actions/auth.action";
 import { StoreState } from "../store";
+import { loadWidgets, saveWidgets } from "../actions/dashboard.action";
 
-export type AuthState = {
-  user: any;
+export type DashboardState = {
+  widgets: any;
   status: StoreState;
   errors: string | null;
 };
 
-const initialState: AuthState = {
-  user: null,
+const initialState: DashboardState = {
+  widgets: null,
   status: "idle",
   errors: null,
 };
 
-const authReducer = createReducer(initialState, (builder) => {
+const dashboardReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(register.pending, (state, action) => {
+    .addCase(loadWidgets.pending, (state, action) => {
       state.status = "pending";
     })
-    .addCase(register.rejected, (state, action) => {
+    .addCase(loadWidgets.rejected, (state, action) => {
       state.status = "failed";
       state.errors = action.error.message!;
       // Check if error come from the action condition
@@ -27,22 +28,22 @@ const authReducer = createReducer(initialState, (builder) => {
         state.errors = "Condition";
       }
     })
-    .addCase(register.fulfilled, (state, { payload }) => {
+    .addCase(loadWidgets.fulfilled, (state, { payload }) => {
       const culture = payload;
       state.status = "succeeded";
     })
-    .addCase(login.pending, (state, action) => {
+    .addCase(saveWidgets.pending, (state, action) => {
       const culture = action.payload;
       state.status = "pending";
     })
-    .addCase(login.rejected, (state, action) => {
+    .addCase(saveWidgets.rejected, (state, action) => {
       const culture = action.payload;
       state.status = "failed";
     })
-    .addCase(login.fulfilled, (state, action) => {
+    .addCase(saveWidgets.fulfilled, (state, action) => {
       const culture = action.payload;
       state.status = "succeeded";
     });
 });
 
-export default authReducer;
+export default dashboardReducer;

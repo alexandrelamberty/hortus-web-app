@@ -2,15 +2,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import loggerMiddleware from "redux-logger";
 import authReducer from "./reducers/auth.reducer";
 import cultureReducer from "./reducers/culture.reducer";
+import dashboardReducer from "./reducers/dashboard.reducer";
 import plantReducer from "./reducers/plant.reducer";
 import seedReducer from "./reducers/seed.reducer";
+import settingsReducer from "./reducers/settings.reducer";
+import userReducer from "./reducers/user.reducer";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     plants: plantReducer,
     seeds: seedReducer,
-    culture: cultureReducer,
+    cultures: cultureReducer,
+    dashboard: dashboardReducer,
+    settings: settingsReducer,
+    users: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

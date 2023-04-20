@@ -62,9 +62,8 @@ export function PlantRoute() {
   const onConfirmDeleted = () => {};
 
   useEffect(() => {
-    fetchPlants();
     dispatch(listPlants({}));
-  }, [fetchPlants]);
+  }, []);
 
   return (
     <>
