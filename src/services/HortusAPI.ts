@@ -1,53 +1,50 @@
-import { API } from "./APIClient";
+import { AxiosRequestConfig } from "axios";
+import { apiRequest } from "./AxiosClient";
 
-// TESTS
+type GetUsersResponseData = {
+  id: string;
+  name: string;
+  email: string;
+}[];
 
-type Book = {
-  id?: string;
-  title: string;
-  isbn: string;
+type GetUserResponseData = {
+  id: string;
+  name: string;
+  email: string;
 };
 
-type BookRequest = {
-  title: string;
-  isbn: string;
+export const getUsers = async (): Promise<GetUsersResponseData> => {
+  const config: AxiosRequestConfig = {
+    method: "GET",
+    url: "/users",
+  };
+  return await apiRequest<GetUsersResponseData>(config);
 };
 
-async function createBook(book: BookRequest): Promise<Book | unknown> {
-  return await API.post<Book, unknown>("/books", book);
-}
-
-async function readBook(id: string): Promise<Book | unknown> {
-  return await API.get<Book>(`/books/${id}`);
-}
-
-async function updateBookPartial(book: Book): Promise<Book | unknown> {
-  return await API.patch<Book, unknown>(`/books/${book.id}`, book);
-}
-
-async function updateBook(book: Book): Promise<Book | unknown> {
-  return await API.put<Book, unknown>(`/books/${book.id}`, book);
-}
-
-async function deleteBook(book: Book): Promise<Book> {
-  return await API.delete<Book>(`/books/${book.id}`);
-}
-
-async function fetchBooks(): Promise<Book[]> {
-  return await API.get<Book[]>("/seeds");
-}
-
-// 1 - Create a new book and log it
-const book: BookRequest = {
-  title: "Abc",
-  isbn: "Abc123",
+export const getUser = async (userId: string): Promise<GetUserResponseData> => {
+  const config: AxiosRequestConfig = {
+    method: "GET",
+    url: `/users/${userId}`,
+  };
+  return await apiRequest<GetUserResponseData>(config);
 };
-const newBook = createBook(book);
-console.log(newBook);
 
-// Retrieve all books
-const myBooks = fetchBooks();
-console.log(myBooks);
+export const postRegister = async (
+  userId: string
+): Promise<GetUserResponseData> => {
+  const config: AxiosRequestConfig = {
+    method: "GET",
+    url: `/users/${userId}`,
+  };
+  return await apiRequest<GetUserResponseData>(config);
+};
 
-// Update a book
-const bookToUpdate = myBooks;
+export const postLogin = async (
+  userId: string
+): Promise<GetUserResponseData> => {
+  const config: AxiosRequestConfig = {
+    method: "GET",
+    url: `/users/${userId}`,
+  };
+  return await apiRequest<GetUserResponseData>(config);
+};

@@ -49,7 +49,7 @@ const productReducer = createReducer(initialState, (builder) => {
     })
     .addCase(listPlants.fulfilled, (state, { payload }) => {
       console.log("REDUCER", payload);
-      state.plants = state.plants.concat(payload);
+      state.plants = payload;
       state.count = state.plants.length;
       state.status = "idle";
     })
