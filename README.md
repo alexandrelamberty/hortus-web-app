@@ -16,11 +16,12 @@ It communicate via HTTP with the [Hortus API](https://github.com/alexandrelamber
 ## Technologies, languages, frameworks
 
 - [Docker](https://www.docker.com/)
-- [NPM](https://www.npmjs.com/)
+- [PNPM](https://pnpm.io/)
 - [Typescript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
 - [React Router](https://reactrouter.com/en/main)
 - [Semantic UI React](https://react.semantic-ui.com/)
+- [Heroicons](https://heroicons.com/)
 
 ## Requirements
 

@@ -23,38 +23,33 @@ export function SeedRoute() {
   const { seeds, status, errors } = useSelector(
     (state: RootState) => state.seeds
   );
-  // ApplicationContext and data provider PlantContext
+
+  // TODO: Switch to store
   const { viewSeedForm, setViewSeedForm, seedViewType, setSeedViewType } =
     useContext(ApplicationContext);
 
-  const {
-    fetchSeeds,
-    selecteds,
-    setSelecteds,
-    selected,
-    setSelected,
-    deleteSeeds,
-  } = React.useContext(SeedContext);
+  // TODO: Switch to store
+  const { selecteds, setSelecteds, selected, setSelected, deleteSeeds } =
+    React.useContext(SeedContext);
 
-  // FIXME:
   const ids = useSelectedIds(seeds);
 
   const renderView = () => {
     switch (seedViewType) {
       case "grid":
-        return <SeedGrid onChange={onDataViewChange} />;
+        return <SeedGrid onChange={handleSelect} />;
       case "table":
-        return <SeedTable seeds={seeds} onChange={onDataViewChange} />;
+        return <SeedTable seeds={seeds} onChange={handleSelect} />;
       default:
         return <SeedList />;
     }
   };
 
-  const onDeleted = () => {
+  const handleDelete = () => {
     console.log("SeedRoute.onDeleteClicked");
   };
 
-  const onDataViewChange = (seed: Seed) => {
+  const handleSelect = (seed: Seed) => {
     console.log("data change", seed);
     if (seed) setSelected(seed);
     setViewSeedForm(!viewSeedForm);
@@ -100,6 +95,7 @@ export function SeedRoute() {
         right={
           <>
             <SearchMenuItem
+              placeholder="Search for a seed..."
               onChange={(terms) => {
                 console.log("search", terms);
               }}
@@ -115,6 +111,7 @@ export function SeedRoute() {
         }
       />
       {seeds.length > 0 ? renderView() : <PlaceHolder />}
+
       <Modal
         open={viewSeedForm}
         onOpen={() => setViewSeedForm(true)}

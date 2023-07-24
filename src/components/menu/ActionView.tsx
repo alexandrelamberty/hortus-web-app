@@ -1,4 +1,3 @@
-import React from "react";
 import { Dropdown, Menu } from "semantic-ui-react";
 
 const options = [
@@ -39,14 +38,14 @@ const views = [
   { key: "grid", icon: "th", text: "Grid", value: "grid" },
 ];
 
-type ControllsProps = {
+type ControlsProps = {
   name: string;
   selected?: [];
-  handleAdd: VoidFunction;
-  handleDelete: VoidFunction;
+  onAdd: VoidFunction;
+  onDelete: VoidFunction;
 };
 
-export default function ActionControlls(props: ControllsProps) {
+export default function ActionControls(props: ControlsProps) {
   return (
     <Menu.Item>
       <Menu.Item>

@@ -1,17 +1,16 @@
-import React from "react";
-import { Menu, Segment } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 
-interface ActionMenuProps {
+type ActionMenuProps = {
   left: JSX.Element;
   right: JSX.Element;
-}
+};
 
-export const ActionMenu = (props: ActionMenuProps) => {
+export const ActionMenu = ({ left, right }: ActionMenuProps) => {
   return (
     <>
       <Menu size="tiny" fluid>
-        {props.left}
-        <Menu.Menu position="right">{props.right}</Menu.Menu>
+        {left}
+        <Menu.Menu position="right">{right}</Menu.Menu>
       </Menu>
 
       {/* TODO:feature <Segment>Filter form</Segment> */}

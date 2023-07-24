@@ -1,12 +1,12 @@
-import { useContext } from "react";
 import { Grid } from "semantic-ui-react";
 import { Plant } from "../../interfaces/Plant";
-import { PlantContext } from "../../contexts/PlantContextProvider";
 import PlantGridCard from "./PlantGridCard";
 
-const PlantGrid = () => {
-  const { plants } = useContext(PlantContext);
-  //
+type PlantGridProps = {
+  plants: Plant[];
+};
+
+const PlantGrid = ({ plants }: PlantGridProps) => {
   return (
     <Grid inverted>
       {plants.map((plant: Plant) => (
@@ -17,4 +17,5 @@ const PlantGrid = () => {
     </Grid>
   );
 };
+
 export default PlantGrid;

@@ -74,10 +74,9 @@ export function CultureRoute() {
               }}
             />
             <DeleteMenuItem
-              disabled={selected.length !== 0}
+              disabled={selected.length === 0 ? true : false}
               onClick={() => {
                 console.log("delete");
-                //
                 deleteCultures(selected);
               }}
             />
@@ -87,6 +86,7 @@ export function CultureRoute() {
           <>
             <Menu.Item>{/* <SemanticDatepicker size="small" /> */}</Menu.Item>
             <SearchMenuItem
+              placeholder="Search"
               onChange={(terms) => {
                 console.log("search", terms);
               }}
@@ -105,7 +105,7 @@ export function CultureRoute() {
       {/* FIXME: loading */}
       {/* <CultureTable /> */}
       <div style={{ height: "70vh", overflowY: "scroll" }}>
-        {cultures.length !== 0 && <CultureList />}
+        {cultures.length !== 0 && <CultureList cultures={cultures} />}
       </div>
 
       {/* CultureForm  */}

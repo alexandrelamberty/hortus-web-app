@@ -1,19 +1,19 @@
-import React from "react";
 import { Input, Menu } from "semantic-ui-react";
 
 interface SearchMenuItemProps {
+  placeholder: string;
   onChange: (terms: string) => void;
 }
-export const SearchMenuItem = (props: SearchMenuItemProps) => {
+export const SearchMenuItem = ({
+  placeholder,
+  onChange,
+}: SearchMenuItemProps) => {
   return (
     <Menu.Item>
       <Input
         icon="search"
-        placeholder="Search..."
-        onChange={(event, data) => {
-          console.log("SearchMenuItem::onChange()");
-          props.onChange(data.value as string);
-        }}
+        placeholder={placeholder}
+        onChange={(event, data) => onChange(data.value as string)}
       />
     </Menu.Item>
   );

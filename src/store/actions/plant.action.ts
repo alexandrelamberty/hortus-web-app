@@ -1,11 +1,18 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { PlantDTO } from "../../interfaces/PlantDTO";
 import { getPlants } from "../../services/HortusAPI";
+import { Plant } from "../../interfaces/Plant";
 
 type ListPlantsParams = {
   limit?: number;
   skip?: number;
 };
+
+export const selectPlant = createAction("plants/select", (plant: Plant) => {
+  return {
+    payload: plant,
+  };
+});
 
 export const listPlants = createAsyncThunk(
   "plants/list",

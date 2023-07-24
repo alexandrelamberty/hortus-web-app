@@ -5,7 +5,7 @@ import { Plant } from "../../interfaces/Plant";
 
 interface PlantTableProps {
   plants: Plant[];
-  onChange: (plant: Plant) => void;
+  onSelect: (plant: Plant) => void;
 }
 
 const sortReducer = (state: any, action: any) => {
@@ -30,7 +30,7 @@ const sortReducer = (state: any, action: any) => {
   }
 };
 
-export default function PlantTable({ plants, onChange }: PlantTableProps) {
+export default function PlantTable({ plants, onSelect }: PlantTableProps) {
   // The selected table rows
   const { selecteds, setSelecteds } = useContext(PlantContext);
 
@@ -66,7 +66,7 @@ export default function PlantTable({ plants, onChange }: PlantTableProps) {
       // FIXME: what this is used for?...
       // setViewOpen(true);
     } else {
-      onChange(plant);
+      onSelect(plant);
       setMouseDownId("");
     }
   }
@@ -76,10 +76,10 @@ export default function PlantTable({ plants, onChange }: PlantTableProps) {
     setMouseDownId(data.id);
   };
 
-  const onCheckboxMouseUp = (event: any, data: any) => {
-    console.log("onCheckboxMouseUp()", data.id);
-    setMouseDownId("");
-  };
+  // const onCheckboxMouseUp = (event: any, data: any) => {
+  //   console.log("onCheckboxMouseUp()", data.id);
+  //   setMouseDownId("");
+  // };
 
   const onCheckboxChange = (event: any, data: any): void => {
     console.log("PlantTable::onCheckboxChange", data.id);

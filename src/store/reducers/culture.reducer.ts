@@ -49,7 +49,7 @@ const cultureReducer = createReducer(initialState, (builder) => {
     })
     .addCase(listCultures.fulfilled, (state, { payload }) => {
       console.log("REDUCER", payload);
-      state.cultures = payload!;
+      state.cultures = payload.results!;
       state.count = state.cultures.length;
       state.status = "idle";
     })

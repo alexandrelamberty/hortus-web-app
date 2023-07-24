@@ -78,16 +78,18 @@ export const getPlant = async (
 
 // Seeds
 
-type GetSeedsResponseData = Seed[];
+type GetSeedsResponseData = {
+  results: Seed[];
+};
 
 type GetSeedResponseData = Seed;
 
-export const getSeeds = async (): Promise<GetPlantsResponseData> => {
+export const getSeeds = async (): Promise<GetSeedsResponseData> => {
   const config: AxiosRequestConfig = {
     method: "GET",
     url: "/seeds",
   };
-  return await apiRequest<GetPlantsResponseData>(config);
+  return await apiRequest<GetSeedsResponseData>(config);
 };
 
 export const getSeed = async (seedId: string): Promise<GetSeedResponseData> => {
@@ -100,7 +102,9 @@ export const getSeed = async (seedId: string): Promise<GetSeedResponseData> => {
 
 // Cultures
 
-type GetCulturesResponseData = Culture[];
+type GetCulturesResponseData = {
+  results: Culture[];
+};
 
 type GetCultureResponseData = Culture;
 
@@ -120,4 +124,26 @@ export const getCulture = async (
     url: `/cultures/${cultureId}`,
   };
   return await apiRequest<GetCultureResponseData>(config);
+};
+
+/**
+ * Weather using Open-Meteo Weather Forecast API
+ * https://open-meteo.com/en/docs
+ */
+
+export const getWeather = async (): Promise<any> => {
+  const urlParams = new URLSearchParams({
+    latitude: "52.52",
+    longitude: "13.41",
+    timezone: "GMT+1",
+    current_weather: "true",
+    hourly: "temperature_2m",
+    daily: "temperature_2m_max",
+  });
+
+  const config: AxiosRequestConfig = {
+    method: "GET",
+    url: `https://api.open-meteo.com/v1/forecast${urlParams}`,
+  };
+  return await apiRequest<any>(config);
 };

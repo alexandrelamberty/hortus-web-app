@@ -1,6 +1,4 @@
-import React from "react";
 import { Dropdown, Menu } from "semantic-ui-react";
-// View
 
 const LIST_VIEW = {
   key: "list",
@@ -16,11 +14,15 @@ const TABLE_VIEW = {
   value: "table",
 };
 
-const GRID_VIEW = { key: "grid", icon: "th", text: "Grid", value: "grid" };
+const GRID_VIEW = {
+  key: "grid",
+  icon: "th",
+  text: "Grid",
+  value: "grid",
+};
 
 export const views = [GRID_VIEW, TABLE_VIEW];
 
-// View
 export type List = "list";
 export type Grid = "grid";
 export type Table = "table";
@@ -30,7 +32,7 @@ interface ViewMenuItemProps {
   type: string;
   onChange: (view: View) => void;
 }
-export const ViewMenuItem = (props: ViewMenuItemProps) => {
+export const ViewMenuItem = ({ type, onChange }: ViewMenuItemProps) => {
   return (
     <Menu.Item>
       <Dropdown
@@ -40,10 +42,8 @@ export const ViewMenuItem = (props: ViewMenuItemProps) => {
         labeled
         icon="cog"
         options={views}
-        defaultValue={props.type}
-        onChange={(event, data) => {
-          props.onChange(data.value as View);
-        }}
+        defaultValue={type}
+        onChange={(event, data) => onChange(data.value as View)}
       />
     </Menu.Item>
   );

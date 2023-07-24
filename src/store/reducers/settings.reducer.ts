@@ -1,7 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { login, register } from "../actions/auth.action";
-import { StoreState } from "../store";
 import { loadSettings, saveSettings } from "../actions/settings.action";
+import { StoreState } from "../store";
 
 export type SettingsState = {
   settings: any;

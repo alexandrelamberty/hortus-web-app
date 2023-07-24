@@ -7,19 +7,13 @@ import { SensorHumidityWidget } from "../components/widgets/SensorHumidityWidget
 import { SensorTemperatureWidget } from "../components/widgets/SensorTemperatureWidget";
 import { TransplantingWidget } from "../components/widgets/TransplantingWidget";
 import { WeatherWidget } from "../components/widgets/WeatherWidget";
+import weather from "../store/weather.json";
 
-const list = [
-  {
-    name: "Carrots",
-  },
-  {
-    name: "Beets",
-  },
-  {
-    name: "Corn",
-  },
-];
 export function DashboardRoute() {
+  const weatherData = weather;
+
+  // const weatherTransform =
+
   return (
     <Container>
       <Grid>

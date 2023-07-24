@@ -1,16 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { Plant } from "../../interfaces/Plant";
 import {
   createPlant,
   deletePlant,
   listPlants,
   readPlant,
+  selectPlant,
   updatePlant,
 } from "../actions/plant.action";
 import { StoreState } from "../store";
-import { Plant } from "../../interfaces/Plant";
 
 export type PlantState = {
   plants: Plant[];
+  selectedPlant: Plant | null;
+  selectedPlantIds: string[];
   count: number;
   status: StoreState;
   errors: string | null;
@@ -18,23 +21,26 @@ export type PlantState = {
   showDetail: boolean;
   showConfirmModal: boolean;
   showSuccessModal: boolean;
-  selectedPlantIds: string[];
 };
 
 const initialState: PlantState = {
+  selectedPlantIds: [],
+  selectedPlant: null,
   plants: [],
   count: 0,
   status: "idle",
   errors: null,
   showForm: false,
   showDetail: false,
-  showConfirmModal: false,
+  showConfirmModal: true,
   showSuccessModal: false,
-  selectedPlantIds: [],
 };
 
 const productReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(selectPlant, (state, action) => {
+      state.selectedPlant = action.payload;
+    })
     .addCase(listPlants.pending, (state, action) => {
       state.status = "pending";
     })
